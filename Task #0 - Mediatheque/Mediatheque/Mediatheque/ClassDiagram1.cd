@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Mediatheque.Components.File" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIACAEKAAAAAAAAAQAAAAQAAAIAAAAIAAAA=</HashCode>
+      <FileName>Components\File.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Mediatheque.Components.Frame" Collapsed="true">
+    <Position X="11.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Components\Frame.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mediatheque.Components.Photo" Collapsed="true">
+    <Position X="7" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAIAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Components\Photo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Mediatheque.Components.Track" Collapsed="true">
+    <Position X="9.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAACAAAAIBAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Components\Track.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Mediatheque.Components.Video" Collapsed="true">
+    <Position X="4.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAACAAAAAAAKAACAAAAABAAAAAAgAAAAAAEAoABAAAA=</HashCode>
+      <FileName>Components\Video.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Mediatheque.Interfaces.IFile" Collapsed="true">
+    <Position X="11.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEKAAAAAAAAAQAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IFile.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Mediatheque.Interfaces.IPicture" Collapsed="true">
+    <Position X="13.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Interfaces\IPicture.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Mediatheque.Interfaces.ITrack" Collapsed="true">
+    <Position X="11.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\ITrack.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Mediatheque.Interfaces.IUrl" Collapsed="true">
+    <Position X="13.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Interfaces\IUrl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
