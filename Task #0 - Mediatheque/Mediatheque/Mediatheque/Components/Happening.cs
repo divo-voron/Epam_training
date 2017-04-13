@@ -8,40 +8,16 @@ using System.Threading.Tasks;
 
 namespace Mediatheque.Components
 {
-    class Happening : File, ICRUDOperation
+    class Happening : File
     {
-        private ICollection< Photo> _photos;
-        private ICollection< Video> _videos;
+        private ICollection<IPicture> _photos;
+        private ICollection<IVideo> _videos;
 
-        public Happening() { }
-        public Happening(string path, string title, string extension, ICollection<Photo> photos, ICollection<Video> videos)
-            : base(path, title, extension)
+        public Happening(string name, ICollection<IPicture> photos, ICollection<IVideo> videos)
+            : base(name)
         {
             _photos = photos;
             _videos = videos;
-        }
-
-        //TODO: realize CRUD operatios here
-
-
-        public bool Create(File file)
-        {
-            throw new NotImplementedException();
-        }
-
-        public File Read()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Update()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete()
-        {
-            throw new NotImplementedException();
         }
     }
 }

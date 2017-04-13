@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mediatheque.Enums;
 
 namespace Mediatheque.Interfaces
 {
-    interface ITrack:IFile
+    interface IVideo:IFile
     {
-        int Duration { get; }
+        Resolutions Resolution { get; }
     }
 }

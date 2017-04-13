@@ -10,26 +10,12 @@ namespace Mediatheque.Components
 {
     class Photo : File, IPicture
     {
-        private Resolutions _resolution;
         private ColorDepth _color;
 
-        public Photo() { }
-        public Photo(string path, string title, string extension, int size)
-            : base(path, title, extension, size)
+        public Photo(string name, ColorDepth color)
+            : base(name)
         {
-
-        }
-        public Photo(string path, string title, string extension, int size, Resolutions resolution, ColorDepth color)
-            : base(path, title, extension, size)
-        {
-            _resolution = resolution;
             _color = color;
-        }
-
-        public Resolutions Resolution
-        {
-            get { return _resolution; }
-            set { _resolution = value; }
         }
 
         public ColorDepth Color

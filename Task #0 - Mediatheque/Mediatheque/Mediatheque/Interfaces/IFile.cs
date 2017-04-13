@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mediatheque.Components;
 
 namespace Mediatheque.Interfaces
 {
     interface IFile
     {
-        string Path { get; set; }
-        string Title { get; set; }
-        string Extension { get; set; }
+        string Name { get; set; }
         string GetFileName();
-        int GetSize();
+        Stream GetStream();
     }
 }

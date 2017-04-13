@@ -7,9 +7,8 @@ using Mediatheque.Enums;
 
 namespace Mediatheque.Interfaces
 {
-    interface IPicture
+    interface IPicture:IFile
     {
-        Resolutions Resolution { get; }
         ColorDepth Color { get; }
     }
 }

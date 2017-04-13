@@ -10,21 +10,15 @@ namespace Mediatheque.Components
     class Track : File, ITrack
     {
         private int _duration;
-        private int _sampleRate;
-        public Track() { }
-        public Track(string path, string title, string extension, int size, int duration, int sampleRate)
-            : base(path, title, extension, size)
-        { }
+        public Track(string name, int duration)
+            : base(name)
+        {
+            _duration = duration;
+        }
         public int Duration
         {
             get { return _duration; }
             set { _duration = value; }
-        }
-
-        public int SampleRate
-        {
-            get { return _sampleRate; }
-            set { _sampleRate = value; }
         }
     }
 }

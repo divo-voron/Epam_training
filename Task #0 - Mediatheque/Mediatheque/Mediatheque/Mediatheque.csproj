@@ -45,15 +45,16 @@
     <Compile Include="Components\Happening.cs" />
     <Compile Include="Components\File.cs" />
     <Compile Include="Components\Photo.cs" />
+    <Compile Include="Components\Stream.cs" />
     <Compile Include="Components\Track.cs" />
     <Compile Include="Components\Video.cs" />
     <Compile Include="Enums\ColorDepth.cs" />
     <Compile Include="Enums\Resolutions.cs" />
-    <Compile Include="Interfaces\ICRUDOperation.cs" />
     <Compile Include="Interfaces\IFile.cs" />
     <Compile Include="Interfaces\IPicture.cs" />
     <Compile Include="Interfaces\ITrack.cs" />
     <Compile Include="Interfaces\IUrl.cs" />
+    <Compile Include="Interfaces\IVideo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

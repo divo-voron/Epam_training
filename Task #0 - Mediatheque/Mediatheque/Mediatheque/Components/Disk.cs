@@ -7,39 +7,16 @@ using System.Threading.Tasks;
 
 namespace Mediatheque.Components
 {
-    class Disk:File,ICRUDOperation
+    class Disk : File
     {
-        private ICollection< Photo> _photos;
-        private ICollection< Video> _videos;
+        private ICollection<IPicture> _photos;
+        private ICollection<IVideo> _videos;
 
-        public Disk(string path, string title, string extension, ICollection<Photo> photos, ICollection<Video> videos)
-            : base(path, title, extension)
+        public Disk(string name, ICollection<IPicture> photos, ICollection<IVideo> videos)
+            : base(name)
         {
             _photos = photos;
             _videos = videos;
-        }
-
-        //TODO: realize only READ operation here
-
-        public bool Create(File file)
-        {
-            return false;
-            throw new NotImplementedException();
-        }
-
-        public File Read()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Update()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Delete()
-        {
-            throw new NotImplementedException();
         }
     }
 }

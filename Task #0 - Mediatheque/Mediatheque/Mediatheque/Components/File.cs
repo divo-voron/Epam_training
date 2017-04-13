@@ -9,43 +9,29 @@ namespace Mediatheque.Components
 {
     abstract class File : IFile
     {
-        private string _path;
-        private string _title;
-        private string _extension;
+        private string _name;
         private int _size;
+        
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
-        public File() { }
-        public File(string path, string title, string extension, int size = 0)
+        public File(string name)
         {
-            _path = path;
-            _title = title;
-            _extension = extension;
-            _size = size;
-        }
-        public string Path
-        {
-            get { return _path; }
-            set { _path = value; }
-        }
-        public string Title
-        {
-            get { return _title; }
-            set { _title = value; }
-        }
-        public string Extension
-        {
-            get { return _extension; }
-            set { _extension = value; }
+            _name = name;
         }
 
         public string GetFileName()
         {
-            return string.Concat(_path, "\\", _title, ".", _extension);
+            return _name;
         }
 
-        public virtual int GetSize()
+        public Stream GetStream()
         {
-            return _size;
+            throw new NotImplementedException();
+            //return new Stream();
         }
     }
 }
