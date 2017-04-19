@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Taxis.Interfaces
+namespace TaxiStation.Interfaces
 {
     interface ICargo
     {

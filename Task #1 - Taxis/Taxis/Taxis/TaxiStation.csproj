@@ -7,7 +7,7 @@
     <ProjectGuid>{E129D175-0E1B-43EB-8D0A-1146C3BF404D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Taxis</RootNamespace>
+    <RootNamespace>TaxiStation</RootNamespace>
     <AssemblyName>Taxis</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

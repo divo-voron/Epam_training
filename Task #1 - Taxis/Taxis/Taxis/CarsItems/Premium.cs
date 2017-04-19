@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Taxis.CarComponents;
-using Taxis.Interfaces;
+using TaxiStation.CarComponents;
+using TaxiStation.Interfaces;
 
-namespace Taxis.CarsItems
+namespace TaxiStation.CarsItems
 {
     class Premium : Car, IPassengers, ICar
     {

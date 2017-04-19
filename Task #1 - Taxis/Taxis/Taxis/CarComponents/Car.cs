@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Taxis.Interfaces;
+using TaxiStation.Interfaces;
 
-namespace Taxis.CarComponents
+namespace TaxiStation.CarComponents
 {
     abstract class Car : ICar
     {
