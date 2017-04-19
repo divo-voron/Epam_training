@@ -21,7 +21,7 @@ namespace Mediatheque.Components
         public ColorDepth Color
         {
             get { return _color; }
-            set { _color = value; }
+            set { /*_color = value;*/ }
         }
 
         public override Stream GetStream()
