@@ -28,10 +28,9 @@ namespace Mediatheque.Components
             return _name;
         }
 
-        public Stream GetStream()
+        public virtual Stream GetStream()
         {
-            throw new NotImplementedException();
-            //return new Stream();
+            return new Stream("");
         }
     }
 }

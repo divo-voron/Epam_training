@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Mediatheque.Components
 {
-    class Happening : File
+    class Serial : File
     {
         private ICollection<IPicture> _photos;
         private ICollection<IVideo> _videos;
 
-        public Happening(string name, ICollection<IPicture> photos, ICollection<IVideo> videos)
+        public Serial(string name, ICollection<IPicture> photos, ICollection<IVideo> videos)
             : base(name)
         {
             _photos = photos;

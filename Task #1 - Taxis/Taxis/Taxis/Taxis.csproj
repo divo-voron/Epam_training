@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{085CF349-FE32-4853-804B-C549A661B483}</ProjectGuid>
+    <ProjectGuid>{E129D175-0E1B-43EB-8D0A-1146C3BF404D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mediatheque</RootNamespace>
-    <AssemblyName>Mediatheque</AssemblyName>
+    <RootNamespace>Taxis</RootNamespace>
+    <AssemblyName>Taxis</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,29 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Compilation.cs" />
-    <Compile Include="Components\Disk.cs" />
-    <Compile Include="Components\Happening.cs" />
-    <Compile Include="Components\File.cs" />
-    <Compile Include="Components\Photo.cs" />
-    <Compile Include="Components\Serial.cs" />
-    <Compile Include="Components\Track.cs" />
-    <Compile Include="Components\Video.cs" />
-    <Compile Include="Enums\ColorDepth.cs" />
-    <Compile Include="Enums\Resolutions.cs" />
-    <Compile Include="Interfaces\IFile.cs" />
-    <Compile Include="Interfaces\IPicture.cs" />
-    <Compile Include="Interfaces\ITrack.cs" />
-    <Compile Include="Interfaces\IUrl.cs" />
-    <Compile Include="Interfaces\IVideo.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="Stream.cs" />
+    <Compile Include="CarsComponent\Car.cs" />
+    <Compile Include="Interfaces\ICar.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

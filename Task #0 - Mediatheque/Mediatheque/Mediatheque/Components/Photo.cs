@@ -23,5 +23,10 @@ namespace Mediatheque.Components
             get { return _color; }
             set { _color = value; }
         }
+
+        public override Stream GetStream()
+        {
+            return new Stream(string.Format("Name: {0}, Color: {1}", Name, _color));
+        }
     }
 }

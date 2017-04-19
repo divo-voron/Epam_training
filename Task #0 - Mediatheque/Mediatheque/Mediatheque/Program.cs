@@ -1,5 +1,6 @@
 ﻿using Mediatheque.Components;
 using Mediatheque.Interfaces;
+using Mediatheque.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,10 @@ namespace Mediatheque
     {
         static void Main(string[] args)
         {
-            List<Frame> videoSequence = new List<Frame>();
-            for (int i = 0; i < 15; i++)
-            {
-                videoSequence.Add(new Frame(i + 11));
-            }
+            Photo photo = new Photo("Dog", ColorDepth.GrayScale);
 
-            Video video = new Video("D:\\1", "SampleVideo", "avi", videoSequence, new Track(), 3);
-            Console.WriteLine(video.GetMediaInfo());
-
-            Happening happening = new Happening("", "", "", new List<Photo>(), new List<Video>());
-            Console.WriteLine(happening.GetFileName());
-
-            happening.Create(new Happening());
+            Player player = new Player(photo.GetStream());
+            player.Play();
         }
     }
 }
