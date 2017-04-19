@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Taxis.Interfaces;
 
-namespace Taxis.CarsComponent
+namespace Taxis.CarComponents
 {
     abstract class Car : ICar
     {
