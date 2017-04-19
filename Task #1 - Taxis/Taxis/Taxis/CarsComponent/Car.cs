@@ -19,7 +19,7 @@ namespace Taxis.CarsComponent
             _speed = speed;
             _fuelConsumption = fuelConsumption;
             _price = price;
-            //_carsControlSystemType = carsControlSystemType;
+            _carsControlSystemType = carsControlSystemType;
         }
 
         public int Speed
