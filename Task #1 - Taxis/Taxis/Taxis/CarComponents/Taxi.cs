@@ -1,25 +1,25 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
 {
-    class Taxi : Car, ICollection<ICar>, IPassengers, ICargo
+    public class Taxi : Car, ICollection<ICar>, IPassengers, ICargo
     {
-        private ICollection<Car> _cars;
+        private ICollection<ICar> _cars;
+
+        public Taxi()
+        {
+            _cars = new Collection<ICar>();
+        }
 
         public int NumberOfPassengers
         {
-            get
+            get 
             {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
+                return _cars.OfType<IPassengers>().Sum(item => item.NumberOfPassengers);
             }
         }
 
@@ -27,59 +27,54 @@ namespace TaxiStation.CarComponents
         {
             get
             {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
+                return _cars.OfType<ICargo>().Sum(item => item.Carrying);
             }
         }
-
 
 
         public void Add(ICar item)
         {
-            throw new NotImplementedException();
+            _cars.Add(item);
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            _cars.Clear();
         }
 
         public bool Contains(ICar item)
         {
-            throw new NotImplementedException();
+            return _cars.Contains(item);
         }
 
         public void CopyTo(ICar[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            _cars.CopyTo(array, arrayIndex);
         }
 
         public int Count
         {
-            get { throw new NotImplementedException(); }
+            get { return _cars.Count; }
         }
 
         public bool IsReadOnly
         {
-            get { throw new NotImplementedException(); }
+            get { return _cars.IsReadOnly; }
         }
 
         public bool Remove(ICar item)
         {
-            throw new NotImplementedException();
+            return _cars.Remove(item);
         }
 
         public IEnumerator<ICar> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _cars.GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

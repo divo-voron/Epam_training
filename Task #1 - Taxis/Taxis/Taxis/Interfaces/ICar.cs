@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace TaxiStation.Interfaces
 {
-    enum CarsControlSystemType
+    public enum CarsControlSystemType
     {
         Human,
         Autopilot
     }
-    interface ICar
+    public interface ICar
     {
         int Speed { get; set; }
         int FuelConsumption { get; set; }

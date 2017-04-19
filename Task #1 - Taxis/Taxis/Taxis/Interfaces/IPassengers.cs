@@ -8,6 +8,6 @@ namespace TaxiStation.Interfaces
 {
     interface IPassengers
     {
-        int NumberOfPassengers { get; set; }
+        int NumberOfPassengers { get;}
     }
 }

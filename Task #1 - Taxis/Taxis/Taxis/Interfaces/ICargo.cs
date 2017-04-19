@@ -8,6 +8,6 @@ namespace TaxiStation.Interfaces
 {
     interface ICargo
     {
-        int Carrying { get; set; }
+        int Carrying { get; }
     }
 }

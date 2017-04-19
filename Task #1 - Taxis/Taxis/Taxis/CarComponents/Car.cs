@@ -7,12 +7,15 @@ using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
 {
-    abstract class Car : ICar
+    public abstract class Car : ICar
     {
         private int _speed;
         private int _fuelConsumption;
         private int _price;
         private CarsControlSystemType _carsControlSystemType;
+
+        public Car()
+        { }
 
         public Car(int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
         {
