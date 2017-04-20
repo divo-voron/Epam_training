@@ -23,5 +23,11 @@ namespace TaxiStation.CarsItems
             get { return _carrying; }
             set { _carrying = value; }
         }
+
+        public override int GetFullWeight()
+        {
+            // 75 - driver
+            return base.GetFullWeight() + _carrying;
+        }
     }
 }

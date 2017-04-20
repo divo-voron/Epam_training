@@ -9,7 +9,7 @@ using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
 {
-    [Serializable, XmlInclude(typeof(Coupe)), XmlInclude(typeof(Sedan)), XmlInclude(typeof(Premium)), XmlInclude(typeof(Gazel))]
+    [XmlInclude(typeof(Coupe)), XmlInclude(typeof(Sedan)), XmlInclude(typeof(Premium)), XmlInclude(typeof(Gazel))]
     public class Taxi : Car, ICollection<Car>, IPassengers, ICargo
     {
         private ICollection<Car> _cars;

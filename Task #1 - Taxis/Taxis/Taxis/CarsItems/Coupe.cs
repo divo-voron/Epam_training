@@ -24,5 +24,9 @@ namespace TaxiStation.CarsItems
             get { return _numberOfPassengers; }
             set { _numberOfPassengers = value; }
         }
+        public override int GetFullWeight()
+        {
+            return base.GetFullWeight() + _numberOfPassengers * HumansWeight;
+        }
     }
 }

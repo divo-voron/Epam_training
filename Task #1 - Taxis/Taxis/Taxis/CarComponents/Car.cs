@@ -9,9 +9,11 @@ namespace TaxiStation.CarComponents
 {
     public abstract class Car : ICar
     {
+        public const int HumansWeight = 75;
         private int _speed;
         private int _fuelConsumption;
         private int _price;
+        private int _curbWeight;
         private CarsControlSystemType _carsControlSystemType;
 
         public Car()
@@ -40,10 +42,20 @@ namespace TaxiStation.CarComponents
             get { return _price; }
             set { _price = value; }
         }
+        public int CurbWeight
+        {
+            get { return _curbWeight; }
+            set { _curbWeight = value; }
+        }
         public CarsControlSystemType CarsControlSystemType
         {
             get { return _carsControlSystemType; }
             set { _carsControlSystemType = value; }
+        }
+
+        public virtual int GetFullWeight()
+        {
+            return _curbWeight + (_carsControlSystemType == CarsControlSystemType.Human ? HumansWeight : 0);
         }
     }
 }

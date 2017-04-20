@@ -39,7 +39,10 @@ namespace TaxiStation
                 }
             }
             else
-                return null;
+            {
+                Console.WriteLine("Error! Folder or/and file doesn't exist.");
+                return null; 
+            }
         }
 
         public static bool Write(Taxi taxi)

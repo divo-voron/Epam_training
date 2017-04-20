@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarComponents;
 using TaxiStation.CarsItems;
+using TaxiStation.Interfaces;
 
 namespace TaxiStation
 {
@@ -12,14 +13,20 @@ namespace TaxiStation
     {
         static void Main(string[] args)
         {
-            Taxi taxi = new Taxi();
-            taxi.Add(new Coupe(2, 200, 12, 20000));
-            taxi.Add(new Sedan(4, 100, 200, 15, 15000));
-            taxi.Add(new Premium(4, 120, 150, 13, 25000));
-            taxi.Add(new Gazel(500, 100, 22, 5000));
+            Taxi taxi = Data.Read();
 
-            //int carriyng = taxi.Carrying;
-            //int passangers = taxi.NumberOfPassengers;
+            foreach (var item in taxi)
+            {
+                Console.WriteLine(item.GetFullWeight().ToString());
+            }
+        }
+        
+        // Hardcode data
+        static void Write()
+        {
+            Taxi taxi = new Taxi();
+            taxi.Add(new Sedan() { Speed = 20, Price = 30, NumberOfPassengers = 2, CurbWeight = 100, FuelConsumption = 50, CarsControlSystemType = CarsControlSystemType.Human });
+            taxi.Add(new Premium() { Speed = 20, Price = 30, NumberOfPassengers = 2, CurbWeight = 100, FuelConsumption = 50, CarsControlSystemType = CarsControlSystemType.Autopilot });
 
             Data.Write(taxi);
         }
