@@ -1,23 +1,27 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Xml.Serialization;
+using TaxiStation.CarsItems;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
 {
-    public class Taxi : Car, ICollection<ICar>, IPassengers, ICargo
+    [Serializable, XmlInclude(typeof(Coupe)), XmlInclude(typeof(Sedan)), XmlInclude(typeof(Premium)), XmlInclude(typeof(Gazel))]
+    public class Taxi : Car, ICollection<Car>, IPassengers, ICargo
     {
-        private ICollection<ICar> _cars;
+        private ICollection<Car> _cars;
 
         public Taxi()
         {
-            _cars = new Collection<ICar>();
+            _cars = new Collection<Car>();
         }
 
         public int NumberOfPassengers
         {
-            get 
+            get
             {
                 return _cars.OfType<IPassengers>().Sum(item => item.NumberOfPassengers);
             }
@@ -32,7 +36,7 @@ namespace TaxiStation.CarComponents
         }
 
 
-        public void Add(ICar item)
+        public void Add(Car item)
         {
             _cars.Add(item);
         }
@@ -42,12 +46,12 @@ namespace TaxiStation.CarComponents
             _cars.Clear();
         }
 
-        public bool Contains(ICar item)
+        public bool Contains(Car item)
         {
             return _cars.Contains(item);
         }
 
-        public void CopyTo(ICar[] array, int arrayIndex)
+        public void CopyTo(Car[] array, int arrayIndex)
         {
             _cars.CopyTo(array, arrayIndex);
         }
@@ -62,12 +66,12 @@ namespace TaxiStation.CarComponents
             get { return _cars.IsReadOnly; }
         }
 
-        public bool Remove(ICar item)
+        public bool Remove(Car item)
         {
             return _cars.Remove(item);
         }
 
-        public IEnumerator<ICar> GetEnumerator()
+        public IEnumerator<Car> GetEnumerator()
         {
             return _cars.GetEnumerator();
         }

@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using TaxiStation.CarComponents;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarsItems
 {
-    class Coupe : Car, IPassengers
+    public class Coupe : Car, IPassengers
     {
         private int _numberOfPassengers;
-
+        public Coupe() { }
         public Coupe(int numberOfPassengers, int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
             : base(speed, fuelConsumption, price, carsControlSystemType)
         {

@@ -8,11 +8,11 @@ using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarsItems
 {
-    class Sedan : Car, IPassengers, ICargo
+    public class Sedan : Car, IPassengers, ICargo
     {
         private int _numberOfPassengers;
         private int _carrying;
-
+        public Sedan() { }
         public Sedan(int numberOfPassengers, int carrying, int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
             : base(speed, fuelConsumption, price, carsControlSystemType)
         {

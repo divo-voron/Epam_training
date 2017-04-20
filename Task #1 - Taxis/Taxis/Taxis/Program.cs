@@ -18,10 +18,10 @@ namespace TaxiStation
             taxi.Add(new Premium(4, 120, 150, 13, 25000));
             taxi.Add(new Gazel(500, 100, 22, 5000));
 
-            int carriyng = taxi.Carrying;
-            int passangers = taxi.NumberOfPassengers;
+            //int carriyng = taxi.Carrying;
+            //int passangers = taxi.NumberOfPassengers;
 
-            //Data.Write(taxi);
+            Data.Write(taxi);
         }
     }
 }
