@@ -9,76 +9,21 @@ using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
 {
-    [XmlInclude(typeof(Coupe)), XmlInclude(typeof(Sedan)), XmlInclude(typeof(Premium)), XmlInclude(typeof(Gazel))]
-    public class Taxi : Car, ICollection<Car>, IPassengers, ICargo
+    public class Taxi
     {
-        private ICollection<Car> _cars;
+        private IEnumerable<ICar> _cars;
+        public IEnumerable<ICar> Cars
+        {
+            get { return _cars; }
+        }
 
         public Taxi()
         {
-            _cars = new Collection<Car>();
+            _cars = new Collection<ICar>();
         }
-
-        public int NumberOfPassengers
+        public Taxi(IEnumerable<ICar> cars)
         {
-            get
-            {
-                return _cars.OfType<IPassengers>().Sum(item => item.NumberOfPassengers);
-            }
-        }
-
-        public int Carrying
-        {
-            get
-            {
-                return _cars.OfType<ICargo>().Sum(item => item.Carrying);
-            }
-        }
-
-
-        public void Add(Car item)
-        {
-            _cars.Add(item);
-        }
-
-        public void Clear()
-        {
-            _cars.Clear();
-        }
-
-        public bool Contains(Car item)
-        {
-            return _cars.Contains(item);
-        }
-
-        public void CopyTo(Car[] array, int arrayIndex)
-        {
-            _cars.CopyTo(array, arrayIndex);
-        }
-
-        public int Count
-        {
-            get { return _cars.Count; }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return _cars.IsReadOnly; }
-        }
-
-        public bool Remove(Car item)
-        {
-            return _cars.Remove(item);
-        }
-
-        public IEnumerator<Car> GetEnumerator()
-        {
-            return _cars.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            _cars = cars;
         }
     }
 }

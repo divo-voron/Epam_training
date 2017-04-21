@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarComponents;
+using TaxiStation.Enums;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarsItems
 {
-    public class Sedan : Car, IPassengers, ICargo
+    class Sedan : Car, IPassengers, ICargo
     {
         private int _numberOfPassengers;
         private int _carrying;
-        public Sedan() { }
         public Sedan(int numberOfPassengers, int carrying, int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
             : base(speed, fuelConsumption, price, carsControlSystemType)
         {

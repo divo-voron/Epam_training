@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiStation.Enums;
 
 namespace TaxiStation.Interfaces
 {
-    public enum CarsControlSystemType
-    {
-        Human,
-        Autopilot
-    }
     public interface ICar
     {
         int Speed { get; set; }

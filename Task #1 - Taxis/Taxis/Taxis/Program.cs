@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,22 +14,14 @@ namespace TaxiStation
     {
         static void Main(string[] args)
         {
-            Taxi taxi = Data.Read();
+            Taxi taxi = new Taxi(
+                    new List<ICar>() 
+                    { 
+                        new Coupe(1, 1, 1, 1),
+                        new Sedan(2, 2, 2, 2, 2),
+                    });
 
-            foreach (var item in taxi)
-            {
-                Console.WriteLine(item.GetFullWeight().ToString());
-            }
-        }
-        
-        // Hardcode data
-        static void Write()
-        {
-            Taxi taxi = new Taxi();
-            taxi.Add(new Sedan() { Speed = 20, Price = 30, NumberOfPassengers = 2, CurbWeight = 100, FuelConsumption = 50, CarsControlSystemType = CarsControlSystemType.Human });
-            taxi.Add(new Premium() { Speed = 20, Price = 30, NumberOfPassengers = 2, CurbWeight = 100, FuelConsumption = 50, CarsControlSystemType = CarsControlSystemType.Autopilot });
-
-            Data.Write(taxi);
+            IEnumerable<ICar> a = taxi.Cars;
         }
     }
 }

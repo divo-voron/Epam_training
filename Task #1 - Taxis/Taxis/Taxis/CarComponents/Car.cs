@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaxiStation.Enums;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
 {
-    public abstract class Car : ICar
+    abstract class Car : ICar
     {
         public const int HumansWeight = 75;
         private int _speed;
@@ -16,8 +17,8 @@ namespace TaxiStation.CarComponents
         private int _curbWeight;
         private CarsControlSystemType _carsControlSystemType;
 
-        public Car()
-        { }
+        //public Car()
+        //{ }
 
         public Car(int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
         {
