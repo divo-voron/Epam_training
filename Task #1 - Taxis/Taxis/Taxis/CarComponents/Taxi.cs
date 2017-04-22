@@ -11,19 +11,24 @@ namespace TaxiStation.CarComponents
 {
     public class Taxi
     {
-        private IEnumerable<ICar> _cars;
-        public IEnumerable<ICar> Cars
+        private ICollection<ICar> _cars;
+        public Taxi(ICollection<ICar> cars)
+        {
+            _cars = cars;
+        }
+        public ICollection<ICar> Cars
         {
             get { return _cars; }
+            set { _cars = value; }
+        }
+        public IEnumerator GetEnumerator()
+        {
+            return _cars.GetEnumerator();
         }
 
         public Taxi()
         {
             _cars = new Collection<ICar>();
         }
-        public Taxi(IEnumerable<ICar> cars)
-        {
-            _cars = cars;
-        }
-    }
+    }        
 }

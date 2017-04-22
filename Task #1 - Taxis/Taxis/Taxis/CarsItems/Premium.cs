@@ -12,12 +12,12 @@ namespace TaxiStation.CarsItems
     class Premium : Car, IPassengers, ICar
     {
         private int _numberOfPassengers;
-        private int _carrying;
-        public Premium(int numberOfPassengers, int carrying, int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
-            : base(speed, fuelConsumption, price, carsControlSystemType)
+        private int _cargo;
+        public Premium(int numberOfPassengers, int cargo, int speed, int fuelConsumption, int price, int curbWeight, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
+            : base(speed, fuelConsumption, price, curbWeight, carsControlSystemType)
         {
             _numberOfPassengers = numberOfPassengers;
-            _carrying = carrying;
+            _cargo = cargo;
         }
 
         public int NumberOfPassengers
@@ -28,13 +28,20 @@ namespace TaxiStation.CarsItems
 
         public int Carrying
         {
-            get { return _carrying; }
-            set { _carrying = value; }
+            get { return _cargo; }
+            set { _cargo = value; }
         }
 
         public override int GetFullWeight()
         {
-            return base.GetFullWeight() + _carrying + _numberOfPassengers * HumansWeight;
+            return base.GetFullWeight() + _cargo + _numberOfPassengers * HumansWeight;
+        }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(6);
+            sb.Append("Pass:    "); sb.Append(this.NumberOfPassengers.ToString()); sb.Append("\r\n");
+            sb.Append("Cargo:   "); sb.Append(this.Carrying.ToString()); sb.Append("\r\n");
+            return string.Concat(base.ToString(), sb.ToString());
         }
     }
 }

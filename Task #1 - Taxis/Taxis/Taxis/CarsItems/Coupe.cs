@@ -13,8 +13,8 @@ namespace TaxiStation.CarsItems
     class Coupe : Car, IPassengers
     {
         private int _numberOfPassengers;
-        public Coupe(int numberOfPassengers, int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
-            : base(speed, fuelConsumption, price, carsControlSystemType)
+        public Coupe(int numberOfPassengers, int speed, int fuelConsumption, int price, int curbWeight, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
+            : base(speed, fuelConsumption, price, curbWeight, carsControlSystemType)
         {
             _numberOfPassengers = numberOfPassengers;
         }
@@ -27,6 +27,12 @@ namespace TaxiStation.CarsItems
         public override int GetFullWeight()
         {
             return base.GetFullWeight() + _numberOfPassengers * HumansWeight;
+        }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(6);
+            sb.Append("Pass:    "); sb.Append(this.NumberOfPassengers.ToString()); sb.Append("\r\n");
+            return string.Concat(base.ToString(), sb.ToString());
         }
     }
 }

@@ -12,6 +12,7 @@ namespace TaxiStation.Interfaces
         int Speed { get; set; }
         int FuelConsumption { get; set; }
         int Price { get; set; }
+        int CurbWeight { get; set; }
         CarsControlSystemType CarsControlSystemType { get; set; }
     }
 }

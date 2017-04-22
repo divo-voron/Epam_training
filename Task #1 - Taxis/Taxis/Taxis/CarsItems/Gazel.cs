@@ -11,22 +11,28 @@ namespace TaxiStation.CarsItems
 {
     class Gazel : Car, ICargo
     {
-        private int _carrying;
-        public Gazel(int carrying, int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
-            : base(speed, fuelConsumption, price, carsControlSystemType)
+        private int _cargo;
+        public Gazel(int cargo, int speed, int fuelConsumption, int price, int curbWeight, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
+            : base(speed, fuelConsumption, price, curbWeight, carsControlSystemType)
         {
-            _carrying = carrying;
+            _cargo = cargo;
         }
 
-        public int Carrying
+        public int Cargo
         {
-            get { return _carrying; }
-            set { _carrying = value; }
+            get { return _cargo; }
+            set { _cargo = value; }
         }
 
         public override int GetFullWeight()
         {
-            return base.GetFullWeight() + _carrying;
+            return base.GetFullWeight() + _cargo;
+        }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(3);
+            sb.Append("Cargo:   "); sb.Append(this.Cargo.ToString()); sb.Append("\r\n");
+            return string.Concat(base.ToString(), sb.ToString());
         }
     }
 }

@@ -17,14 +17,12 @@ namespace TaxiStation.CarComponents
         private int _curbWeight;
         private CarsControlSystemType _carsControlSystemType;
 
-        //public Car()
-        //{ }
-
-        public Car(int speed, int fuelConsumption, int price, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
+        public Car(int speed, int fuelConsumption, int price, int curbWeight, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
         {
             _speed = speed;
             _fuelConsumption = fuelConsumption;
             _price = price;
+            _curbWeight = curbWeight;
             _carsControlSystemType = carsControlSystemType;
         }
 
@@ -57,6 +55,18 @@ namespace TaxiStation.CarComponents
         public virtual int GetFullWeight()
         {
             return _curbWeight + (_carsControlSystemType == CarsControlSystemType.Human ? HumansWeight : 0);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Car:     "); sb.Append(GetType().ToString()); sb.Append("\r\n");
+            sb.Append("Control: "); sb.Append(CarsControlSystemType.ToString()); sb.Append("\r\n");
+            sb.Append("Speed:   "); sb.Append(Speed.ToString()); sb.Append("\r\n");
+            sb.Append("Fuel:    "); sb.Append(FuelConsumption.ToString()); sb.Append("\r\n");
+            sb.Append("Price:   "); sb.Append(Price.ToString()); sb.Append("\r\n");
+            sb.Append("CarMass: "); sb.Append(GetFullWeight().ToString()); sb.Append("\r\n");
+            return sb.ToString();
         }
     }
 }
