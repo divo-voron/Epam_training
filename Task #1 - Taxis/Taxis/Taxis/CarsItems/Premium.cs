@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarComponents;
 using TaxiStation.Enums;
+using TaxiStation.Factory;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarsItems
@@ -42,6 +43,11 @@ namespace TaxiStation.CarsItems
             sb.Append("Pass:    "); sb.Append(this.NumberOfPassengers.ToString()); sb.Append("\r\n");
             sb.Append("Cargo:   "); sb.Append(this.Carrying.ToString()); sb.Append("\r\n");
             return string.Concat(base.ToString(), sb.ToString());
+        }
+
+        public override CarData GetData()
+        {
+            return new CarData("Premium");
         }
     }
 }

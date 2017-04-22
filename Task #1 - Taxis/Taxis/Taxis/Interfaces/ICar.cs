@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.Enums;
+using TaxiStation.Factory;
 
 namespace TaxiStation.Interfaces
 {
@@ -14,5 +15,7 @@ namespace TaxiStation.Interfaces
         int Price { get; set; }
         int CurbWeight { get; set; }
         CarsControlSystemType CarsControlSystemType { get; set; }
+
+        CarData GetData();
     }
 }

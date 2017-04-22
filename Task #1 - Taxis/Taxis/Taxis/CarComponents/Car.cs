@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.Enums;
+using TaxiStation.Factory;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
@@ -51,12 +52,10 @@ namespace TaxiStation.CarComponents
             get { return _carsControlSystemType; }
             set { _carsControlSystemType = value; }
         }
-
         public virtual int GetFullWeight()
         {
             return _curbWeight + (_carsControlSystemType == CarsControlSystemType.Human ? HumansWeight : 0);
         }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -68,5 +67,8 @@ namespace TaxiStation.CarComponents
             sb.Append("CarMass: "); sb.Append(GetFullWeight().ToString()); sb.Append("\r\n");
             return sb.ToString();
         }
+
+
+        public abstract CarData GetData();
     }
 }

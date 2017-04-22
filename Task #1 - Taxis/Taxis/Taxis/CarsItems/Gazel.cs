@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarComponents;
 using TaxiStation.Enums;
+using TaxiStation.Factory;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarsItems
@@ -33,6 +34,11 @@ namespace TaxiStation.CarsItems
             StringBuilder sb = new StringBuilder(3);
             sb.Append("Cargo:   "); sb.Append(this.Cargo.ToString()); sb.Append("\r\n");
             return string.Concat(base.ToString(), sb.ToString());
+        }
+
+        public override CarData GetData()
+        {
+            return new CarData("Gazel");
         }
     }
 }

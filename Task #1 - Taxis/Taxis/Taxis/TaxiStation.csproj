@@ -48,6 +48,9 @@
     <Compile Include="CarsItems\Premium.cs" />
     <Compile Include="CarsItems\Sedan.cs" />
     <Compile Include="Enums\CarsControlSystemType.cs" />
+    <Compile Include="Factory\CarData.cs" />
+    <Compile Include="Factory\Creator.cs" />
+    <Compile Include="Factory\CreatorCar.cs" />
     <Compile Include="Interfaces\ICar.cs" />
     <Compile Include="Interfaces\ICargo.cs" />
     <Compile Include="Interfaces\IPassengers.cs" />

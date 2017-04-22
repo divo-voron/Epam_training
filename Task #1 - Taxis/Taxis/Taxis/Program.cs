@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TaxiStation.CarComponents;
 using TaxiStation.CarsItems;
 using TaxiStation.Enums;
+using TaxiStation.Factory;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation
@@ -15,8 +16,12 @@ namespace TaxiStation
     {
         static void Main(string[] args)
         {
+            FactoryMethod();
+        }
+        static void TestToString()
+        {
             Taxi taxi = new Taxi(
-                            new List<ICar>() 
+                              new List<ICar>() 
                             { 
                                 new Coupe(1, 1, 1, 1, 1, CarsControlSystemType.Autopilot), 
                                 new Coupe(1, 1, 1, 1, 1, CarsControlSystemType.Human), 
@@ -25,14 +30,27 @@ namespace TaxiStation
                                 new Gazel(4, 4, 4, 4, 4), 
                             });
 
-            //foreach (ICar item in taxi.Cars)
-            //{
-            //    Console.WriteLine(item.CarsControlSystemType.ToString());
-            //}
-
             foreach (ICar item in taxi.Cars)
             {
                 Console.WriteLine(item.ToString());
+            }
+        }
+        static void FactoryMethod()
+        {
+            // an array of creators
+            Creator[] creators = 
+            { 
+                new CreatorCar(new Coupe(1, 1, 1, 1, 1)),
+                new CreatorCar(new Sedan(1,1 ,1, 1, 1, 1)),
+                new CreatorCar(new Premium(1, 1, 1, 1, 1, 1)),
+                new CreatorCar(new Gazel(1, 1, 1, 1, 1)) 
+            };
+
+            foreach (Creator creator in creators)
+            {
+                // iterate over creators and create products
+                CarData carData = creator.FactoryMethod();
+                Console.WriteLine("Created {0}", carData.GetData());
             }
         }
     }
