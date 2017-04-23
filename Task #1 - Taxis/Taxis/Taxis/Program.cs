@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarComponents;
@@ -16,7 +18,26 @@ namespace TaxiStation
     {
         static void Main(string[] args)
         {
-            FactoryMethod();
+            
+        }
+        static void Serial()
+        {
+            Car[] cars = 
+            { 
+                new Coupe(1, 1, 1, 1, 1), 
+                new Sedan(1, 1, 1, 1, 1, 1), 
+                //new Premium(1, 1, 1, 1, 1, 1), 
+                //new Gazel(1, 1, 1, 1, 1) 
+            };
+
+            Car cars123 = new Coupe(1, 1, 1, 1, 1);
+
+            DataContractJsonSerializer jsonSer = new DataContractJsonSerializer(typeof(Car));
+
+            using (FileStream fs = new FileStream(@"D:\1\Car.json", FileMode.Create))
+            {
+                jsonSer.WriteObject(fs, cars123);
+            }
         }
         static void TestToString()
         {
@@ -50,6 +71,21 @@ namespace TaxiStation
             {
                 // iterate over creators and create products
                 CarData carData = creator.FactoryMethod();
+                Console.WriteLine("Created {0}", carData.GetData());
+            }
+
+
+            CarData[] carDates = 
+            {
+                new Coupe(1,1,1,1,1).GetData(),
+                new Sedan(1,1 ,1, 1, 1, 1).GetData(),
+                new Premium(1, 1, 1, 1, 1, 1).GetData(),
+                new Gazel(1, 1, 1, 1, 1).GetData() 
+            };
+
+            foreach (CarData carData in carDates)
+            {
+                // iterate over creators and create products
                 Console.WriteLine("Created {0}", carData.GetData());
             }
         }
