@@ -15,7 +15,8 @@ namespace TaxiStation.Interfaces
         int Price { get; set; }
         int CurbWeight { get; set; }
         CarsControlSystemType CarsControlSystemType { get; set; }
-
+        int GetFullWeight();
+        string GetInfo();
         CarData GetData();
     }
 }

@@ -14,7 +14,7 @@ namespace TaxiStation.CarsItems
     class Gazel : Car, ICargo
     {
         private int _cargo;
-        public Gazel(int cargo, int speed, int fuelConsumption, int price, int curbWeight, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
+        public Gazel(int speed, int fuelConsumption, int price, int curbWeight, int cargo, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
             : base(speed, fuelConsumption, price, curbWeight, carsControlSystemType)
         {
             _cargo = cargo;
@@ -29,11 +29,15 @@ namespace TaxiStation.CarsItems
         {
             return base.GetFullWeight() + _cargo;
         }
-        public override string ToString()
+        //public override string ToString()
+        //{
+        //    StringBuilder sb = new StringBuilder(3);
+        //    sb.Append("Cargo:   "); sb.Append(this.Cargo.ToString()); sb.Append("\r\n");
+        //    return string.Concat(base.ToString(), sb.ToString());
+        //}
+        public override string GetInfo()
         {
-            StringBuilder sb = new StringBuilder(3);
-            sb.Append("Cargo:   "); sb.Append(this.Cargo.ToString()); sb.Append("\r\n");
-            return string.Concat(base.ToString(), sb.ToString());
+            return string.Format("{0} | {1} | {2}", base.GetInfo(), " ", Cargo);
         }
 
         public override CarData GetData()

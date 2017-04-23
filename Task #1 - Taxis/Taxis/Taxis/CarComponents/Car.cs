@@ -58,16 +58,21 @@ namespace TaxiStation.CarComponents
         {
             return _curbWeight + (_carsControlSystemType == CarsControlSystemType.Human ? HumansWeight : 0);
         }
-        public override string ToString()
+        //public override string ToString()
+        //{
+        //    StringBuilder sb = new StringBuilder();
+        //    sb.Append("Car:     "); sb.Append(GetType().ToString()); sb.Append("\r\n");
+        //    sb.Append("Control: "); sb.Append(CarsControlSystemType.ToString()); sb.Append("\r\n");
+        //    sb.Append("Speed:   "); sb.Append(Speed.ToString()); sb.Append("\r\n");
+        //    sb.Append("Fuel:    "); sb.Append(FuelConsumption.ToString()); sb.Append("\r\n");
+        //    sb.Append("Price:   "); sb.Append(Price.ToString()); sb.Append("\r\n");
+        //    sb.Append("CarMass: "); sb.Append(GetFullWeight().ToString()); sb.Append("\r\n");
+        //    return sb.ToString();
+        //}
+        public virtual string GetInfo()
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("Car:     "); sb.Append(GetType().ToString()); sb.Append("\r\n");
-            sb.Append("Control: "); sb.Append(CarsControlSystemType.ToString()); sb.Append("\r\n");
-            sb.Append("Speed:   "); sb.Append(Speed.ToString()); sb.Append("\r\n");
-            sb.Append("Fuel:    "); sb.Append(FuelConsumption.ToString()); sb.Append("\r\n");
-            sb.Append("Price:   "); sb.Append(Price.ToString()); sb.Append("\r\n");
-            sb.Append("CarMass: "); sb.Append(GetFullWeight().ToString()); sb.Append("\r\n");
-            return sb.ToString();
+            return string.Format("{0} | {1} | {2} | {3} | {4} | {5}",
+                          GetType().Name.PadLeft(8, ' '), CarsControlSystemType, Speed, FuelConsumption, Price, GetFullWeight());
         }
 
 

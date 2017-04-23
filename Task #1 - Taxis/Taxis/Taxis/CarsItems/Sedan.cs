@@ -15,7 +15,7 @@ namespace TaxiStation.CarsItems
     {
         private int _numberOfPassengers;
         private int _cargo;
-        public Sedan(int numberOfPassengers, int cargo, int speed, int fuelConsumption, int price, int curbWeight, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
+        public Sedan(int speed, int fuelConsumption, int price, int curbWeight, int numberOfPassengers, int cargo, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
             : base(speed, fuelConsumption, price, curbWeight, carsControlSystemType)
         {
             _numberOfPassengers = numberOfPassengers;
@@ -37,12 +37,16 @@ namespace TaxiStation.CarsItems
         {
             return base.GetFullWeight() + _cargo + _numberOfPassengers * HumansWeight;
         }
-        public override string ToString()
+        //public override string ToString()
+        //{
+        //    StringBuilder sb = new StringBuilder(6);
+        //    sb.Append("Pass:    "); sb.Append(this.NumberOfPassengers.ToString()); sb.Append("\r\n");
+        //    sb.Append("Cargo:   "); sb.Append(this.Cargo.ToString()); sb.Append("\r\n");
+        //    return string.Concat(base.ToString(), sb.ToString());
+        //}
+        public override string GetInfo()
         {
-            StringBuilder sb = new StringBuilder(6);
-            sb.Append("Pass:    "); sb.Append(this.NumberOfPassengers.ToString()); sb.Append("\r\n");
-            sb.Append("Cargo:   "); sb.Append(this.Cargo.ToString()); sb.Append("\r\n");
-            return string.Concat(base.ToString(), sb.ToString());
+            return string.Format("{0} | {1} | {2}", base.GetInfo(), NumberOfPassengers, Cargo);
         }
 
         public override CarData GetData()
