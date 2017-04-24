@@ -48,6 +48,7 @@
     <Compile Include="CarsItems\Gazel.cs" />
     <Compile Include="CarsItems\Premium.cs" />
     <Compile Include="CarsItems\Sedan.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="Enums\CarsControlSystemType.cs" />
     <Compile Include="Factory\CarData.cs" />
     <Compile Include="Factory\Creator.cs" />
