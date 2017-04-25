@@ -15,8 +15,8 @@ namespace TaxiStation.CarsItems
     {
         private int _numberOfPassengers;
         private int _cargo;
-        public Premium(int speed, int fuelConsumption, int price, int curbWeight, int numberOfPassengers, int cargo, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
-            : base(speed, fuelConsumption, price, curbWeight, carsControlSystemType)
+        public Premium(int id, int speed, int fuelConsumption, int price, int curbWeight, int numberOfPassengers, int cargo, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
+            : base(id, speed, fuelConsumption, price, curbWeight, carsControlSystemType)
         {
             _numberOfPassengers = numberOfPassengers;
             _cargo = cargo;
@@ -37,16 +37,9 @@ namespace TaxiStation.CarsItems
         {
             return base.GetFullWeight() + _cargo + _numberOfPassengers * HumansWeight;
         }
-        //public override string ToString()
-        //{
-        //    StringBuilder sb = new StringBuilder(6);
-        //    sb.Append("Pass:    "); sb.Append(this.NumberOfPassengers.ToString()); sb.Append("\r\n");
-        //    sb.Append("Cargo:   "); sb.Append(this.Cargo.ToString()); sb.Append("\r\n");
-        //    return string.Concat(base.ToString(), sb.ToString());
-        //}
         public override string GetInfo()
         {
-            return string.Format("{0} | {1} | {2}", base.GetInfo(), NumberOfPassengers, Cargo);
+            return string.Format("{0} | {1} | {2}", base.GetInfo(), NumberOfPassengers, Cargo.ToString().PadLeft(4, ' '));
         }
 
         public override CarData GetData()

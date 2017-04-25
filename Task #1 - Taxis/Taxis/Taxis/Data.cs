@@ -16,60 +16,21 @@ namespace TaxiStation
         {
             _taxi = taxi;
         }
-        public static void Initialize()
+        public static void ChooseAction()
         {
-            
-                while (true)
-                {
-                    Console.WriteLine("Choose action:\r\n1.Show Cars content\r\n2.Exit");
-                    int choose;
-                    if (int.TryParse(Console.ReadLine(), out choose))
-                    {
-                        switch (choose)
-                        {
-                            case 1:
-                                ChooseAction();
-                                break;
-                            case 2:
-                                Environment.Exit(0);
-                                break;
-                            default:
-                                Console.Clear();
-                                Console.WriteLine("Wrong input data\r\n-----------------------------\r\n");
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        Console.Clear();
-                        Console.WriteLine("Wrong input data\r\n-----------------------------\r\n");
-                    }
-                }
-            
-        }
-        private static void ShowData(IEnumerable cars)
-        {
-            foreach (ICar car in cars)
-            {
-                Console.WriteLine(car.GetInfo());
-            }
-        }
-        private static void ChooseAction()
-        {
-            Console.Clear();
-            Console.WriteLine("Taxi contains:\r\n" +
-                              "-------------------------------------------------");
+            Console.WriteLine("Taxi contains:\r\n");
 
             ShowData(_taxi.Cars);
 
             while (true)
             {
                 Console.WriteLine("\r\nPlease choose what do you want to do? " +
-                                  "\r\n1.Get full price " +
-                                  "\r\n2.Get full load capacity " +
-                                  "\r\n3.Sort by property " +
-                                  "\r\n4.Find cars by property " +
-                                  "\r\n5.Back\r\n");
+                                  "\r\n 1. Show all items in Taxi " +
+                                  "\r\n 2. Get full price " +
+                                  "\r\n 3. Get full load capacity " +
+                                  "\r\n 4. Sort by property " +
+                                  "\r\n 5. Find cars by property " +
+                                  "\r\n 6. Exit\r\n");
                 int choose;
                 if (int.TryParse(Console.ReadLine(), out choose))
                 {
@@ -77,21 +38,26 @@ namespace TaxiStation
                     {
                         case 1:
                             Console.Clear();
+                            Console.WriteLine("Taxi contains:\r\n");
+                            ShowData(_taxi.Cars);
+                            break;
+                        case 2:
+                            Console.Clear();
                             Console.WriteLine("\nTotal cost of the taxi: {0}", _taxi.Cars.Sum(item => item.Price));
                             Console.WriteLine("-----------------------------");
                             break;
-                        case 2:
+                        case 3:
                             Console.Clear();
                             Console.WriteLine("\nTotal load capacity of the taxi: {0}", _taxi.Cars.OfType<ICargo>().Sum(item => item.Cargo));
                             Console.WriteLine("-----------------------------");
                             break;
-                        case 3:
+                        case 4:
                             SortByProperty();
                             break;
-                        case 4:
+                        case 5:
                             FindByProperty();
                             break;
-                        case 5:
+                        case 6:
                             return;
                         default:
                             Console.Clear();
@@ -263,6 +229,17 @@ namespace TaxiStation
                     Console.WriteLine("-----------------------------");
                 }
             }
+        }
+        private static void ShowData(IEnumerable cars)
+        {
+            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine("     Type |   Control | Speed | Fuel | Price | FullWeight | P | C-go |");
+            Console.WriteLine("----------------------------------------------------------------------");
+            foreach (ICar car in cars)
+            {
+                Console.WriteLine(string.Concat("|", car.GetInfo() , " |"));
+            }
+            Console.WriteLine("----------------------------------------------------------------------");
         }
     }
 }

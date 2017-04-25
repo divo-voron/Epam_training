@@ -18,90 +18,96 @@ namespace TaxiStation
     {
         static void Main(string[] args)
         {
-            Taxi taxi = new Taxi(
-                new List<ICar>() 
+            try
+            {
+                Taxi taxi1 = new Taxi(new List<ICar>());
+                Taxi taxi = new Taxi(
+                    new List<ICar>() 
                 { 
-                    new Coupe(250, 13, 50, 1000, 2),
-                    new Coupe(290, 14, 65, 1100, 2),
-                    new Sedan(190, 10, 35, 1250, 3, 100),
-                    new Sedan(190, 11, 35, 1350, 4, 150),
-                    new Gazel(100, 16, 40, 1500, 1500),
-                    new Gazel(100, 16, 45, 1500, 1800),
-                    new Premium(180, 11, 80, 1000, 5, 220),
-                    new Premium(180, 11, 85, 1200, 5, 250)
+                    new Coupe(1, 250, 13, 50, 1000, 2, CarsControlSystemType.Autopilot),
+                    new Coupe(2, 290, 14, 65, 1100, 2),
+                    new Sedan(3, 190, 10, 35, 1250, 3, 100),
+                    new Sedan(4, 190, 11, 35, 1350, 4, 150),
+                    new Gazel(5, 100, 16, 40, 1500, 1500),
+                    new Gazel(6, 100, 16, 45, 1500, 1800),
+                    new Premium(7, 180, 11, 80, 1000, 5, 220, CarsControlSystemType.Autopilot),
+                    new Premium(8, 180, 11, 85, 1200, 5, 250)
                 });
 
-            Data.GetTaxi(taxi);
-            Data.Initialize();
-        }
-        static void Serial()
-        {
-            Car[] cars = 
-            { 
-                new Coupe(1, 1, 1, 1, 1), 
-                new Sedan(1, 1, 1, 1, 1, 1), 
-                new Premium(1, 1, 1, 1, 1, 1), 
-                new Gazel(1, 1, 1, 1, 1) 
-            };
-
-            Car cars123 = new Coupe(1, 1, 1, 1, 1);
-
-            DataContractJsonSerializer jsonSer = new DataContractJsonSerializer(typeof(Car));
-
-            using (FileStream fs = new FileStream(@"D:\1\Car.json", FileMode.Create))
-            {
-                jsonSer.WriteObject(fs, cars123);
+                Data.GetTaxi(taxi);
+                Data.ChooseAction();
             }
+            catch (InvalidKeyException error) { Console.WriteLine(string.Format("App error: {0}", error.ToString())); }
+            catch (Exception error) { Console.WriteLine(string.Format("App error: {0}", error.ToString())); }
         }
-        static void TestToString()
-        {
-            Taxi taxi = new Taxi(
-                              new List<ICar>() 
-                            { 
-                                new Coupe(1, 1, 1, 1, 1, CarsControlSystemType.Autopilot), 
-                                new Coupe(1, 1, 1, 1, 1, CarsControlSystemType.Human), 
-                                new Sedan(2, 2, 2, 2, 2, 2), 
-                                new Premium(3, 3, 3, 3, 3, 3), 
-                                new Gazel(4, 4, 4, 4, 4), 
-                            });
+        //static void Serial()
+        //{
+        //    Car[] cars = 
+        //    { 
+        //        new Coupe(1, 1, 1, 1, 1), 
+        //        new Sedan(1, 1, 1, 1, 1, 1), 
+        //        new Premium(1, 1, 1, 1, 1, 1), 
+        //        new Gazel(1, 1, 1, 1, 1) 
+        //    };
 
-            foreach (ICar item in taxi.Cars)
-            {
-                Console.WriteLine(item.ToString());
-            }
-        }
-        static void FactoryMethod()
-        {
-            // an array of creators
-            Creator[] creators = 
-            { 
-                new CreatorCar(new Coupe(1, 1, 1, 1, 1)),
-                new CreatorCar(new Sedan(1, 1, 1, 1, 1, 1)),
-                new CreatorCar(new Premium(1, 1, 1, 1, 1, 1)),
-                new CreatorCar(new Gazel(1, 1, 1, 1, 1)) 
-            };
+        //    Car cars123 = new Coupe(1, 1, 1, 1, 1);
 
-            foreach (Creator creator in creators)
-            {
-                // iterate over creators and create products
-                CarData carData = creator.FactoryMethod();
-                Console.WriteLine("Created {0}", carData.GetData());
-            }
+        //    DataContractJsonSerializer jsonSer = new DataContractJsonSerializer(typeof(Car));
+
+        //    using (FileStream fs = new FileStream(@"D:\1\Car.json", FileMode.Create))
+        //    {
+        //        jsonSer.WriteObject(fs, cars123);
+        //    }
+        //}
+        //static void TestToString()
+        //{
+        //    Taxi taxi = new Taxi(
+        //                      new List<ICar>() 
+        //                    { 
+        //                        new Coupe(1, 1, 1, 1, 1, CarsControlSystemType.Autopilot), 
+        //                        new Coupe(1, 1, 1, 1, 1, CarsControlSystemType.Human), 
+        //                        new Sedan(2, 2, 2, 2, 2, 2), 
+        //                        new Premium(3, 3, 3, 3, 3, 3), 
+        //                        new Gazel(4, 4, 4, 4, 4), 
+        //                    });
+
+        //    foreach (ICar item in taxi.Cars)
+        //    {
+        //        Console.WriteLine(item.ToString());
+        //    }
+        //}
+        //static void FactoryMethod()
+        //{
+        //    // an array of creators
+        //    Creator[] creators = 
+        //    { 
+        //        new CreatorCar(new Coupe(1, 1, 1, 1, 1)),
+        //        new CreatorCar(new Sedan(1, 1, 1, 1, 1, 1)),
+        //        new CreatorCar(new Premium(1, 1, 1, 1, 1, 1)),
+        //        new CreatorCar(new Gazel(1, 1, 1, 1, 1)) 
+        //    };
+
+        //    foreach (Creator creator in creators)
+        //    {
+        //        // iterate over creators and create products
+        //        CarData carData = creator.FactoryMethod();
+        //        Console.WriteLine("Created {0}", carData.GetData());
+        //    }
 
 
-            CarData[] carDates = 
-            {
-                new Coupe(1, 1, 1, 1, 1).GetData(),
-                new Sedan(1, 1, 1, 1, 1, 1).GetData(),
-                new Premium(1, 1, 1, 1, 1, 1).GetData(),
-                new Gazel(1, 1, 1, 1, 1).GetData() 
-            };
+        //    CarData[] carDates = 
+        //    {
+        //        new Coupe(1, 1, 1, 1, 1).GetData(),
+        //        new Sedan(1, 1, 1, 1, 1, 1).GetData(),
+        //        new Premium(1, 1, 1, 1, 1, 1).GetData(),
+        //        new Gazel(1, 1, 1, 1, 1).GetData() 
+        //    };
 
-            foreach (CarData carData in carDates)
-            {
-                // iterate over creators and create products
-                Console.WriteLine("Created {0}", carData.GetData());
-            }
-        }
+        //    foreach (CarData carData in carDates)
+        //    {
+        //        // iterate over creators and create products
+        //        Console.WriteLine("Created {0}", carData.GetData());
+        //    }
+        //}
     }
 }
