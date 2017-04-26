@@ -12,7 +12,7 @@ namespace TaxiStation
         private string _textExceptiton;
         public InvalidKeyException(IEnumerable<int> ids)
         {
-            _textExceptiton = string.Format("Next ID repeats: {0}", string.Join(", ", ids));
+            _textExceptiton = string.Format("The following IDs are repeated: {0}", string.Join(", ", ids));
         }
         public override string ToString()
         {

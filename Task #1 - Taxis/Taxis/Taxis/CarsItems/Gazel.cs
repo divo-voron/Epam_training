@@ -22,7 +22,6 @@ namespace TaxiStation.CarsItems
         public int Cargo
         {
             get { return _cargo; }
-            set { _cargo = value; }
         }
 
         public override int GetFullWeight()

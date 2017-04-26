@@ -24,13 +24,11 @@ namespace TaxiStation.CarsItems
         public int NumberOfPassengers
         {
             get { return _numberOfPassengers; }
-            set { _numberOfPassengers = value; }
         }
 
         public int Cargo
         {
             get { return _cargo; }
-            set { _cargo = value; }
         }
 
         public override int GetFullWeight()

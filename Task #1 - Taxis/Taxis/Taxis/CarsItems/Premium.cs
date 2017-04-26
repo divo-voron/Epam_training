@@ -11,7 +11,7 @@ using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarsItems
 {
-    class Premium : Car, IPassengers, ICar
+    class Premium : Car, IPassengers, ICargo
     {
         private int _numberOfPassengers;
         private int _cargo;
@@ -24,13 +24,11 @@ namespace TaxiStation.CarsItems
         public int NumberOfPassengers
         {
             get { return _numberOfPassengers; }
-            set { _numberOfPassengers = value; }
         }
 
         public int Cargo
         {
             get { return _cargo; }
-            set { _cargo = value; }
         }
 
         public override int GetFullWeight()

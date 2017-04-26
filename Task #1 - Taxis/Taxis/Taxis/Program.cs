@@ -20,7 +20,6 @@ namespace TaxiStation
         {
             try
             {
-                Taxi taxi1 = new Taxi(new List<ICar>());
                 Taxi taxi = new Taxi(
                     new List<ICar>() 
                 { 
@@ -37,7 +36,6 @@ namespace TaxiStation
                 Data.GetTaxi(taxi);
                 Data.ChooseAction();
             }
-            catch (InvalidKeyException error) { Console.WriteLine(string.Format("App error: {0}", error.ToString())); }
             catch (Exception error) { Console.WriteLine(string.Format("App error: {0}", error.ToString())); }
         }
         //static void Serial()

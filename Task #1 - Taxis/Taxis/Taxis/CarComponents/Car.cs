@@ -34,17 +34,14 @@ namespace TaxiStation.CarComponents
         public int Id
         {
             get { return _id; }
-            set { _id = value; }
         }
         public int Speed
         {
             get { return _speed; }
-            set { _speed = value; }
         }
         public int FuelConsumption
         {
             get { return _fuelConsumption; }
-            set { _fuelConsumption = value; }
         }
         public int Price
         {
@@ -54,7 +51,6 @@ namespace TaxiStation.CarComponents
         public int CurbWeight
         {
             get { return _curbWeight; }
-            set { _curbWeight = value; }
         }
         public CarsControlSystemType CarsControlSystemType
         {
@@ -73,8 +69,5 @@ namespace TaxiStation.CarComponents
                           Price.ToString().PadLeft(5, ' '), GetFullWeight().ToString().PadLeft(10, ' '));
         }
         public abstract CarData GetData();
-
-
-        
     }
 }
