@@ -50,9 +50,11 @@
     <Compile Include="CarsItems\Sedan.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="Enums\CarsControlSystemType.cs" />
-    <Compile Include="Factory\CarData.cs" />
     <Compile Include="Factory\Creator.cs" />
-    <Compile Include="Factory\CreatorCar.cs" />
+    <Compile Include="Factory\CreatorGazel.cs" />
+    <Compile Include="Factory\CreatorSedan.cs" />
+    <Compile Include="Factory\CreatorPremium.cs" />
+    <Compile Include="Factory\CreatorCoupe.cs" />
     <Compile Include="Interfaces\ICar.cs" />
     <Compile Include="Interfaces\ICargo.cs" />
     <Compile Include="Interfaces\IPassengers.cs" />

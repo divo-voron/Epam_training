@@ -19,6 +19,5 @@ namespace TaxiStation.Interfaces
         CarsControlSystemType CarsControlSystemType { get; }
         int GetFullWeight();
         string GetInfo();
-        CarData GetData();
     }
 }

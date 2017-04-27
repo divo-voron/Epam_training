@@ -68,6 +68,5 @@ namespace TaxiStation.CarComponents
                           Speed.ToString().PadLeft(5, ' '), FuelConsumption.ToString().PadLeft(4, ' '),
                           Price.ToString().PadLeft(5, ' '), GetFullWeight().ToString().PadLeft(10, ' '));
         }
-        public abstract CarData GetData();
     }
 }

@@ -39,10 +39,5 @@ namespace TaxiStation.CarsItems
         {
             return string.Format("{0} | {1} | {2}", base.GetInfo(), NumberOfPassengers, Cargo.ToString().PadLeft(4, ' '));
         }
-
-        public override CarData GetData()
-        {
-            return new CarData("Premium");
-        }
     }
 }

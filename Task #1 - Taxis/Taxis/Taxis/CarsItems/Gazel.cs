@@ -32,10 +32,5 @@ namespace TaxiStation.CarsItems
         {
             return string.Format("{0} | {1} | {2}", base.GetInfo(), " ", Cargo);
         }
-
-        public override CarData GetData()
-        {
-            return new CarData("Gazel");
-        }
     }
 }
