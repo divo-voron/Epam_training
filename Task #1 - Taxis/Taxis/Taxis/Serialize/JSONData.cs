@@ -32,7 +32,7 @@ namespace TaxiStation.Serialize
                 retVal = (IEnumerable<Creator>)jsonSer.ReadObject(fs);
             }
 
-            return retVal.Select(item => item.FactoryMethod()).ToList();
+            return retVal.Select(item => item.GetCar()).ToList();
         }
     }
 }

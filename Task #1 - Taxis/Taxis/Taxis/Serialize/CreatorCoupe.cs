@@ -15,7 +15,7 @@ namespace TaxiStation.Serialize
         {
             _numberOfPassenger = numberOfPassenger;
         }
-        public override ICar FactoryMethod()
+        public override ICar GetCar()
         {
             return new Coupe(_id, _speed, _fuelConsumption, _price, _curbWeight, _numberOfPassenger, _carsControlSystemType);
         }

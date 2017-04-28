@@ -38,6 +38,6 @@ namespace TaxiStation.Serialize
             _curbWeight = curbWeight;
             _carsControlSystemType = carsControlSystemType;
         }
-        public abstract ICar FactoryMethod();
+        public abstract ICar GetCar();
     }
 }

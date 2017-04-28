@@ -21,7 +21,7 @@ namespace TaxiStation.Serialize
         {
             _cargo = cargo;
         }
-        public override ICar FactoryMethod()
+        public override ICar GetCar()
         {
             return new Gazel(_id, _speed, _fuelConsumption, _price, _curbWeight, _cargo, _carsControlSystemType);
         }
