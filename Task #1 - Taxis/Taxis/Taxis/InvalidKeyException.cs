@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TaxiStation
 {
-    public class InvalidKeyException : SystemException
+    class InvalidKeyException : SystemException
     {
         private string _textExceptiton;
         public InvalidKeyException(IEnumerable<int> ids)

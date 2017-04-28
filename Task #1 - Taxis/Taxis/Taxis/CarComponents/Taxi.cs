@@ -9,7 +9,7 @@ using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
 {
-    public class Taxi
+    class Taxi
     {
         private ICollection<ICar> _cars;
         public Taxi(ICollection<ICar> cars)
@@ -19,16 +19,10 @@ namespace TaxiStation.CarComponents
             else
                 throw new InvalidKeyException(cars.GroupBy(item => item.Id).Where(item => item.Count() > 1).Select(item => item.Key));
         }
-
-        public Taxi()
-        {
-            // TODO: Complete member initialization
-        }
         public ICollection<ICar> Cars
         {
             get { return _cars; }
         }
-
         public ICar GetCarByID(int id)
         {
             return _cars.FirstOrDefault(item => item.Id == id);

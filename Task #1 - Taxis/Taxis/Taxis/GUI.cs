@@ -77,6 +77,7 @@ namespace TaxiStation
         private static void SortByProperty()
         {
             Console.Clear();
+            ShowData(_taxi.Cars);
             while (true)
             {
                 Console.WriteLine("Sort by: " +
@@ -147,6 +148,7 @@ namespace TaxiStation
         private static void FindByProperty()
         {
             Console.Clear();
+            ShowData(_taxi.Cars);
             while (true)
             {
                 Console.WriteLine("Find by:\r\n" +
@@ -168,51 +170,62 @@ namespace TaxiStation
                         case 1:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Find by speed");
-                            Console.Write("Enter speed from:"); int.TryParse(Console.ReadLine(), out from);
-                            Console.Write("Enter speed to:"); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.Where(item => from <= item.Speed && item.Speed <= to));
+                            Console.Write("Enter speed from: "); int.TryParse(Console.ReadLine(), out from);
+                            Console.Write("Enter speed to: "); int.TryParse(Console.ReadLine(), out to);
+                            ShowData(_taxi.Cars.Where(item => from <= item.Speed && item.Speed <= to).OrderBy(item => item.Speed));
                             break;
                         case 2:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Find by fuel consumption");
-                            Console.Write("Enter fuel consumption from:"); int.TryParse(Console.ReadLine(), out from);
-                            Console.Write("Enter fuel consumption to:"); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.Where(item => from <= item.FuelConsumption && item.FuelConsumption <= to));
+                            Console.Write("Enter fuel consumption from: "); int.TryParse(Console.ReadLine(), out from);
+                            Console.Write("Enter fuel consumption to: "); int.TryParse(Console.ReadLine(), out to);
+                            ShowData(_taxi.Cars
+                                .Where(item => from <= item.FuelConsumption && item.FuelConsumption <= to)
+                                .OrderBy(item => item.FuelConsumption));
                             break;
                         case 3:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Find by price");
-                            Console.Write("Enter price from:"); int.TryParse(Console.ReadLine(), out from);
-                            Console.Write("Enter price to:"); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.Where(item => from <= item.Price && item.Price <= to));
+                            Console.Write("Enter price from: "); int.TryParse(Console.ReadLine(), out from);
+                            Console.Write("Enter price to: "); int.TryParse(Console.ReadLine(), out to);
+                            ShowData(_taxi.Cars
+                                .Where(item => from <= item.Price && item.Price <= to).OrderBy(item => item.Price));
                             break;
                         case 4:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Find by curb weight");
-                            Console.Write("Enter curb weight from:"); int.TryParse(Console.ReadLine(), out from);
-                            Console.Write("Enter curb weight to:"); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.Where(item => from <= item.CurbWeight && item.CurbWeight <= to));
+                            Console.Write("Enter curb weight from: "); int.TryParse(Console.ReadLine(), out from);
+                            Console.Write("Enter curb weight to: "); int.TryParse(Console.ReadLine(), out to);
+                            ShowData(_taxi.Cars
+                                .Where(item => from <= item.CurbWeight && item.CurbWeight <= to)
+                                .OrderBy(item => item.CurbWeight));
                             break;
                         case 5:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Find by full weight");
-                            Console.Write("Enter full weight from:"); int.TryParse(Console.ReadLine(), out from);
-                            Console.Write("Enter full weight to:"); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.Where(item => from <= item.GetFullWeight() && item.GetFullWeight() <= to));
+                            Console.Write("Enter full weight from: "); int.TryParse(Console.ReadLine(), out from);
+                            Console.Write("Enter full weight to: "); int.TryParse(Console.ReadLine(), out to);
+                            ShowData(_taxi.Cars
+                                .Where(item => from <= item.GetFullWeight() && item.GetFullWeight() <= to)
+                                .OrderBy(item => item.GetFullWeight()));
                             break;
                         case 6:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Find by cargo");
-                            Console.Write("Enter cargo from:"); int.TryParse(Console.ReadLine(), out from);
-                            Console.Write("Enter cargo to:"); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.OfType<ICargo>().Where(item => from <= item.Cargo && item.Cargo <= to));
+                            Console.Write("Enter cargo from: "); int.TryParse(Console.ReadLine(), out from);
+                            Console.Write("Enter cargo to: "); int.TryParse(Console.ReadLine(), out to);
+                            ShowData(_taxi.Cars.OfType<ICargo>()
+                                .Where(item => from <= item.Cargo && item.Cargo <= to)
+                                .OrderBy(item => item.Cargo));
                             break;
                         case 7:
                             Console.WriteLine("-----------------------------");
-                            Console.WriteLine("Find by passanger");
-                            Console.Write("Enter passanger from:"); int.TryParse(Console.ReadLine(), out from);
-                            Console.Write("Enter passanger to:"); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.OfType<IPassengers>().Where(item => from <= item.NumberOfPassengers && item.NumberOfPassengers <= to));
+                            Console.WriteLine("Find by passenger");
+                            Console.Write("Enter passenger from: "); int.TryParse(Console.ReadLine(), out from);
+                            Console.Write("Enter passenger to: "); int.TryParse(Console.ReadLine(), out to);
+                            ShowData(_taxi.Cars.OfType<IPassengers>()
+                                .Where(item => from <= item.NumberOfPassengers && item.NumberOfPassengers <= to)
+                                .OrderBy(item => item.NumberOfPassengers));
                             break;
                         case 8:
                             Console.Clear();
@@ -232,14 +245,14 @@ namespace TaxiStation
         }
         private static void ShowData(IEnumerable cars)
         {
-            Console.WriteLine("----------------------------------------------------------------------");
-            Console.WriteLine("     Type |   Control | Speed | Fuel | Price | FullWeight | P | C-go |");
-            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine("-----------------------------------------------------------------------------------");
+            Console.WriteLine("     Type |   Control | Speed | Fuel | Price | CurbWeight | FullWeight | P | C-go |");
+            Console.WriteLine("-----------------------------------------------------------------------------------");
             foreach (ICar car in cars)
             {
                 Console.WriteLine(string.Concat("|", car.GetInfo() , " |"));
             }
-            Console.WriteLine("----------------------------------------------------------------------");
+            Console.WriteLine("-----------------------------------------------------------------------------------");
         }
     }
 }
