@@ -6,15 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarComponents;
 using TaxiStation.Enums;
+using TaxiStation.Interfaces;
 
-namespace TaxiStation.Factory
+namespace TaxiStation.Serialize
 {
     [DataContract]
     [KnownType(typeof(CreatorCoupe))]
     [KnownType(typeof(CreatorPremium))]
     [KnownType(typeof(CreatorSedan))]
     [KnownType(typeof(CreatorGazel))]
-    abstract class Creator
+    public abstract class Creator
     {
         [DataMember]
         protected int _id;
@@ -37,6 +38,6 @@ namespace TaxiStation.Factory
             _curbWeight = curbWeight;
             _carsControlSystemType = carsControlSystemType;
         }
-        public abstract Car FactoryMethod();
+        public abstract ICar FactoryMethod();
     }
 }

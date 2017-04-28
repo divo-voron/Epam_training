@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using TaxiStation.CarComponents;
 using TaxiStation.Enums;
-using TaxiStation.Factory;
+using TaxiStation.Serialize;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarsItems
@@ -20,7 +20,6 @@ namespace TaxiStation.CarsItems
         {
             _numberOfPassengers = numberOfPassengers;
         }
-
         public int NumberOfPassengers
         {
             get { return _numberOfPassengers; }
@@ -32,6 +31,10 @@ namespace TaxiStation.CarsItems
         public override string GetInfo()
         {
             return string.Format("{0} | {1} | {2}", base.GetInfo(), NumberOfPassengers, "    ");
+        }
+        public override Creator GetCreator()
+        {
+            return new CreatorCoupe(Id, Speed, FuelConsumption, Price, CurbWeight, NumberOfPassengers, CarsControlSystemType);
         }
     }
 }

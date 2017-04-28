@@ -48,19 +48,20 @@
     <Compile Include="CarsItems\Gazel.cs" />
     <Compile Include="CarsItems\Premium.cs" />
     <Compile Include="CarsItems\Sedan.cs" />
-    <Compile Include="Data.cs" />
+    <Compile Include="GUI.cs" />
     <Compile Include="Enums\CarsControlSystemType.cs" />
-    <Compile Include="Factory\Creator.cs" />
-    <Compile Include="Factory\CreatorGazel.cs" />
-    <Compile Include="Factory\CreatorSedan.cs" />
-    <Compile Include="Factory\CreatorPremium.cs" />
-    <Compile Include="Factory\CreatorCoupe.cs" />
+    <Compile Include="Serialize\Creator.cs" />
+    <Compile Include="Serialize\CreatorGazel.cs" />
+    <Compile Include="Serialize\CreatorSedan.cs" />
+    <Compile Include="Serialize\CreatorPremium.cs" />
+    <Compile Include="Serialize\CreatorCoupe.cs" />
     <Compile Include="Interfaces\ICar.cs" />
     <Compile Include="Interfaces\ICargo.cs" />
     <Compile Include="Interfaces\IPassengers.cs" />
     <Compile Include="InvalidKeyException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialize\JSONData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

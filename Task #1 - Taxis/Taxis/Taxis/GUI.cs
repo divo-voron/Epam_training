@@ -9,7 +9,7 @@ using TaxiStation.Interfaces;
 
 namespace TaxiStation
 {
-    static class Data
+    static class GUI
     {
         private static Taxi _taxi;
         public static void GetTaxi(Taxi taxi) 

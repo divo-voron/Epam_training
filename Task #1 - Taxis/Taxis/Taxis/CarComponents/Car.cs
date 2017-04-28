@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarsItems;
 using TaxiStation.Enums;
-using TaxiStation.Factory;
+using TaxiStation.Serialize;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
 {
-    abstract class Car : ICar
+    public abstract class Car : ICar
     {
         public const int HumansWeight = 75;
         private int _id;
@@ -68,5 +68,8 @@ namespace TaxiStation.CarComponents
                           Speed.ToString().PadLeft(5, ' '), FuelConsumption.ToString().PadLeft(4, ' '),
                           Price.ToString().PadLeft(5, ' '), GetFullWeight().ToString().PadLeft(10, ' '));
         }
+
+
+        public abstract Creator GetCreator();
     }
 }

@@ -19,6 +19,11 @@ namespace TaxiStation.CarComponents
             else
                 throw new InvalidKeyException(cars.GroupBy(item => item.Id).Where(item => item.Count() > 1).Select(item => item.Key));
         }
+
+        public Taxi()
+        {
+            // TODO: Complete member initialization
+        }
         public ICollection<ICar> Cars
         {
             get { return _cars; }

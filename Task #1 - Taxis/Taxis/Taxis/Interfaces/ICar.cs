@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarComponents;
 using TaxiStation.Enums;
-using TaxiStation.Factory;
+using TaxiStation.Serialize;
 
 namespace TaxiStation.Interfaces
 {
@@ -19,5 +19,6 @@ namespace TaxiStation.Interfaces
         CarsControlSystemType CarsControlSystemType { get; }
         int GetFullWeight();
         string GetInfo();
+        Creator GetCreator();
     }
 }

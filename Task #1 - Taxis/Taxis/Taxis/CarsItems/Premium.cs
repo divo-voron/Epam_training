@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TaxiStation.CarComponents;
 using TaxiStation.Enums;
-using TaxiStation.Factory;
+using TaxiStation.Serialize;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarsItems
@@ -38,6 +38,10 @@ namespace TaxiStation.CarsItems
         public override string GetInfo()
         {
             return string.Format("{0} | {1} | {2}", base.GetInfo(), NumberOfPassengers, Cargo.ToString().PadLeft(4, ' '));
+        }
+        public override Creator GetCreator()
+        {
+            return new CreatorPremium(Id, Speed, FuelConsumption, Price, CurbWeight, NumberOfPassengers, Cargo, CarsControlSystemType);
         }
     }
 }
