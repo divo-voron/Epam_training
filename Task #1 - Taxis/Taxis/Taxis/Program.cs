@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
 using TaxiStation.CarComponents;
 using TaxiStation.CarsItems;
 using TaxiStation.Enums;
-using TaxiStation.Serialize;
 using TaxiStation.Interfaces;
+using TaxiStation.Serialize;
 
 namespace TaxiStation
 {
@@ -18,18 +13,17 @@ namespace TaxiStation
     {
         static void Main(string[] args)
         {
-            try
-            {
-                ICollection<ICar> data = JSONData.Read();
-                Taxi taxi = new Taxi(data);
+            //Write(Directory.GetCurrentDirectory() + "\\Car.json");
 
+            ICollection<ICar> data = JSONData.Read(Directory.GetCurrentDirectory() + "\\Car.json");
+            if (Validator.Check(data))
+            {
+                Taxi taxi = new Taxi(data);
                 GUI.GetTaxi(taxi);
                 GUI.ChooseAction();
             }
-            catch (Exception error) { Console.WriteLine(string.Format("App error: {0}", error.ToString())); }
-
         }
-        static void ReadWrite()
+        static void Write(string path)
         {
             ICollection<ICar> cars = new List<ICar>() 
             {
@@ -43,9 +37,7 @@ namespace TaxiStation
                 new Premium(8, 180, 11, 85, 1200, 5, 250)
             };
 
-            JSONData.Write(cars);
-
-            cars = JSONData.Read();
+            JSONData.Write(cars, path);
         }
 
         

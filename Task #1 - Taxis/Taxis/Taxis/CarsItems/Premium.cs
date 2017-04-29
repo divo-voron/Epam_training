@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using TaxiStation.CarComponents;
+﻿using TaxiStation.CarComponents;
 using TaxiStation.Enums;
-using TaxiStation.Serialize;
 using TaxiStation.Interfaces;
+using TaxiStation.Serialize;
 
 namespace TaxiStation.CarsItems
 {

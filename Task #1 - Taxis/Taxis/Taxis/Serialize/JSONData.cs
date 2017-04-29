@@ -3,36 +3,41 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Threading.Tasks;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.Serialize
 {
-    static class JSONData
+    class JSONData
     {
-        public static void Write(ICollection<ICar> data)
+        public static void Write(ICollection<ICar> data, string path)
         {
-            IEnumerable<Creator> serData = data.Select(item => item.GetCreator());
-            
             DataContractJsonSerializer jsonSer = new DataContractJsonSerializer(typeof(IEnumerable<Creator>));
 
-            using (FileStream fs = new FileStream(@"D:\1\Car.json", FileMode.Create))
+            if (Directory.Exists(Path.GetDirectoryName(path)) == false)
             {
-                jsonSer.WriteObject(fs, serData);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+            }
+            using (FileStream fs = new FileStream(path, FileMode.Create))
+            {
+                jsonSer.WriteObject(fs, data.Select(item => item.GetCreator()));
             }
         }
 
-        public static ICollection<ICar> Read()
+        public static ICollection<ICar> Read(string path)
         {
-            IEnumerable<Creator> retVal;
-            DataContractJsonSerializer jsonSer = new DataContractJsonSerializer(typeof(IEnumerable<Creator>));
-            using (FileStream fs = new FileStream(@"D:\1\Car.json", FileMode.Open))
+            if (File.Exists(path))
             {
-                retVal = (IEnumerable<Creator>)jsonSer.ReadObject(fs);
+                try
+                {
+                    DataContractJsonSerializer jsonSer = new DataContractJsonSerializer(typeof(IEnumerable<Creator>));
+                    using (FileStream fs = new FileStream(path, FileMode.Open))
+                    {
+                        return ((IEnumerable<Creator>)jsonSer.ReadObject(fs)).Select(item => item.GetCar()).ToArray();
+                    }
+                }
+                catch (Exception) { return null; }
             }
-
-            return retVal.Select(item => item.GetCar()).ToList();
+            else return null;
         }
     }
 }

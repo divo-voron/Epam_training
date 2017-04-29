@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
-using TaxiStation.CarsItems;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.CarComponents
@@ -14,10 +9,7 @@ namespace TaxiStation.CarComponents
         private ICollection<ICar> _cars;
         public Taxi(ICollection<ICar> cars)
         {
-            if (cars.GroupBy(item => item.Id).Count() == cars.Count())
-                _cars = cars;
-            else
-                throw new InvalidKeyException(cars.GroupBy(item => item.Id).Where(item => item.Count() > 1).Select(item => item.Key));
+            _cars = cars;
         }
         public ICollection<ICar> Cars
         {
