@@ -6,7 +6,6 @@ namespace TaxiStation.Serialize
 {
     [DataContract]
     [KnownType(typeof(CreatorCoupe))]
-    [KnownType(typeof(CreatorPremium))]
     [KnownType(typeof(CreatorSedan))]
     [KnownType(typeof(CreatorGazel))]
     public abstract class Creator

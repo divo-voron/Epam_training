@@ -13,7 +13,7 @@ namespace TaxiStation
     {
         static void Main(string[] args)
         {
-            //Write(Directory.GetCurrentDirectory() + "\\Car.json");
+            Write(Directory.GetCurrentDirectory() + "\\Car.json");
 
             ICollection<ICar> data = JSONData.Read(Directory.GetCurrentDirectory() + "\\Car.json");
             if (Validator.Check(data))
@@ -32,9 +32,7 @@ namespace TaxiStation
                 new Sedan(3, 190, 10, 35, 1250, 3, 100, CarsControlSystemType.Autopilot),
                 new Sedan(4, 190, 11, 35, 1350, 4, 150),
                 new Gazel(5, 100, 16, 40, 1500, 1500),
-                new Gazel(6, 100, 16, 45, 1500, 1800),
-                new Premium(7, 180, 11, 80, 1000, 5, 220, CarsControlSystemType.Autopilot),
-                new Premium(8, 180, 11, 85, 1200, 5, 250)
+                new Gazel(6, 100, 16, 45, 1500, 1800)
             };
 
             JSONData.Write(cars, path);
