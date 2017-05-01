@@ -15,34 +15,13 @@ namespace TaxiStation.CarComponents
         {
             get { return _cars; }
         }
-        public ICar GetCarByID(int id)
+        public int GetTotalLoadCapacity()
         {
-            return _cars.FirstOrDefault(item => item.Id == id);
+            return _cars.OfType<ICargo>().Sum(item => item.Cargo);
         }
-        public bool AddCar(ICar car)
+        public int GetTotalCost()
         {
-            if (_cars.Any(item => item.Id == car.Id))
-                return false;
-            else
-            {
-                _cars.Add(car);
-                return true;
-            }
-        }
-        public bool RemoveCar(ICar car)
-        {
-            return _cars.Remove(car);
-        }
-        public void UpdateCar(ICar car)
-        {
-            ICar value = _cars.FirstOrDefault(item => item.Id == car.Id);
-            if (value != null)
-            {
-                _cars.Remove(value);
-                _cars.Add(car);
-            }
-            else
-                _cars.Add(car);
+            return _cars.Sum(item => item.Price);
         }
     }        
 }

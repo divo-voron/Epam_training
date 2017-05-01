@@ -19,8 +19,7 @@ namespace TaxiStation
             if (Validator.Check(data))
             {
                 Taxi taxi = new Taxi(data);
-                GUI.GetTaxi(taxi);
-                GUI.ChooseAction();
+                GUI.Start(taxi);
             }
         }
         static void Write(string path)

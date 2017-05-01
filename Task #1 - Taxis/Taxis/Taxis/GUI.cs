@@ -8,16 +8,11 @@ namespace TaxiStation
 {
     static class GUI
     {
-        private static Taxi _taxi;
-        public static void GetTaxi(Taxi taxi) 
-        {
-            _taxi = taxi;
-        }
-        public static void ChooseAction()
+        public static void Start(Taxi taxi)
         {
             Console.WriteLine("Taxi contains:\r\n");
 
-            ShowData(_taxi.Cars);
+            ShowData(taxi.Cars);
 
             while (true)
             {
@@ -36,23 +31,23 @@ namespace TaxiStation
                         case 1:
                             Console.Clear();
                             Console.WriteLine("Taxi contains:\r\n");
-                            ShowData(_taxi.Cars);
+                            ShowData(taxi.Cars);
                             break;
                         case 2:
                             Console.Clear();
-                            Console.WriteLine("\nTotal cost of the taxi: {0}", _taxi.Cars.Sum(item => item.Price));
+                            Console.WriteLine("\nTotal cost of the taxi: {0}", taxi.GetTotalCost());
                             Console.WriteLine("-----------------------------");
                             break;
                         case 3:
                             Console.Clear();
-                            Console.WriteLine("\nTotal load capacity of the taxi: {0}", _taxi.Cars.OfType<ICargo>().Sum(item => item.Cargo));
+                            Console.WriteLine("\nTotal load capacity of the taxi: {0}", taxi.GetTotalLoadCapacity());
                             Console.WriteLine("-----------------------------");
                             break;
                         case 4:
-                            SortByProperty();
+                            SortByProperty(taxi);
                             break;
                         case 5:
-                            FindByProperty();
+                            FindByProperty(taxi);
                             break;
                         case 6:
                             return;
@@ -71,10 +66,10 @@ namespace TaxiStation
                 }
             }
         }
-        private static void SortByProperty()
+        private static void SortByProperty(Taxi taxi)
         {
             Console.Clear();
-            ShowData(_taxi.Cars);
+            ShowData(taxi.Cars);
             while (true)
             {
                 Console.WriteLine("Sort by: " +
@@ -94,37 +89,37 @@ namespace TaxiStation
                         case 1:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Sorted by speed");
-                            ShowData(_taxi.Cars.OrderBy(item => item.Speed));
+                            ShowData(taxi.Cars.OrderBy(item => item.Speed));
                             break;
                         case 2:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Sorted by fuel consumption");
-                            ShowData(_taxi.Cars.OrderBy(item => item.FuelConsumption));
+                            ShowData(taxi.Cars.OrderBy(item => item.FuelConsumption));
                             break;
                         case 3:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Sorted by price");
-                            ShowData(_taxi.Cars.OrderBy(item => item.Price));
+                            ShowData(taxi.Cars.OrderBy(item => item.Price));
                             break;
                         case 4:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Sorted by curb weight");
-                            ShowData(_taxi.Cars.OrderBy(item => item.CurbWeight));
+                            ShowData(taxi.Cars.OrderBy(item => item.CurbWeight));
                             break;
                         case 5:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Sorted by full weight");
-                            ShowData(_taxi.Cars.OrderBy(item => item.GetFullWeight()));
+                            ShowData(taxi.Cars.OrderBy(item => item.GetFullWeight()));
                             break;
                         case 6:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Sorted by cargo");
-                            ShowData(_taxi.Cars.OfType<ICargo>().OrderBy(item => item.Cargo));
+                            ShowData(taxi.Cars.OfType<ICargo>().OrderBy(item => item.Cargo));
                             break;
                         case 7:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Sorted by passenger");
-                            ShowData(_taxi.Cars.OfType<IPassengers>().OrderBy(item => item.NumberOfPassengers));
+                            ShowData(taxi.Cars.OfType<IPassengers>().OrderBy(item => item.NumberOfPassengers));
                             break;
                         case 8:
                             Console.Clear();
@@ -142,10 +137,10 @@ namespace TaxiStation
                 }
             }
         }
-        private static void FindByProperty()
+        private static void FindByProperty(Taxi taxi)
         {
             Console.Clear();
-            ShowData(_taxi.Cars);
+            ShowData(taxi.Cars);
             while (true)
             {
                 Console.WriteLine("Find by:\r\n" +
@@ -169,14 +164,14 @@ namespace TaxiStation
                             Console.WriteLine("Find by speed");
                             Console.Write("Enter speed from: "); int.TryParse(Console.ReadLine(), out from);
                             Console.Write("Enter speed to: "); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.Where(item => from <= item.Speed && item.Speed <= to).OrderBy(item => item.Speed));
+                            ShowData(taxi.Cars.Where(item => from <= item.Speed && item.Speed <= to).OrderBy(item => item.Speed));
                             break;
                         case 2:
                             Console.WriteLine("-----------------------------");
                             Console.WriteLine("Find by fuel consumption");
                             Console.Write("Enter fuel consumption from: "); int.TryParse(Console.ReadLine(), out from);
                             Console.Write("Enter fuel consumption to: "); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars
+                            ShowData(taxi.Cars
                                 .Where(item => from <= item.FuelConsumption && item.FuelConsumption <= to)
                                 .OrderBy(item => item.FuelConsumption));
                             break;
@@ -185,7 +180,7 @@ namespace TaxiStation
                             Console.WriteLine("Find by price");
                             Console.Write("Enter price from: "); int.TryParse(Console.ReadLine(), out from);
                             Console.Write("Enter price to: "); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars
+                            ShowData(taxi.Cars
                                 .Where(item => from <= item.Price && item.Price <= to).OrderBy(item => item.Price));
                             break;
                         case 4:
@@ -193,7 +188,7 @@ namespace TaxiStation
                             Console.WriteLine("Find by curb weight");
                             Console.Write("Enter curb weight from: "); int.TryParse(Console.ReadLine(), out from);
                             Console.Write("Enter curb weight to: "); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars
+                            ShowData(taxi.Cars
                                 .Where(item => from <= item.CurbWeight && item.CurbWeight <= to)
                                 .OrderBy(item => item.CurbWeight));
                             break;
@@ -202,7 +197,7 @@ namespace TaxiStation
                             Console.WriteLine("Find by full weight");
                             Console.Write("Enter full weight from: "); int.TryParse(Console.ReadLine(), out from);
                             Console.Write("Enter full weight to: "); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars
+                            ShowData(taxi.Cars
                                 .Where(item => from <= item.GetFullWeight() && item.GetFullWeight() <= to)
                                 .OrderBy(item => item.GetFullWeight()));
                             break;
@@ -211,7 +206,7 @@ namespace TaxiStation
                             Console.WriteLine("Find by cargo");
                             Console.Write("Enter cargo from: "); int.TryParse(Console.ReadLine(), out from);
                             Console.Write("Enter cargo to: "); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.OfType<ICargo>()
+                            ShowData(taxi.Cars.OfType<ICargo>()
                                 .Where(item => from <= item.Cargo && item.Cargo <= to)
                                 .OrderBy(item => item.Cargo));
                             break;
@@ -220,7 +215,7 @@ namespace TaxiStation
                             Console.WriteLine("Find by passenger");
                             Console.Write("Enter passenger from: "); int.TryParse(Console.ReadLine(), out from);
                             Console.Write("Enter passenger to: "); int.TryParse(Console.ReadLine(), out to);
-                            ShowData(_taxi.Cars.OfType<IPassengers>()
+                            ShowData(taxi.Cars.OfType<IPassengers>()
                                 .Where(item => from <= item.NumberOfPassengers && item.NumberOfPassengers <= to)
                                 .OrderBy(item => item.NumberOfPassengers));
                             break;
