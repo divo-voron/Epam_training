@@ -2,7 +2,7 @@
 using TaxiStation.Interfaces;
 using TaxiStation.Serialize;
 
-namespace TaxiStation.CarComponents
+namespace TaxiStation.Impl
 {
     abstract class Car : ICar
     {
@@ -14,14 +14,9 @@ namespace TaxiStation.CarComponents
         private int _curbWeight;
         private CarsControlSystemType _carsControlSystemType;
 
-        public Car(int id, int speed, int fuelConsumption, int price, int curbWeight, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
+        public Car(int id)
         {
             _id = id;
-            _speed = speed;
-            _fuelConsumption = fuelConsumption;
-            _price = price;
-            _curbWeight = curbWeight;
-            _carsControlSystemType = carsControlSystemType;
         }
 
         public int Id
@@ -31,10 +26,12 @@ namespace TaxiStation.CarComponents
         public int Speed
         {
             get { return _speed; }
+            set { _speed = value; }
         }
         public int FuelConsumption
         {
             get { return _fuelConsumption; }
+            set { _fuelConsumption = value; }
         }
         public int Price
         {
@@ -44,6 +41,7 @@ namespace TaxiStation.CarComponents
         public int CurbWeight
         {
             get { return _curbWeight; }
+            set { _curbWeight = value; }
         }
         public CarsControlSystemType CarsControlSystemType
         {

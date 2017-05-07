@@ -1,21 +1,17 @@
-﻿using TaxiStation.CarComponents;
-using TaxiStation.Enums;
+﻿using TaxiStation.Enums;
 using TaxiStation.Interfaces;
 using TaxiStation.Serialize;
 
-namespace TaxiStation.CarsItems
+namespace TaxiStation.Impl.CarsTypes
 {
     class Coupe : Car, IPassengers
     {
         private int _numberOfPassengers;
-        public Coupe(int id, int speed, int fuelConsumption, int price, int curbWeight, int numberOfPassengers, CarsControlSystemType carsControlSystemType = CarsControlSystemType.Human)
-            : base(id, speed, fuelConsumption, price, curbWeight, carsControlSystemType)
-        {
-            _numberOfPassengers = numberOfPassengers;
-        }
+        public Coupe(int id) : base(id) { }
         public int NumberOfPassengers
         {
             get { return _numberOfPassengers; }
+            set { _numberOfPassengers = value; }
         }
         public override int GetFullWeight()
         {

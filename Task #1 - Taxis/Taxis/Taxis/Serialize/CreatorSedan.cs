@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
-using TaxiStation.CarsItems;
 using TaxiStation.Enums;
+using TaxiStation.Impl.CarsTypes;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation.Serialize
@@ -20,7 +20,16 @@ namespace TaxiStation.Serialize
         }
         public override ICar GetCar()
         {
-            return new Sedan(_id, _speed, _fuelConsumption, _price, _curbWeight, _numberOfPassenger, _cargo, _carsControlSystemType);
+            return new Sedan(_id)
+            {
+                Speed = _speed,
+                FuelConsumption = _fuelConsumption,
+                Price = _price,
+                CurbWeight = _curbWeight,
+                NumberOfPassengers = _numberOfPassenger,
+                Cargo = _cargo,
+                CarsControlSystemType = _carsControlSystemType
+            };
         }
     }
 }

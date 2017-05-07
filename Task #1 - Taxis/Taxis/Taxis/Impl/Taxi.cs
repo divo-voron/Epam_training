@@ -2,7 +2,7 @@
 using System.Linq;
 using TaxiStation.Interfaces;
 
-namespace TaxiStation.CarComponents
+namespace TaxiStation.Impl
 {
     class Taxi
     {

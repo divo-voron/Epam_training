@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
-using TaxiStation.CarComponents;
+using TaxiStation.Impl;
 using TaxiStation.Interfaces;
 
 namespace TaxiStation

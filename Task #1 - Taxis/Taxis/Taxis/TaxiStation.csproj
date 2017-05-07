@@ -42,11 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CarComponents\Car.cs" />
-    <Compile Include="CarComponents\Taxi.cs" />
-    <Compile Include="CarsItems\Coupe.cs" />
-    <Compile Include="CarsItems\Gazel.cs" />
-    <Compile Include="CarsItems\Sedan.cs" />
+    <Compile Include="Impl\Car.cs" />
+    <Compile Include="Impl\Taxi.cs" />
+    <Compile Include="Impl\CarsTypes\Coupe.cs" />
+    <Compile Include="Impl\CarsTypes\Gazel.cs" />
+    <Compile Include="Impl\CarsTypes\Sedan.cs" />
     <Compile Include="GUI.cs" />
     <Compile Include="Enums\CarsControlSystemType.cs" />
     <Compile Include="Serialize\Creator.cs" />
