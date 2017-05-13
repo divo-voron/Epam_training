@@ -9,9 +9,9 @@ namespace LinguisticTask.TextComponents
 {
     class Punctuation : ISentenceItem
     {
-        private string _items;
+        private char[] _items;
         private PunctuationMarks _punctuationMark;
-        public string Items
+        public char[] Items
         {
             get { return _items; }
             set { _items = value; }
@@ -24,6 +24,10 @@ namespace LinguisticTask.TextComponents
         public int Length
         {
             get { return _items.Length; }
+        }
+        public override string ToString()
+        {
+            return string.Join("", _items);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace LinguisticTask.TextComponents
     interface ISentence : ITextElement
     {
         ICollection<ISentenceItem> Items { get; set; }
-        int Count<T>();
+        int Count<T>() where T : ISentenceItem;
         PunctuationMarks GetEndSentence();
     }
 }

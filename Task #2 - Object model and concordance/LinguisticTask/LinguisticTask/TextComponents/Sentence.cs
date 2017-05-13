@@ -20,7 +20,7 @@ namespace LinguisticTask.TextComponents
             get { return _items.Sum(item => item.Length); }
         }
 
-        public int Count<T>()
+        public int Count<T>() where T : ISentenceItem
         {
             return _items.OfType<T>().Count();
         }

@@ -44,7 +44,18 @@ namespace LinguisticTask
 
             return retVal;
         }
-        public IEnumerable<Word> GetWord(PunctuationMarks punctuationMark, int length)
+        public IEnumerable<Word> GetWord(int length = 0)
+        {
+            IEnumerable<Word> retVal = new List<Word>();
+
+            foreach (ISentence sentence in this.GetSentences())
+            {
+                retVal = retVal.Union(sentence.Items.OfType<Word>().Where(item => item.Length == length));
+            }
+
+            return retVal;
+        }
+        public IEnumerable<Word> GetWord(PunctuationMarks punctuationMark, int length = 0)
         {
             IEnumerable<Word> retVal = new List<Word>();
 
@@ -54,6 +65,27 @@ namespace LinguisticTask
             }
 
             return retVal;
+        }
+        public void ReplaceWord(int length, char[] substitution)
+        {
+            foreach (ISentence sentence in this.GetSentences())
+            {
+                foreach (Word word in sentence.Items.OfType<Word>())
+                {
+                    if (word.Length == length) word.Items = substitution;
+                }
+            }
+        }
+        public void RemoveWord(int length, LetterType letterType)
+        {
+            foreach (ISentence sentence in this.GetSentences())
+            {
+                foreach (Word word in sentence.Items.OfType<Word>())
+                {
+                    if ((word.Length == length) && )
+                    { }
+                }
+            }
         }
     }
 }

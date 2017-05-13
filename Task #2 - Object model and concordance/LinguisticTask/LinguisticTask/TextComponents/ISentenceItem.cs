@@ -8,6 +8,6 @@ namespace LinguisticTask.TextComponents
 {
     interface ISentenceItem : ITextElement
     {
-        string Items { get; set; }
+        char[] Items { get; set; }
     }
 }

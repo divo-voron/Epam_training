@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alphabet.cs" />
+    <Compile Include="AlphabetItem.cs" />
+    <Compile Include="Enums\LetterType.cs" />
+    <Compile Include="Enums\PrescriptionType.cs" />
     <Compile Include="Enums\PunctuationMarks.cs" />
     <Compile Include="TextComponents\ISentence.cs" />
     <Compile Include="TextComponents\ISentenceItem.cs" />
