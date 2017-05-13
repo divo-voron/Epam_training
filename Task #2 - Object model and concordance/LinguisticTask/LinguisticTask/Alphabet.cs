@@ -9,18 +9,22 @@ namespace LinguisticTask
 {
     class Alphabet
     {
-        private ICollection<AlphabetItem> _alphabetItems;
+        private static ICollection<AlphabetItem> _alphabetItems;
         public Alphabet(ICollection<AlphabetItem> alphabetItems)
         {
             _alphabetItems = alphabetItems;
         }
-        public char[] GetAlphabet(PrescriptionType prescriptionType = PrescriptionType.Lowercase)
+        //public char[] GetAlphabet(PrescriptionType prescriptionType = PrescriptionType.Lowercase)
+        //{
+        //    return _alphabetItems.Where(item => item.PrescriptionType == prescriptionType).Select(item => item.Item).ToArray();
+        //}
+        //public char[] GetAlphabet(LetterType letterType)
+        //{
+        //    return _alphabetItems.Where(item => item.LetterType == letterType).Select(item => item.Item).ToArray();
+        //}
+        public static AlphabetItem GetAlpabetItem(char letter)
         {
-            return _alphabetItems.Where(item => item.PrescriptionType == prescriptionType).Select(item => item.Item).ToArray();
-        }
-        public char[] GetAlphabet(LetterType letterType)
-        {
-            return _alphabetItems.Where(item => item.LetterType == letterType).Select(item => item.Item).ToArray();
+            return _alphabetItems.FirstOrDefault(item => item.Item == letter);
         }
     }
 }

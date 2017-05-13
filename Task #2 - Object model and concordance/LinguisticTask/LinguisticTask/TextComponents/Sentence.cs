@@ -33,5 +33,11 @@ namespace LinguisticTask.TextComponents
             else
                 return PunctuationMarks.Nothing;
         }
+
+
+        public void RemoveItem(ISentenceItem item)
+        {
+            _items.Remove(item);
+        }
     }
 }

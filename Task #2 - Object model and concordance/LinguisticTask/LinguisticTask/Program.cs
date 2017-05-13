@@ -13,6 +13,7 @@ namespace LinguisticTask
         static void Main(string[] args)
         {
             Text text = LoadText();
+            
             Alphabet alphabet = new Alphabet(GetAlphabet());
 
             IEnumerable<ISentence> sentences1 = text.GetSentences();
@@ -24,6 +25,8 @@ namespace LinguisticTask
             IEnumerable<Word> words = text.GetWord(PunctuationMarks.Question, 3).Distinct();
 
             text.ReplaceWord(3, new char[] { 'б', 'л', 'а', 'б', 'л', 'а' });
+
+            text.RemoveWord(6, LetterType.Consonant);
         }
 
         static Text LoadText()
