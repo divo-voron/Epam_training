@@ -21,7 +21,10 @@ namespace LinguisticTask
         {
             get { return _items.Sum(item => item.Length); }
         }
-
+        public Text() 
+        {
+            _items = new List<Paragraph>();
+        }
         public IEnumerable<ISentence> GetSentences()
         {
             IEnumerable<ISentence> retVal = new List<ISentence>();

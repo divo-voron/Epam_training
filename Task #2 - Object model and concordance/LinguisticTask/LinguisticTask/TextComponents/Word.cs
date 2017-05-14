@@ -23,5 +23,14 @@ namespace LinguisticTask.TextComponents
         {
             return string.Join("", _items);
         }
+        public Word() { }
+        public Word(string item)
+        {
+            _items = item.Select(x => x).ToArray();
+        }
+        public Word(IEnumerable<char> item)
+        {
+            _items = item.ToArray();
+        }
     }
 }

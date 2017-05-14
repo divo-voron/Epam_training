@@ -19,7 +19,14 @@ namespace LinguisticTask.TextComponents
         {
             get { return _items.Sum(item => item.Length); }
         }
-
+        public Sentence() 
+        {
+            _items = new List<ISentenceItem>();
+        }
+        public Sentence(ICollection<ISentenceItem> items)
+        {
+            _items = items;
+        }
         public int Count<T>() where T : ISentenceItem
         {
             return _items.OfType<T>().Count();
@@ -33,8 +40,6 @@ namespace LinguisticTask.TextComponents
             else
                 return PunctuationMarks.Nothing;
         }
-
-
         public void RemoveItem(ISentenceItem item)
         {
             _items.Remove(item);

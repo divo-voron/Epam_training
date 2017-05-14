@@ -2,6 +2,7 @@
 using LinguisticTask.TextComponents;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace LinguisticTask
     {
         static void Main(string[] args)
         {
-            Text text = LoadText();
+            Text text = Parser.Parse(new StreamReader(new FileStream(@"D:\1\2.txt", FileMode.Open)));
             
             Alphabet alphabet = new Alphabet(GetAlphabet());
 
@@ -102,7 +103,7 @@ namespace LinguisticTask
         {
             ICollection<AlphabetItem> alphabet = new List<AlphabetItem>();
 
-            // add А...Я
+            // add  [А...Я]
             int[] upperVowels = new int[10] { 1040, 1045, 1048, 1054, 1059, 1067, 1069, 1070, 1071, 1025 };
             for (int i = 1040; i < 1072; i++)
             {
@@ -112,10 +113,12 @@ namespace LinguisticTask
                         LetterType = upperVowels.Contains(i) ? LetterType.Vowel : LetterType.Consonant,
                         PrescriptionType = PrescriptionType.Uppercase
                     });
-                // add 'Ё'
+                // add ['Ё']
                 if (i == 1045)
                     alphabet.Add(new AlphabetItem((char)1025, LetterType.Vowel, PrescriptionType.Uppercase));
             }
+
+            // add  [а...я]
             int[] lowerVowels = new int[10] { 1072, 1077, 1080, 1086, 1091, 1099, 1101, 1102, 1103, 1105 };
             for (int i = 1072; i < 1104; i++)
             {
@@ -125,7 +128,7 @@ namespace LinguisticTask
                         LetterType = lowerVowels.Contains(i) ? LetterType.Vowel : LetterType.Consonant,
                         PrescriptionType = PrescriptionType.Lowercase
                     });
-                // add 'ё'
+                // add ['ё']
                 if (i == 1077)
                     alphabet.Add(new AlphabetItem((char)1105, LetterType.Vowel, PrescriptionType.Lowercase));
             }

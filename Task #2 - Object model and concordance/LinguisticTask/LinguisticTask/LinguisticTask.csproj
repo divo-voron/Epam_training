@@ -46,6 +46,7 @@
     <Compile Include="Enums\LetterType.cs" />
     <Compile Include="Enums\PrescriptionType.cs" />
     <Compile Include="Enums\PunctuationMarks.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="TextComponents\ISentence.cs" />
     <Compile Include="TextComponents\ISentenceItem.cs" />
     <Compile Include="TextComponents\ITextElement.cs" />
@@ -56,10 +57,10 @@
     <Compile Include="TextComponents\Sentence.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="TextComponents\Word.cs" />
+    <Compile Include="TextSeparators.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

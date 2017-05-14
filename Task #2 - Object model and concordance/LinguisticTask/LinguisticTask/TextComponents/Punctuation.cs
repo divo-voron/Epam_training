@@ -29,5 +29,14 @@ namespace LinguisticTask.TextComponents
         {
             return string.Join("", _items);
         }
+        public Punctuation() { }
+        public Punctuation(string item)
+        {
+            _items = item.Select(x => x).ToArray();
+        }
+        public Punctuation(IEnumerable<char> item)
+        {
+            _items = item.ToArray();
+        }
     }
 }

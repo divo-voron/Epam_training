@@ -14,6 +14,14 @@ namespace LinguisticTask.TextComponents
             get { return _items; }
             set { _items = value; }
         }
+        public Paragraph() 
+        {
+            _items = new List<ISentence>();
+        }
+        public Paragraph(ICollection<ISentence> items)
+        {
+            _items = items;
+        }
         public int Length
         {
             get { return _items.Sum(item => item.Length); }
