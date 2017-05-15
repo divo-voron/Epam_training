@@ -10,7 +10,7 @@ namespace LinguisticTask
 {
     static class Parser
     {
-        private static ICollection<string> separators = new List<string>() { " ", ",", "." };
+        private static ICollection<string> separators = new List<string>() { ",", "." };
         private static ICollection<string> separatorsTerminal = new List<string>() { "." };
         public static Text Parse(TextReader reader)
         {
