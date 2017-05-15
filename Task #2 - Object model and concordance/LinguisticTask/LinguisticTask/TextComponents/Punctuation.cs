@@ -10,13 +10,13 @@ namespace LinguisticTask.TextComponents
     class Punctuation : ISentenceItem
     {
         private char[] _items;
-        private PunctuationMarks _punctuationMark;
+        private PunctuationMark _punctuationMark;
         public char[] Items
         {
             get { return _items; }
             set { _items = value; }
         }
-        public PunctuationMarks PunctuationMark
+        public PunctuationMark PunctuationMark
         {
             get { return _punctuationMark; }
             set { _punctuationMark = value; }
@@ -30,13 +30,15 @@ namespace LinguisticTask.TextComponents
             return string.Join("", _items);
         }
         public Punctuation() { }
-        public Punctuation(string item)
+        public Punctuation(string item, PunctuationMark punctuationMark)
         {
             _items = item.Select(x => x).ToArray();
+            _punctuationMark = punctuationMark;
         }
-        public Punctuation(IEnumerable<char> item)
+        public Punctuation(IEnumerable<char> item, PunctuationMark punctuationMark)
         {
             _items = item.ToArray();
+            _punctuationMark = punctuationMark;
         }
     }
 }

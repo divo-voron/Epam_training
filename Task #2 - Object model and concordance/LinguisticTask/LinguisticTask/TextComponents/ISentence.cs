@@ -11,7 +11,7 @@ namespace LinguisticTask.TextComponents
     {
         ICollection<ISentenceItem> Items { get; set; }
         int Count<T>() where T : ISentenceItem;
-        PunctuationMarks GetEndSentence();
+        PunctuationMark GetEndSentence();
         void RemoveItem(ISentenceItem item);
     }
 }

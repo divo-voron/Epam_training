@@ -13,104 +13,39 @@ namespace LinguisticTask
     {
         static void Main(string[] args)
         {
-            Text text = Parser.Parse(new StreamReader(new FileStream(@"D:\1\2.txt", FileMode.Open)));
-            
+            PunctuationMarkContainer.LoadData(GetPunctuation());
             Alphabet alphabet = new Alphabet(GetAlphabet());
+
+            Text text = Parser.Parse(new StreamReader(new FileStream(@"D:\1\2.txt", FileMode.Open)));
 
             IEnumerable<ISentence> sentences1 = text.GetSentences();
 
             IOrderedEnumerable<ISentence> sentences2 = text.GetSentences().OrderBy(item => item.Count<Word>());
 
-            IEnumerable<ISentence> sentences3 = text.GetSentences(PunctuationMarks.Question);
+            IEnumerable<ISentence> sentences3 = text.GetSentences(PunctuationMarkName.Question);
 
-            IEnumerable<Word> words = text.GetWord(PunctuationMarks.Question, 3).Distinct();
+            IEnumerable<Word> words = text.GetWord(PunctuationMarkName.Question, 3).Distinct();
 
-            text.ReplaceWord(3, new char[] { 'б', 'л', 'а', 'б', 'л', 'а' });
+            text.ReplaceWord(3, "q!!");
 
-            text.RemoveWord(6, LetterType.Consonant);
+            text.RemoveWord(3, 0, LetterType.Consonant);
+
+            Console.WriteLine(text.ToString());
         }
 
-        static Text LoadText()
-        {
-            Sentence sentence_1 = new Sentence();
-            sentence_1.Items = new List<ISentenceItem>() 
-            { 
-                new Word() { Items = new char[] { 'П', 'р', 'и', 'в', 'е', 'т' } }, 
-                new Punctuation() { Items = new char[] { ',' }, PunctuationMark = PunctuationMarks.Comma }, 
-                new Word() { Items = new char[] { 'к', 'а', 'к' } }, 
-                new Word() { Items = new char[] { 'д', 'е', 'л', 'а' } }, 
-                new Punctuation() { Items = new char[] { '?' }, PunctuationMark = PunctuationMarks.Question }, 
-                new Word() { Items = new char[] { 'П', 'р', 'и', 'в', 'е', 'т' } }, 
-                new Punctuation() { Items = new char[] { ',' }, PunctuationMark = PunctuationMarks.Comma }, 
-                new Word() { Items = new char[] { 'к', 'а', 'к' } }, 
-                new Word() { Items = new char[] { 'д', 'е', 'л', 'а' } }, 
-                new Punctuation() { Items = new char[] { '?' }, PunctuationMark = PunctuationMarks.Question } 
-            };
-
-            Sentence sentence_2 = new Sentence();
-            sentence_2.Items = new List<ISentenceItem>() 
-            { 
-                new Word() { Items = new char[] { 'Ч', 'е', 'м' } },
-                new Word() { Items = new char[] { 'з', 'а', 'н', 'я', 'т' } }, 
-                new Punctuation() { Items = new char[] { '?' }, PunctuationMark = PunctuationMarks.Question } 
-            };
-
-            Paragraph paragraph_1 = new Paragraph();
-            paragraph_1.Items = new List<ISentence>()
-            {
-                sentence_1,
-                sentence_2
-            };
-
-            Sentence sentence_3 = new Sentence();
-            sentence_3.Items = new List<ISentenceItem>()
-            {
-                new Word() { Items = new char[] { 'П', 'р', 'и', 'в', 'е', 'т' } }, 
-                new Punctuation() { Items = new char[] { ',' }, PunctuationMark = PunctuationMarks.Comma }, 
-                new Word() { Items = new char[] { 'к', 'а', 'к' } }, 
-                new Word() { Items = new char[] { 'д', 'е', 'л', 'а' } }, 
-                new Punctuation() { Items = new char[] { '?' }, PunctuationMark = PunctuationMarks.Question }, 
-            };
-
-            Sentence sentence_4 = new Sentence();
-            sentence_4.Items = new List<ISentenceItem>()
-            {
-                new Word() { Items = new char[] { 'Ч', 'е', 'м' } },
-                new Word() { Items = new char[] { 'з', 'а', 'н', 'я', 'т' } }, 
-                new Punctuation() { Items = new char[] { '?' }, PunctuationMark = PunctuationMarks.Question },
-                new Word() { Items = new char[] { 'Ч', 'е', 'м' } },
-                new Word() { Items = new char[] { 'з', 'а', 'н', 'я', 'т' } }, 
-                new Punctuation() { Items = new char[] { '?' }, PunctuationMark = PunctuationMarks.Question } 
-            };
-
-            Paragraph paragraph_2 = new Paragraph();
-            paragraph_2.Items = new List<ISentence>()
-            {
-                sentence_3,
-                sentence_4
-            };
-
-            Text text = new Text();
-            text.Items = new List<Paragraph>() 
-            {
-                paragraph_1,
-                paragraph_2
-            };
-
-            return text;
-        }
         static ICollection<AlphabetItem> GetAlphabet()
         {
             ICollection<AlphabetItem> alphabet = new List<AlphabetItem>();
 
+            // add Cyrillic
             // add  [А...Я]
-            int[] upperVowels = new int[10] { 1040, 1045, 1048, 1054, 1059, 1067, 1069, 1070, 1071, 1025 };
+            int[] upperVowelsCyrillic = new int[10] { 1040, 1045, 1048, 1054, 1059, 1067, 1069, 1070, 1071, 1025 };
             for (int i = 1040; i < 1072; i++)
             {
                 alphabet.Add(new AlphabetItem()
                     {
                         Item = (char)i,
-                        LetterType = upperVowels.Contains(i) ? LetterType.Vowel : LetterType.Consonant,
+                        LetterType = upperVowelsCyrillic.Contains(i) ? LetterType.Vowel : LetterType.Consonant,
                         PrescriptionType = PrescriptionType.Uppercase
                     });
                 // add ['Ё']
@@ -119,13 +54,13 @@ namespace LinguisticTask
             }
 
             // add  [а...я]
-            int[] lowerVowels = new int[10] { 1072, 1077, 1080, 1086, 1091, 1099, 1101, 1102, 1103, 1105 };
+            int[] lowerVowelsCyrillic = new int[10] { 1072, 1077, 1080, 1086, 1091, 1099, 1101, 1102, 1103, 1105 };
             for (int i = 1072; i < 1104; i++)
             {
                 alphabet.Add(new AlphabetItem()
                     {
                         Item = (char)i,
-                        LetterType = lowerVowels.Contains(i) ? LetterType.Vowel : LetterType.Consonant,
+                        LetterType = lowerVowelsCyrillic.Contains(i) ? LetterType.Vowel : LetterType.Consonant,
                         PrescriptionType = PrescriptionType.Lowercase
                     });
                 // add ['ё']
@@ -133,7 +68,47 @@ namespace LinguisticTask
                     alphabet.Add(new AlphabetItem((char)1105, LetterType.Vowel, PrescriptionType.Lowercase));
             }
 
+
+            // add Latinica
+            // add  [A...Z]
+            int[] upperVowelsLatinica = new int[6] { 65, 69, 73, 79, 85, 89 };
+            for (int i = 65; i < 91; i++)
+            {
+                alphabet.Add(new AlphabetItem()
+                {
+                    Item = (char)i,
+                    LetterType = upperVowelsLatinica.Contains(i) ? LetterType.Vowel : LetterType.Consonant,
+                    PrescriptionType = PrescriptionType.Uppercase
+                });
+            }
+
+            // add  [а...я]
+            int[] lowerVowelsLatinica = new int[6] { 97, 101, 105, 111, 117, 121 };
+            for (int i = 97; i < 123; i++)
+            {
+                alphabet.Add(new AlphabetItem()
+                {
+                    Item = (char)i,
+                    LetterType = lowerVowelsLatinica.Contains(i) ? LetterType.Vowel : LetterType.Consonant,
+                    PrescriptionType = PrescriptionType.Lowercase
+                });
+            }
             return alphabet;
+        }
+        static ICollection<PunctuationMark> GetPunctuation()
+        {
+            return new List<PunctuationMark>()
+            {
+                new PunctuationMark() { Value = " ", Name = PunctuationMarkName.Undefined, Type = PunctuationMarkType.Inner },
+                new PunctuationMark() { Value = ".", Name = PunctuationMarkName.Dot, Type = PunctuationMarkType.Terminal },
+                new PunctuationMark() { Value = ",", Name = PunctuationMarkName.Comma, Type = PunctuationMarkType.Inner },
+                new PunctuationMark() { Value = "!", Name = PunctuationMarkName.Exclamation, Type = PunctuationMarkType.Terminal },
+                new PunctuationMark() { Value = "?", Name = PunctuationMarkName.Question, Type = PunctuationMarkType.Terminal },
+                new PunctuationMark() { Value = ";", Name = PunctuationMarkName.Semicolon, Type = PunctuationMarkType.Inner },
+                new PunctuationMark() { Value = ":", Name = PunctuationMarkName.Colon, Type = PunctuationMarkType.Inner },
+                new PunctuationMark() { Value = "'", Name = PunctuationMarkName.SingleQuotes, Type = PunctuationMarkType.Inner },
+                new PunctuationMark() { Value = "\"", Name = PunctuationMarkName.DoubleQuotes, Type = PunctuationMarkType.Inner }
+            };
         }
     }
 }

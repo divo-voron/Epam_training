@@ -32,17 +32,21 @@ namespace LinguisticTask.TextComponents
             return _items.OfType<T>().Count();
         }
 
-        public PunctuationMarks GetEndSentence()
+        public PunctuationMark GetEndSentence()
         {
             ITextElement last = _items.Last();
-            if (last is Punctuation) 
+            if (last is Punctuation)
                 return ((Punctuation)last).PunctuationMark;
             else
-                return PunctuationMarks.Nothing;
+                return default(PunctuationMark);
         }
         public void RemoveItem(ISentenceItem item)
         {
             _items.Remove(item);
+        }
+        public override string ToString()
+        {
+            return string.Join("", _items);
         }
     }
 }

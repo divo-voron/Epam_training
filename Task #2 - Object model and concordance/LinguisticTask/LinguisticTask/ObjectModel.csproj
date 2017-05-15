@@ -45,7 +45,8 @@
     <Compile Include="AlphabetItem.cs" />
     <Compile Include="Enums\LetterType.cs" />
     <Compile Include="Enums\PrescriptionType.cs" />
-    <Compile Include="Enums\PunctuationMarks.cs" />
+    <Compile Include="Enums\PunctuationMarkName.cs" />
+    <Compile Include="Enums\PunctuationMarkType.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="TextComponents\ISentence.cs" />
     <Compile Include="TextComponents\ISentenceItem.cs" />
@@ -54,10 +55,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextComponents\Paragraph.cs" />
     <Compile Include="TextComponents\Punctuation.cs" />
+    <Compile Include="TextComponents\PunctuationMark.cs" />
+    <Compile Include="TextComponents\PunctuationMarkContainer.cs" />
     <Compile Include="TextComponents\Sentence.cs" />
     <Compile Include="Text.cs" />
     <Compile Include="TextComponents\Word.cs" />
-    <Compile Include="TextSeparators.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

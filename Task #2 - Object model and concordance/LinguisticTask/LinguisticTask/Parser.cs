@@ -1,4 +1,5 @@
-﻿using LinguisticTask.TextComponents;
+﻿using LinguisticTask.Enums;
+using LinguisticTask.TextComponents;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,60 +11,76 @@ namespace LinguisticTask
 {
     static class Parser
     {
-        private static ICollection<string> separators = new List<string>() { ",", "." };
-        private static ICollection<string> separatorsTerminal = new List<string>() { "." };
         public static Text Parse(TextReader reader)
         {
             Text text = new Text();
             string line = reader.ReadLine();
             while (line != null)
             {
-                Paragraph paragraph = new Paragraph();
-                Sentence sentence = new Sentence();
-                while (line.Length > 0)
+                while (string.IsNullOrWhiteSpace(line) == false)
                 {
-                    int firstSentenceSeparatorOccurence = -1;
-                    string firstSentenceSeparator = separators.FirstOrDefault(
-                        x =>
+                    Paragraph paragraph = new Paragraph();
+                    Sentence sentence = new Sentence();
+
+                    while (line.Length > 0)
+                    {
+                        int firstSentenceSeparatorOccurence;
+                        PunctuationMark firstSentenceSeparator;
+                        SearchSeparator(line, out firstSentenceSeparatorOccurence, out firstSentenceSeparator);
+
+                        if (firstSentenceSeparator.Equals(default(PunctuationMark)) == false)
                         {
-                            firstSentenceSeparatorOccurence = line.IndexOf(x);
-                            return firstSentenceSeparatorOccurence >= 0;
-                        });
-                    if (firstSentenceSeparator != null)
-                    {
-                        Word word = new Word(line.Substring(0, firstSentenceSeparatorOccurence));
-                        Punctuation punctuation = new Punctuation(line.Substring(firstSentenceSeparatorOccurence, firstSentenceSeparator.Length));
+                            if (firstSentenceSeparatorOccurence > 0)
+                            {
+                                Word word = new Word(line.Substring(0, firstSentenceSeparatorOccurence));
+                                sentence.Items.Add(word);
+                            }
 
-                        line = line.Remove(0, word.Length + punctuation.Length);
+                            Punctuation punctuation =
+                                new Punctuation(line.Substring(firstSentenceSeparatorOccurence, firstSentenceSeparator.Value.Length),
+                                    firstSentenceSeparator);
 
-                        sentence.Items.Add(word);
-                        sentence.Items.Add(punctuation);
+                            line = line.Remove(0, firstSentenceSeparatorOccurence + punctuation.Length);
+
+                            sentence.Items.Add(punctuation);
+                        }
+                        else
+                        {
+                            Word word = new Word(line);
+                            line = line.Remove(0, word.Length);
+                            sentence.Items.Add(word);
+                        }
+                        if (firstSentenceSeparator.Equals(default(PunctuationMark)) == false &&
+                            firstSentenceSeparator.Type == PunctuationMarkType.Terminal || line.Length == 0)
+                        {
+                            paragraph.Items.Add(sentence);
+                            sentence = new Sentence();
+                        }
                     }
-                    else
-                    {
-                        Word word = new Word(line);
-                        line = line.Remove(0, word.Length);
-                        sentence.Items.Add(word);
-                        continue;
-                    }
-                    if (separatorsTerminal.Contains(firstSentenceSeparator)) 
-                    {
-                        paragraph.Items.Add(sentence);
-                        sentence = new Sentence();
-                    }
+                    text.Items.Add(paragraph);
                 }
-                
                 line = reader.ReadLine();
-
-                paragraph.Items.Add(sentence);
-                text.Items.Add(paragraph);
             }
             return text;
         }
-
-        private static Sentence GetSentence(this string source)
+        private static void SearchSeparator(string line, out int firstSentenceSeparatorOccurence, out PunctuationMark firstSentenceSeparator)
         {
-            return new Sentence();// source.Substring(0, 3);
+            firstSentenceSeparatorOccurence = line.Length;
+            firstSentenceSeparator = default(PunctuationMark);
+            for (int i = 0; i < PunctuationMarkContainer.AllMarks.Count; i++)
+            {
+                int a = line.IndexOf(PunctuationMarkContainer.AllMarks.ElementAt(i).Value);
+                if (a >= 0 && firstSentenceSeparatorOccurence > a)
+                {
+                    firstSentenceSeparatorOccurence = a;
+                    firstSentenceSeparator = PunctuationMarkContainer.AllMarks.ElementAt(i);
+                }
+            }
+        }
+
+        private static string CleanLine(string line)
+        {
+            return "";
         }
     }
 }

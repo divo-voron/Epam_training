@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace LinguisticTask.Enums
 {
-    enum PunctuationMarks
+    enum PunctuationMarkType
     {
-        Nothing,
-        Dot,        // .
-        Comma,      // ,
-        Question,   // ?
-        Exclamation // !
+        Undefined,  // Undefined value
+        Terminal,   // End sentence
+        Inner       // inside sentence
     }
 }

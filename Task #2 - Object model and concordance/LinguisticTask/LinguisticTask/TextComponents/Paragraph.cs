@@ -26,5 +26,9 @@ namespace LinguisticTask.TextComponents
         {
             get { return _items.Sum(item => item.Length); }
         }
+        public override string ToString()
+        {
+            return string.Join("", _items);
+        }
     }
 }

@@ -36,13 +36,24 @@ namespace LinguisticTask
 
             return retVal;
         }
-        public IEnumerable<ISentence> GetSentences(PunctuationMarks punctuationMark)
+        public IEnumerable<ISentence> GetSentences(PunctuationMark punctuationMark)
         {
             IEnumerable<ISentence> retVal = new List<ISentence>();
 
             foreach (Paragraph paragraph in _items)
             {
-                retVal = retVal.Union(paragraph.Items.Where(item => item.GetEndSentence() == punctuationMark));
+                retVal = retVal.Union(paragraph.Items.Where(item => item.GetEndSentence().Equals(punctuationMark)));
+            }
+
+            return retVal;
+        }
+        public IEnumerable<ISentence> GetSentences(PunctuationMarkName punctuationMarkName)
+        {
+            IEnumerable<ISentence> retVal = new List<ISentence>();
+
+            foreach (Paragraph paragraph in _items)
+            {
+                retVal = retVal.Union(paragraph.Items.Where(item => item.GetEndSentence().Name == punctuationMarkName));
             }
 
             return retVal;
@@ -59,7 +70,7 @@ namespace LinguisticTask
 
             return retVal;
         }
-        public IEnumerable<Word> GetWord(PunctuationMarks punctuationMark, int length = 0)
+        public IEnumerable<Word> GetWord(PunctuationMarkName punctuationMark, int length = 0)
         {
             IEnumerable<Word> retVal = new List<Word>();
 
@@ -81,6 +92,16 @@ namespace LinguisticTask
                 }
             }
         }
+        public void ReplaceWord(int length, string substitution)
+        {
+            foreach (ISentence sentence in this.GetSentences())
+            {
+                foreach (Word word in sentence.Items.OfType<Word>())
+                {
+                    if (word.Length == length) word.Items = substitution.ToArray();
+                }
+            }
+        }
 
         public void RemoveWord(int length)
         {
@@ -95,50 +116,56 @@ namespace LinguisticTask
                 }
             }
         }
-        public void RemoveWord(int length, LetterType letterType)
+        public void RemoveWord(int length, int numberOfLetter, LetterType letterType)
         {
             foreach (ISentence sentence in this.GetSentences())
             {
-                List<Word> words = sentence.Items.OfType<Word>().ToList();
+                List<Word> words = sentence.Items.OfType<Word>()
+                    .Where(item => item.Length == length && item.Length > numberOfLetter).ToList();
 
                 for (int i = 0; i < words.Count(); i++)
                 {
-                    AlphabetItem alphabetItem = Alphabet.GetAlpabetItem(words[i].Items[0]);
-                    if (alphabetItem.Equals(default(AlphabetItem)) == false &&
-                        words[i].Length == length && alphabetItem.LetterType == letterType)
+                    AlphabetItem alphabetItem = Alphabet.GetAlpabetItem(words[i].Items[numberOfLetter]);
+                    if (alphabetItem.Equals(default(AlphabetItem)) == false && alphabetItem.LetterType == letterType)
                         sentence.RemoveItem(words[i]);
                 }
             }
         }
-        public void RemoveWord(int length, PrescriptionType prescriptionType)
+        public void RemoveWord(int length, int numberOfLetter, PrescriptionType prescriptionType)
         {
             foreach (ISentence sentence in this.GetSentences())
             {
-                List<Word> words = sentence.Items.OfType<Word>().ToList();
+                List<Word> words = sentence.Items.OfType<Word>()
+                    .Where(item => item.Length == length && item.Length > numberOfLetter).ToList();
 
                 for (int i = 0; i < words.Count(); i++)
                 {
                     AlphabetItem alphabetItem = Alphabet.GetAlpabetItem(words[i].Items[0]);
-                    if (alphabetItem.Equals(default(AlphabetItem)) == false &&
-                        words[i].Length == length && alphabetItem.PrescriptionType == prescriptionType)
+                    if (alphabetItem.Equals(default(AlphabetItem)) == false && alphabetItem.PrescriptionType == prescriptionType)
                         sentence.RemoveItem(words[i]);
                 }
             }
         }
-        public void RemoveWord(int length, LetterType letterType, PrescriptionType prescriptionType)
+        public void RemoveWord(int length, int numberOfLetter, LetterType letterType, PrescriptionType prescriptionType)
         {
             foreach (ISentence sentence in this.GetSentences())
             {
-                List<Word> words = sentence.Items.OfType<Word>().ToList();
+                List<Word> words = sentence.Items.OfType<Word>()
+                    .Where(item => item.Length == length && item.Length > numberOfLetter).ToList();
 
                 for (int i = 0; i < words.Count(); i++)
                 {
                     AlphabetItem alphabetItem = Alphabet.GetAlpabetItem(words[i].Items[0]);
                     if (alphabetItem.Equals(default(AlphabetItem)) == false && 
-                        words[i].Length == length && alphabetItem.LetterType == letterType && alphabetItem.PrescriptionType == prescriptionType)
+                        alphabetItem.LetterType == letterType && alphabetItem.PrescriptionType == prescriptionType)
                         sentence.RemoveItem(words[i]);
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return string.Join("\n", _items);
         }
     }
 }
