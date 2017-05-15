@@ -16,20 +16,43 @@ namespace LinguisticTask
             PunctuationMarkContainer.LoadData(GetPunctuation());
             Alphabet.LoadData(GetAlphabet());
 
-            Text text = Parser.Parse(new StreamReader(new FileStream(@"D:\1\2.txt", FileMode.Open)));
+            Text text = Parser.Parse(new StreamReader(new FileStream(Directory.GetCurrentDirectory() + "\\Text.txt", FileMode.Open)));
 
+            // Get all sentences
+            Console.WriteLine("Get all sentences\n");
             IEnumerable<ISentence> sentences1 = text.GetSentences();
+            Console.WriteLine(string.Join("\n", sentences1.Take(15)));
+            Console.ReadKey();
+            Console.Clear();
 
+            // get all sentences order by word count
+            Console.WriteLine("Get all sentences order by word count\n");
             IOrderedEnumerable<ISentence> sentences2 = text.GetSentences().OrderBy(item => item.Count<Word>());
+            Console.WriteLine(string.Join("\n", sentences2.Take(15)));
+            Console.ReadKey();
+            Console.Clear();
 
+            // get all sentences where end punctuation is question
+            Console.WriteLine("Get all sentences where end punctuation is question\n");
             IEnumerable<ISentence> sentences3 = text.GetSentences(PunctuationMarkName.Question);
+            Console.WriteLine(string.Join("\n", sentences3.Take(15)));
+            Console.ReadKey();
+            Console.Clear();
 
-            IEnumerable<Word> words = text.GetWord(PunctuationMarkName.Question, 3).Distinct();
+            // add all word lenght from sentences where end punctuation is question by lenght 3 letters
+            Console.WriteLine("Add all word lenght from sentences where end punctuation is dot by lenght 3 letters\n");
+            IEnumerable<Word> words = text.GetWord(PunctuationMarkName.Dot, 3).Distinct();
+            Console.WriteLine(string.Join("\n", words.Take(15)));
+            Console.ReadKey();
+            Console.Clear();
 
-            text.ReplaceWord(3, "q!!");
+            // replace word on 'q!!!!'
+            text.ReplaceWord(3, "q!!!!");
 
+            // delete word by lenght where fisrt letter is consonant
             text.RemoveWord(3, 0, LetterType.Consonant);
 
+            // show all text
             Console.WriteLine(text.ToString());
         }
 
