@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LinguisticTask
@@ -19,6 +20,7 @@ namespace LinguisticTask
             {
                 while (string.IsNullOrWhiteSpace(line) == false)
                 {
+                    line = CleanLine(line);
                     Paragraph paragraph = new Paragraph();
                     Sentence sentence = new Sentence();
 
@@ -80,7 +82,9 @@ namespace LinguisticTask
 
         private static string CleanLine(string line)
         {
-            return "";
+            line = line.Trim();
+            Regex.Replace(line, "[ ]+", " ");
+            return line;
         }
     }
 }
