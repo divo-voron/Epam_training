@@ -1,12 +1,9 @@
-﻿using LinguisticTask.Enums;
-using LinguisticTask.TextComponents;
-using System;
-using System.Collections.Generic;
+﻿using LinguisticTask.Impl;
+using LinguisticTask.Impl.PunctuationItems;
+using LinguisticTask.Impl.TextItems;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace LinguisticTask
 {

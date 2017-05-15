@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LinguisticTask.Enums;
-
-namespace LinguisticTask
+﻿
+namespace LinguisticTask.Impl.AlphabetItems
 {
     struct AlphabetItem
     {

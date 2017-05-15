@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Concordance.cs" />
+    <Compile Include="ConcordanceContainer.cs" />
     <Compile Include="MatchData.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Program.cs" />

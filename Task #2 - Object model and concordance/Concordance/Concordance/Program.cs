@@ -13,10 +13,10 @@ namespace Concordance
         static void Main(string[] args)
         {
             Parser parser = new Parser();
-            parser.Parse(new StreamReader(new FileStream(@"D:\1\1.txt", FileMode.Open)));
+            parser.Parse(new StreamReader(new FileStream(@"D:\1\2.txt", FileMode.Open)));
 
             ConcordanceContainer concordance = parser.GetConcordance();
-            Show(concordance.GetDictionary(3));
+            Show(concordance.GetDictionary(33));
         }
 
         static void Show(Dictionary<char, Dictionary<string, MatchData>> dictionary)

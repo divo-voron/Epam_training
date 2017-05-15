@@ -41,25 +41,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alphabet.cs" />
-    <Compile Include="AlphabetItem.cs" />
-    <Compile Include="Enums\LetterType.cs" />
-    <Compile Include="Enums\PrescriptionType.cs" />
-    <Compile Include="Enums\PunctuationMarkName.cs" />
-    <Compile Include="Enums\PunctuationMarkType.cs" />
+    <Compile Include="Impl\AlphabetItems\Alphabet.cs" />
+    <Compile Include="Impl\AlphabetItems\AlphabetItem.cs" />
+    <Compile Include="Impl\AlphabetItems\LetterType.cs" />
+    <Compile Include="Impl\AlphabetItems\PrescriptionType.cs" />
+    <Compile Include="Impl\PunctuationItems\PunctuationMarkName.cs" />
+    <Compile Include="Impl\PunctuationItems\PunctuationMarkType.cs" />
     <Compile Include="Parser.cs" />
-    <Compile Include="TextComponents\ISentence.cs" />
-    <Compile Include="TextComponents\ISentenceItem.cs" />
-    <Compile Include="TextComponents\ITextElement.cs" />
+    <Compile Include="Impl\TextItems\ISentence.cs" />
+    <Compile Include="Impl\TextItems\ISentenceItem.cs" />
+    <Compile Include="Impl\TextItems\ITextElement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextComponents\Paragraph.cs" />
-    <Compile Include="TextComponents\Punctuation.cs" />
-    <Compile Include="TextComponents\PunctuationMark.cs" />
-    <Compile Include="TextComponents\PunctuationMarkContainer.cs" />
-    <Compile Include="TextComponents\Sentence.cs" />
-    <Compile Include="Text.cs" />
-    <Compile Include="TextComponents\Word.cs" />
+    <Compile Include="Impl\TextItems\Paragraph.cs" />
+    <Compile Include="Impl\TextItems\Punctuation.cs" />
+    <Compile Include="Impl\PunctuationItems\PunctuationMark.cs" />
+    <Compile Include="Impl\PunctuationItems\PunctuationMarkContainer.cs" />
+    <Compile Include="Impl\TextItems\Sentence.cs" />
+    <Compile Include="Impl\Text.cs" />
+    <Compile Include="Impl\TextItems\Word.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

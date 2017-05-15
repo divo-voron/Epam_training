@@ -1,16 +1,12 @@
-﻿using LinguisticTask.Enums;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace LinguisticTask
+namespace LinguisticTask.Impl.AlphabetItems
 {
-    class Alphabet
+    static class Alphabet
     {
         private static ICollection<AlphabetItem> _alphabetItems;
-        public Alphabet(ICollection<AlphabetItem> alphabetItems)
+        public static void LoadData(ICollection<AlphabetItem> alphabetItems)
         {
             _alphabetItems = alphabetItems;
         }

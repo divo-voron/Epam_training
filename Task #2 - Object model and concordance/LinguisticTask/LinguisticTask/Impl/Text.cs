@@ -1,13 +1,11 @@
-﻿using LinguisticTask.Enums;
-using LinguisticTask.TextComponents;
-using System;
+﻿using LinguisticTask.Impl.AlphabetItems;
+using LinguisticTask.Impl.PunctuationItems;
+using LinguisticTask.Impl.TextItems;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace LinguisticTask
+namespace LinguisticTask.Impl
 {
     class Text
     {

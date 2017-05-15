@@ -1,11 +1,11 @@
-﻿using LinguisticTask.Enums;
-using LinguisticTask.TextComponents;
+﻿using LinguisticTask.Impl;
+using LinguisticTask.Impl.AlphabetItems;
+using LinguisticTask.Impl.PunctuationItems;
+using LinguisticTask.Impl.TextItems;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinguisticTask
 {
@@ -14,7 +14,7 @@ namespace LinguisticTask
         static void Main(string[] args)
         {
             PunctuationMarkContainer.LoadData(GetPunctuation());
-            Alphabet alphabet = new Alphabet(GetAlphabet());
+            Alphabet.LoadData(GetAlphabet());
 
             Text text = Parser.Parse(new StreamReader(new FileStream(@"D:\1\2.txt", FileMode.Open)));
 
