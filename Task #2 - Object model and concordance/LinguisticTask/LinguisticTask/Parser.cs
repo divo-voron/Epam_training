@@ -12,6 +12,7 @@ namespace LinguisticTask
         public static Text Parse(TextReader reader)
         {
             Text text = new Text();
+            reader.Dispose();
             string line = reader.ReadLine();
             while (line != null)
             {
@@ -80,7 +81,7 @@ namespace LinguisticTask
         private static string CleanLine(string line)
         {
             line = line.Trim();
-            Regex.Replace(line, "[ ]+", " ");
+            line = Regex.Replace(line, @"[ |\t]+", " ");
             return line;
         }
     }
