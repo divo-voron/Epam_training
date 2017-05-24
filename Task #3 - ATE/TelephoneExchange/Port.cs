@@ -9,18 +9,25 @@ namespace TelephoneExchange
     public class Port
     {
         private string _number;
+        private StatePort _state;
+        public StatePort State
+        {
+            get { return _state; }
+            set { _state = value; }
+        }
         public string Number
         {
             get { return _number; }
             set { _number = value; }
         }
+
         public Port(string number)
         {
             _number = number;
         }
-        public void CallTerminalWithPort(object sender, EventArgs e)
+        public void CallTerminalWithPort(object sender, CallRequest request)
         {
-            OnCalling();
+            OnCalling(request);
         }
         public void AcceptTerminalWithPort(object sender, EventArgs e)
         {
@@ -31,11 +38,11 @@ namespace TelephoneExchange
             OnDropped();
         }
 
-        private EventHandler _calling;
+        private EventHandler<CallRequest> _calling;
         private EventHandler _accepted;
         private EventHandler _dropped;
 
-        public event EventHandler Calling
+        public event EventHandler<CallRequest> Calling
         {
             add { _calling += value; }
             remove { _calling -= value; }
@@ -51,18 +58,18 @@ namespace TelephoneExchange
             remove { _dropped -= value; }
         }
 
-        public void Drop()
-        {
-            OnDropped();
-        }
-        public void Accept()
-        {
-            OnAccepted();
-        }
-        public void Call()
-        {
-            OnCalling();
-        }
+        //public void Drop()
+        //{
+        //    OnDropped();
+        //}
+        //public void Accept()
+        //{
+        //    OnAccepted();
+        //}
+        //public void Call(CallRequest request)
+        //{
+        //    OnCalling(request);
+        //}
 
         private void OnDropped()
         {
@@ -72,9 +79,13 @@ namespace TelephoneExchange
         {
             if (_accepted != null) _accepted(this, null);
         }
-        private void OnCalling()
+        private void OnCalling(CallRequest request)
         {
-            if (_calling != null) _calling(this, null);
+            _state = StatePort.Busy;
+            
+            if (_calling != null) _calling(this, request);
+            
+            _state = StatePort.Free;
         }
     }
 }

@@ -15,11 +15,11 @@ namespace TelephoneExchange
             set { _terminalType = value; }
         }
 
-        private EventHandler _calling;
+        private EventHandler<CallRequest> _calling;
         private EventHandler _accepted;
         private EventHandler _dropped;
 
-        public event EventHandler Calling
+        public event EventHandler<CallRequest> Calling
         {
             add { _calling += value; }
             remove { _calling -= value; }
@@ -43,9 +43,9 @@ namespace TelephoneExchange
         {
             OnAccepted();
         }
-        public void Call()
+        public void Call(string number)
         {
-            OnCalling();
+            OnCalling(new CallRequest(number));
         }
         
         private void OnDropped()
@@ -56,9 +56,9 @@ namespace TelephoneExchange
         {
             if (_accepted != null) _accepted(this, null);
         }
-        private void OnCalling()
+        private void OnCalling(CallRequest request)
         {
-            if (_calling != null) _calling(this, null);
+            if (_calling != null) _calling(this, request);
         }
     }
 }
