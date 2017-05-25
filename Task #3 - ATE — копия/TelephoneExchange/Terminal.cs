@@ -15,18 +15,18 @@ namespace TelephoneExchange
             set { _terminalType = value; }
         }
 
-        private EventHandler _connected;
-        private EventHandler _disconnected;
+        private EventHandler<CallRequestConnect> _connected;
+        private EventHandler<CallRequestConnect> _disconnected;
         private EventHandler<CallRequestNumber> _calling;
         private EventHandler _accepted;
         private EventHandler _dropped;
 
-        public event EventHandler Connected
+        public event EventHandler<CallRequestConnect> Connected
         {
             add { _connected += value; }
             remove { _connected -= value; }
         }
-        public event EventHandler Disconnected
+        public event EventHandler<CallRequestConnect> Disconnected
         {
             add { _disconnected += value; }
             remove { _disconnected -= value; }
@@ -47,13 +47,13 @@ namespace TelephoneExchange
             remove { _dropped -= value; }
         }
 
-        public void Connect()
+        public void Connect(IPort port)
         {
-            OnConnected();
+            OnConnected(new CallRequestConnect(port));
         }
-        public void Disconnect()
+        public void Disconnect(IPort port)
         {
-            OnDisconnected();
+            OnDisconnected(new CallRequestConnect(port));
         }
         public void Drop()
         {
@@ -68,13 +68,13 @@ namespace TelephoneExchange
             OnCalling(new CallRequestNumber(number));
         }
         
-        private void OnConnected()
+        private void OnConnected(CallRequestConnect request)
         {
-            if (_connected != null) _connected(this, null);
+            if (_connected != null) _connected(this, request);
         }
-        private void OnDisconnected()
+        private void OnDisconnected(CallRequestConnect request)
         {
-            if (_disconnected != null) _disconnected(this, null);
+            if (_disconnected != null) _disconnected(this, request);
         }
         private void OnDropped()
         {

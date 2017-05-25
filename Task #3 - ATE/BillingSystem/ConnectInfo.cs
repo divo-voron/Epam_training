@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace TelephoneExchange
+namespace BillingSystem
 {
-    enum SessionState
+    class ConnectInfo
     {
-        Open,
-        Connected,
-        Close
     }
 }

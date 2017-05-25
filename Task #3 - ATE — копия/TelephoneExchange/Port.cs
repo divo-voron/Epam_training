@@ -6,27 +6,39 @@ using System.Threading.Tasks;
 
 namespace TelephoneExchange
 {
-    public class Terminal : ITerminal
+    public class Port : IPort
     {
-        private TerminalsType _terminalType;
-        public TerminalsType TerminalType
+        private PhoneNumber _number;
+        private StatePort _state;
+        public StatePort State
         {
-            get { return _terminalType; }
-            set { _terminalType = value; }
+            get { return _state; }
+            set { _state = value; }
+        }
+        public PhoneNumber Number
+        {
+            get { return _number; }
+            set { _number = value; }
         }
 
-        private EventHandler _connected;
-        private EventHandler _disconnected;
+        public Port(PhoneNumber number)
+        {
+            _number = number;
+        }
+
+        private EventHandler<CallRequestConnect> _connected;
+        private EventHandler<CallRequestConnect> _disconnected;
         private EventHandler<CallRequestNumber> _calling;
         private EventHandler _accepted;
         private EventHandler _dropped;
+        private EventHandler _incomingCall;
 
-        public event EventHandler Connected
+        public event EventHandler<CallRequestConnect> Connected
         {
             add { _connected += value; }
             remove { _connected -= value; }
         }
-        public event EventHandler Disconnected
+        public event EventHandler<CallRequestConnect> Disconnected
         {
             add { _disconnected += value; }
             remove { _disconnected -= value; }
@@ -46,28 +58,12 @@ namespace TelephoneExchange
             add { _dropped += value; }
             remove { _dropped -= value; }
         }
+        public event EventHandler IncomingCall
+        {
+            add { _incomingCall += value; }
+            remove { _incomingCall -= value; }
+        }
 
-        public void Connect()
-        {
-            OnConnected();
-        }
-        public void Disconnect()
-        {
-            OnDisconnected();
-        }
-        public void Drop()
-        {
-            OnDropped();
-        }
-        public void Accept()
-        {
-            OnAccepted();
-        }
-        public void Call(PhoneNumber number)
-        {
-            OnCalling(new CallRequestNumber(number));
-        }
-        
         private void OnConnected()
         {
             if (_connected != null) _connected(this, null);
@@ -88,26 +84,35 @@ namespace TelephoneExchange
         {
             if (_calling != null) _calling(this, request);
         }
-
-        public void IncomimgCall(object sender, EventArgs e)
+        private void OnIncomingCall()
         {
-            Port source = sender as Port;
-            if (source != null)
-            {
-                Console.WriteLine("Accept incoming call?");
-                string s = Console.ReadLine().Trim().ToLower();
-                switch (s)
-                {
-                    case "y":
-                        Accept();
-                        break;
-                    case "n":
-                        Drop();
-                        break;
-                    default: 
-                        break;
-                }
-            }
+            if (_incomingCall != null) _incomingCall(this, null);
+        }
+
+        public void ConnectPort(object sender, CallRequestConnect e)
+        {
+            OnConnected();
+        }
+        public void DisconnectPort(object sender, CallRequestConnect e)
+        {
+            OnDisconnected();
+        }
+        public void CallPort(object sender, CallRequestNumber request)
+        {
+            _state = StatePort.Dialing;
+            OnCalling(request);
+        }
+        public void AcceptPort(object sender, EventArgs e)
+        {
+            OnAccepted();
+        }
+        public void DropPort(object sender, EventArgs e)
+        {
+            OnDropped();
+        }
+        public void IncomingCallPort(object sender, EventArgs e)
+        {
+            OnIncomingCall();
         }
 
         public void Dispose()
@@ -117,6 +122,7 @@ namespace TelephoneExchange
             _calling = null;
             _accepted = null;
             _dropped = null;
+            _incomingCall = null;
         }
     }
 }

@@ -18,15 +18,10 @@ namespace Demo
 
             ICollection<ITerminal> terminals = new List<ITerminal>() { new Terminal(), new Terminal() };
 
-            station.AddConnection(station.Ports.ElementAt(0));
-            station.AddConnection(station.Ports.ElementAt(1));
-
-            station.Ports.ElementAt(0).RegisterTerminal(terminals.ElementAt(0));
-            station.Ports.ElementAt(1).RegisterTerminal(terminals.ElementAt(1));
+            station.AddConnection(terminals.ElementAt(0), station.Ports.ElementAt(0));
+            station.AddConnection(terminals.ElementAt(1), station.Ports.ElementAt(1));
 
             terminals.ElementAt(0).Connect();
-            terminals.ElementAt(1).Connect();
-
             terminals.ElementAt(0).Call(new PhoneNumber("0", "02"));
             
             terminals.ElementAt(1).Accept();

@@ -5,10 +5,10 @@ using System.Text;
 
 namespace TelephoneExchange
 {
-    enum SessionState
+    public enum StatePort
     {
-        Open,
-        Connected,
-        Close
+        Free,
+        Dialing,
+        Busy
     }
 }

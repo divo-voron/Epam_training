@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TelephoneExchange
 {
-    public class CallRequest : EventArgs
+    public class CallRequestNumber : EventArgs
     {
         private PhoneNumber _number;
         public PhoneNumber Number
@@ -15,7 +15,7 @@ namespace TelephoneExchange
             set { _number = value; }
         }
 
-        public CallRequest(PhoneNumber number)
+        public CallRequestNumber(PhoneNumber number)
         {
             _number = number;
         }

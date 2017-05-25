@@ -26,34 +26,55 @@ namespace TelephoneExchange
             _sessionContainer = new SessionContainer();
         }
 
-        public void AddConnection(IPort port)
+        public void AddConnection(ITerminal terminal, IPort port)
         {
+            terminal.Connected += port.ConnectPort;
+            terminal.Disconnected += port.DisconnectPort;
+            
             port.Connected += ConnectStation;
             port.Disconnected += DisconnectStation;
+            
         }
-        public void RemoveConnection(IPort port)
+        public void RemoveConnection(ITerminal terminal, IPort port)
         {
+            terminal.Connected -= port.ConnectPort;
+            terminal.Disconnected -= port.DisconnectPort;
+
             port.Connected -= ConnectStation;
             port.Disconnected -= DisconnectStation;
         }
-        public void ConnectStation(object sender, EventArgs e)
+        public void ConnectStation(object sender, CallRequestConnect e)
         {
-            IPort port = sender as IPort;
-            if (port != null)
+            ITerminal terminal = sender as ITerminal;
+            IPort port = e.Port;
+            if (terminal != null)
             {
+                terminal.Calling += port.CallPort;
+                terminal.Accepted += port.AcceptPort;
+                terminal.Dropped += port.DropPort;
+
                 port.Calling += CallStation;
                 port.Accepted += AcceptStation;
                 port.Dropped += DropStation;
+
+                port.IncomingCall += terminal.IncomimgCall;
             }
         }
-        public void DisconnectStation(object sender, EventArgs e)
+        public void DisconnectStation(object sender, CallRequestConnect e)
         {
-            IPort port = sender as IPort;
-            if (port != null)
+            ITerminal terminal = sender as ITerminal;
+            IPort port = e.Port;
+            if (terminal != null)
             {
+                terminal.Calling -= port.CallPort;
+                terminal.Accepted -= port.AcceptPort;
+                terminal.Dropped -= port.DropPort;
+
                 port.Calling -= CallStation;
                 port.Accepted -= AcceptStation;
                 port.Dropped -= DropStation;
+
+                port.IncomingCall -= terminal.IncomimgCall;
             }
         }
         public void CallStation(object sender, CallRequestNumber e)
@@ -97,35 +118,22 @@ namespace TelephoneExchange
             IPort port = sender as IPort;
             if (port != null)
             {
-                Session currentSession = _sessionContainer.GetByAny(port);
+                Session currentSession = _sessionContainer.GetByAny(port, SessionState.Connected);
                 if (currentSession != null)
                 {
-                    if (currentSession.State == SessionState.Connected)
-                    {
-                        currentSession.Source.State = StatePort.Free;
-                        currentSession.Target.State = StatePort.Free;
-                        currentSession.State = SessionState.Close;
+                    currentSession.Source.State = StatePort.Free;
+                    currentSession.Target.State = StatePort.Free;
+                    currentSession.State = SessionState.Close;
+                    
+                    ConnectInfo connectInfo = new ConnectInfo(currentSession.Source, currentSession.Target, currentSession.Start, DateTime.Now);
 
-                        ConnectInfo connectInfo = new ConnectInfo(currentSession.Source, currentSession.Target, currentSession.Start, DateTime.Now);
+                    _sessionContainer.Remove(currentSession);
 
-                        _sessionContainer.Remove(currentSession);
-
-                        // TODO: write connectInfo to BillingSystem
-
+                    // TODO: write connectInfo to BillingSystem
+                    
 
 
-                        Console.WriteLine("Сurrent call is completed");
-                    }
-                    else
-                    {
-                        currentSession.Source.State = StatePort.Free;
-                        currentSession.Target.State = StatePort.Free;
-                        currentSession.State = SessionState.Close;
-
-                        _sessionContainer.Remove(currentSession);
-
-                        Console.WriteLine("Сurrent dialing is interrupted");
-                    }
+                    Console.WriteLine("Сurrent call is completed");
                 }
                 else
                 {
