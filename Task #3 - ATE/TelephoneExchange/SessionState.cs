@@ -8,6 +8,7 @@ namespace TelephoneExchange
     public enum SessionState
     {
         Open,
+        Connected,
         Close
     }
 }

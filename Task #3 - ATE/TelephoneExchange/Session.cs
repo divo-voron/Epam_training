@@ -24,7 +24,7 @@ namespace TelephoneExchange
             get { return _state; }
             set { _state = value; }
         }
-        public Session(Port sourcePort, Port targetPort, SessionState state = SessionState.Close)
+        public Session(Port sourcePort, Port targetPort, SessionState state = SessionState.Open)
         {
             _source = sourcePort;
             _target = targetPort;

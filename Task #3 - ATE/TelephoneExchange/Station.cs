@@ -8,83 +8,104 @@ namespace TelephoneExchange
 {
     public class Station
     {
-        private ICollection<Session> _sessions;
+        private SessionContainer _session;
         private ICollection<Port> _ports;
-        private ICollection<Terminal> _terminals;
         public ICollection<Port> Ports
         {
             get { return _ports; }
             set { _ports = value; }
         }
-        public ICollection<Terminal> Terminals
-        {
-            get { return _terminals; }
-            set { _terminals = value; }
-        }
-        public ICollection<Session> Sessions
-        {
-            get { return _sessions; }
-            set { _sessions = value; }
-        }
         public Station()
         {
-            _sessions = new List<Session>(); 
+            _session = new SessionContainer();
         }
-        public Station(ICollection<Port> ports, ICollection<Terminal> terminals)
+        public Station(ICollection<Port> ports)
         {
             _ports = ports;
-            _terminals = terminals;
 
-            _sessions = new List<Session>();
+            _session = new SessionContainer();
         }
 
-        public void AddConnection(Terminal terminal, Port port)
+        public void AddConnection(ITerminal terminal, Port port)
         {
-            terminal.Calling += port.CallTerminalWithPort;
-            terminal.Accepted += port.AcceptTerminalWithPort;
-            terminal.Dropped += port.DropTerminalWithPort;
+            terminal.Calling += port.CallPort;
+            terminal.Accepted += port.AcceptPort;
+            terminal.Dropped += port.DropPort;
 
-            port.Calling += CallTerminalWithStation;
-            port.Accepted += AcceptTerminalWithStation;
-            port.Dropped += DropTerminalWithStation;
+            port.Calling += CallStation;
+            port.Accepted += AcceptStation;
+            port.Dropped += DropStation;
+
+            port.IncomingCall += terminal.IncomimgCall;
         }
-        public void CallTerminalWithStation(object sender, CallRequest e)
+        public void RemoveConnection(ITerminal terminal, Port port)
+        {
+            terminal.Calling -= port.CallPort;
+            terminal.Accepted -= port.AcceptPort;
+            terminal.Dropped -= port.DropPort;
+
+            port.Calling -= CallStation;
+            port.Accepted -= AcceptStation;
+            port.Dropped -= DropStation;
+
+            port.IncomingCall -= terminal.IncomimgCall;
+        }
+        public void CallStation(object sender, CallRequest e)
         {
             Port portSource = sender as Port;
             Port portTarget = _ports.FirstOrDefault(x => x.Number == e.Number);
-            if (portSource != null && portTarget != null)
-                _sessions.Add(new Session(portSource, portTarget));
+            if (portSource != null && portTarget != null && portSource != portTarget && 
+                _session.IsOpenedSession(portSource, portTarget))
+            {
+                portTarget.State = StatePort.Dialing;
+                _session.Add(new Session(portSource, portTarget));
+                portTarget.IncomingCallPort(portTarget, null);
+            }
             else
-                return;
+            {
+                if (portSource == null) { Console.WriteLine("Source port doesn't exist"); }
+                if (portTarget == null) { Console.WriteLine("Target port doesn't exist"); }
+                if (portSource == portTarget) { Console.WriteLine("Port is already in use"); }
+                Console.WriteLine("Connection not made");
+            }
         }
-        public void AcceptTerminalWithStation(object sender, EventArgs e)
+        public void AcceptStation(object sender, EventArgs e)
         {
             Port port = sender as Port;
-            Session currentSession = _sessions.FirstOrDefault(x => x.Target == port);
+            Session currentSession = _session.GetByTarget(port, SessionState.Open);
             if (currentSession != null)
             {
-                currentSession.State = SessionState.Open;
+                currentSession.Source.State = StatePort.Busy;
+                currentSession.Target.State = StatePort.Busy;
+                currentSession.State = SessionState.Connected;
                 Console.WriteLine("Icnoming call accepted");
             }
             else
             {
-                Console.WriteLine("Not found incoming call");
+                Console.WriteLine("Incoming call not found");
             }
         }
-        public void DropTerminalWithStation(object sender, EventArgs e)
+        public void DropStation(object sender, EventArgs e)
         {
             Port port = sender as Port;
-            Session currentSession = _sessions.FirstOrDefault(x => x.State == SessionState.Open && (x.Source == port || x.Target == port));
-            if (currentSession != null)
+            if (port != null)
             {
-                _sessions.Remove(currentSession);
-                // TODO: write ConnectInfo to BillingSystem
+                Session currentSession = _session.GetByAny(port, SessionState.Connected);
+                if (currentSession != null)
+                {
+                    currentSession.Source.State = StatePort.Free;
+                    currentSession.Target.State = StatePort.Free;
+                    currentSession.State = SessionState.Close;
+                    _session.Remove(currentSession);
 
-                Console.WriteLine("Call is complete");
-            }
-            else
-            {
-                Console.WriteLine("Session is not found");
+                    // TODO: write ConnectInfo to BillingSystem
+
+                    Console.WriteLine("Сurrent call is completed");
+                }
+                else
+                {
+                    Console.WriteLine("Session not found");
+                }
             }
         }
     }

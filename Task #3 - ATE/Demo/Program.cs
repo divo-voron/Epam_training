@@ -13,17 +13,20 @@ namespace Demo
         {
             Station station = new Station()
             {
-                Ports = new List<Port>() { new Port("01"), new Port("02") },
-                Terminals = new List<Terminal>() { new Terminal(), new Terminal() }
+                Ports = new List<Port>() { new Port(new PhoneNumber("0", "01")), new Port(new PhoneNumber("0", "02")) }
             };
 
-            station.AddConnection(station.Terminals.ElementAt(0), station.Ports.ElementAt(0));
-            station.AddConnection(station.Terminals.ElementAt(1), station.Ports.ElementAt(1));
+            ICollection<ITerminal> terminals = new List<ITerminal>() { new Terminal(), new Terminal() };
 
-            station.Terminals.ElementAt(0).Call("02");
-            station.Terminals.ElementAt(1).Accept();
+            station.AddConnection(terminals.ElementAt(0), station.Ports.ElementAt(0));
+            station.AddConnection(terminals.ElementAt(1), station.Ports.ElementAt(1));
 
-            station.Terminals.ElementAt(1).Drop();
+            terminals.ElementAt(0).Call(new PhoneNumber("0", "02"));
+            terminals.ElementAt(0).Call(new PhoneNumber("0", "02"));
+            
+            //terminals.ElementAt(1).Accept();
+
+            terminals.ElementAt(1).Drop();
         }
     }
 }

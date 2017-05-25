@@ -8,6 +8,7 @@ namespace TelephoneExchange
     public enum StatePort
     {
         Free,
+        Dialing,
         Busy
     }
 }

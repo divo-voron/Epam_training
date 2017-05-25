@@ -8,14 +8,14 @@ namespace TelephoneExchange
 {
     public class CallRequest : EventArgs
     {
-        private string _number;
-        public string Number
+        private PhoneNumber _number;
+        public PhoneNumber Number
         {
             get { return _number; }
             set { _number = value; }
         }
 
-        public CallRequest(string number)
+        public CallRequest(PhoneNumber number)
         {
             _number = number;
         }

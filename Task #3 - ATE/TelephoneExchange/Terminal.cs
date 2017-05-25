@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TelephoneExchange
 {
-    public class Terminal
+    public class Terminal : ITerminal
     {
         private TerminalsType _terminalType;
         public TerminalsType TerminalType
@@ -43,7 +43,7 @@ namespace TelephoneExchange
         {
             OnAccepted();
         }
-        public void Call(string number)
+        public void Call(PhoneNumber number)
         {
             OnCalling(new CallRequest(number));
         }
@@ -59,6 +59,27 @@ namespace TelephoneExchange
         private void OnCalling(CallRequest request)
         {
             if (_calling != null) _calling(this, request);
+        }
+
+        public void IncomimgCall(object sender, EventArgs e)
+        {
+            Port source = sender as Port;
+            if (source != null)
+            {
+                Console.WriteLine("Accept incoming call?");
+                string s = Console.ReadLine().Trim().ToLower();
+                switch (s)
+                {
+                    case "y":
+                        Accept();
+                        break;
+                    case "n":
+                        Drop();
+                        break;
+                    default: 
+                        break;
+                }
+            }
         }
     }
 }

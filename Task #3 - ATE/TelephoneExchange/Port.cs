@@ -8,39 +8,28 @@ namespace TelephoneExchange
 {
     public class Port
     {
-        private string _number;
+        private PhoneNumber _number;
         private StatePort _state;
         public StatePort State
         {
             get { return _state; }
             set { _state = value; }
         }
-        public string Number
+        public PhoneNumber Number
         {
             get { return _number; }
             set { _number = value; }
         }
 
-        public Port(string number)
+        public Port(PhoneNumber number)
         {
             _number = number;
         }
-        public void CallTerminalWithPort(object sender, CallRequest request)
-        {
-            OnCalling(request);
-        }
-        public void AcceptTerminalWithPort(object sender, EventArgs e)
-        {
-            OnAccepted();
-        }
-        public void DropTerminalWithPort(object sender, EventArgs e)
-        {
-            OnDropped();
-        }
-
+        
         private EventHandler<CallRequest> _calling;
         private EventHandler _accepted;
         private EventHandler _dropped;
+        private EventHandler _incomingCall;
 
         public event EventHandler<CallRequest> Calling
         {
@@ -57,19 +46,11 @@ namespace TelephoneExchange
             add { _dropped += value; }
             remove { _dropped -= value; }
         }
-
-        //public void Drop()
-        //{
-        //    OnDropped();
-        //}
-        //public void Accept()
-        //{
-        //    OnAccepted();
-        //}
-        //public void Call(CallRequest request)
-        //{
-        //    OnCalling(request);
-        //}
+        public event EventHandler IncomingCall
+        {
+            add { _incomingCall += value; }
+            remove { _incomingCall -= value; }
+        }
 
         private void OnDropped()
         {
@@ -81,11 +62,29 @@ namespace TelephoneExchange
         }
         private void OnCalling(CallRequest request)
         {
-            _state = StatePort.Busy;
-            
             if (_calling != null) _calling(this, request);
-            
-            _state = StatePort.Free;
+        }
+        private void OnIncomingCall()
+        {
+            if (_incomingCall != null) _incomingCall(this, null);
+        }
+
+        public void CallPort(object sender, CallRequest request)
+        {
+            _state = StatePort.Dialing;
+            OnCalling(request);
+        }
+        public void AcceptPort(object sender, EventArgs e)
+        {
+            OnAccepted();
+        }
+        public void DropPort(object sender, EventArgs e)
+        {
+            OnDropped();
+        }
+        public void IncomingCallPort(object sender, EventArgs e)
+        {
+            OnIncomingCall();
         }
     }
 }
