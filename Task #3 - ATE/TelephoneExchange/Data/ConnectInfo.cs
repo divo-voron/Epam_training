@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace TelephoneExchange
 {
-    class ConnectInfo
+    public class ConnectInfo : EventArgs
     {
-        private IPort _source;
-        private IPort _target;
+        private PhoneNumber _source;
+        private PhoneNumber _target;
         private DateTime _start;
         private DateTime _end;
-        public IPort Source
+        public PhoneNumber Source
         {
             get { return _source; }
         }
-        public IPort Target
+        public PhoneNumber Target
         {
             get { return _target; }
         }
@@ -33,7 +33,7 @@ namespace TelephoneExchange
             get { return _end - _start; }
         }
 
-        public ConnectInfo(IPort source, IPort target, DateTime start, DateTime end)
+        public ConnectInfo(PhoneNumber source, PhoneNumber target, DateTime start, DateTime end)
         {
             _source = source;
             _target = target;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BillingSystem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,29 +12,41 @@ namespace Demo
     {
         static void Main(string[] args)
         {
-            Station station = new Station()
-            {
-                Ports = new List<IPort>() { new Port(new PhoneNumber("0", "01")), new Port(new PhoneNumber("0", "02")) }
-            };
+            Billing billing = new Billing();
+            billing.AddClient(new Client("Jhon", new PhoneNumber("0", "01"), new Tariff()));
+            billing.AddClient(new Client("Bob", new PhoneNumber("0", "02"), new Tariff()));
+            billing.AddClient(new Client("Alice", new PhoneNumber("0", "03"), new Tariff()));
 
-            ICollection<ITerminal> terminals = new List<ITerminal>() { new Terminal(), new Terminal() };
+            Station station = new Station();
+            station.CallEnd += billing.GetConnectionInfo;
 
-            station.AddConnection(station.Ports.ElementAt(0));
-            station.AddConnection(station.Ports.ElementAt(1));
+            ICollection<ITerminal> terminals = new List<ITerminal>() { new Terminal(), new Terminal(), new Terminal() };
 
-            station.Ports.ElementAt(0).RegisterTerminal(terminals.ElementAt(0));
-            station.Ports.ElementAt(1).RegisterTerminal(terminals.ElementAt(1));
+            station.RegisterNumber(billing.Clients.Select(x => x.Number));
+
+            station.Ports.Values.ElementAt(0).RegisterTerminal(terminals.ElementAt(0));
+            station.Ports.Values.ElementAt(1).RegisterTerminal(terminals.ElementAt(1));
+            station.Ports.Values.ElementAt(2).RegisterTerminal(terminals.ElementAt(2));
+
+
 
             terminals.ElementAt(0).Connect();
             terminals.ElementAt(1).Connect();
+            terminals.ElementAt(2).Connect();
 
-            terminals.ElementAt(0).Call(new PhoneNumber("0", "02"));
-            
-            terminals.ElementAt(1).Accept();
+            for (int i = 0; i < 2; i++)
+            {
+                terminals.ElementAt(0).Call(new PhoneNumber("0", "02"));
+                terminals.ElementAt(1).Accept();
 
-            //System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(new Random().Next(1000));
+                
+                terminals.ElementAt(1).Drop();
+            }
 
-            terminals.ElementAt(1).Drop();
+            var a = billing.History;
         }
+
+        
     }
 }

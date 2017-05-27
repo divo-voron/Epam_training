@@ -8,39 +8,48 @@ namespace TelephoneExchange
 {
     public class Port : IPort
     {
+        private ITerminal _terminal;
         private PhoneNumber _number;
-        private StatePort _state;
-        public StatePort State
-        {
-            get { return _state; }
-            set { _state = value; }
-        }
+        private PortsState _state;
         public PhoneNumber Number
         {
             get { return _number; }
             set { _number = value; }
         }
-
+        public PortsState State
+        {
+            get { return _state; }
+            set { _state = value; }
+        }
         public Port(PhoneNumber number)
         {
             _number = number;
         }
-
         public void RegisterTerminal(ITerminal terminal)
         {
-            terminal.Connected += terminal_Connected;
-            terminal.Disconnected += terminal_Disconnected;
+            if (terminal.State == TerminalsState.Unregistered && _terminal == null)
+            {
+                _terminal = terminal;
+                terminal.State = TerminalsState.Registered;
+                terminal.Connected += OnConnectedTerminal;
+                terminal.Disconnected += OnDisconnectedTerminal;
+            }
+            else throw new ArgumentException("Could not register terminal");
         }
-        public void UnRegisterTerminal(ITerminal terminal)
+        public void UnregisterTerminal(ITerminal terminal)
         {
-            terminal.Connected -= terminal_Connected;
-            terminal.Disconnected -= terminal_Disconnected;
+            _terminal = null;
+            terminal.State = TerminalsState.Unregistered;
+            terminal.Connected -= OnConnectedTerminal;
+            terminal.Disconnected -= OnDisconnectedTerminal;
         }
-        private void terminal_Connected(object sender, EventArgs e)
+        private void OnConnectedTerminal(object sender, EventArgs e)
         {
             ITerminal terminal = sender as ITerminal;
             if (terminal != null)
             {
+                OnDisconnectedTerminal(sender, e);
+
                 terminal.Calling += OnCalling;
                 terminal.Accepted += OnAccepted;
                 terminal.Dropped += OnDropped;
@@ -49,7 +58,7 @@ namespace TelephoneExchange
                 this.OnConnected();
             }
         }
-        private void terminal_Disconnected(object sender, EventArgs e)
+        private void OnDisconnectedTerminal(object sender, EventArgs e)
         {
             ITerminal terminal = sender as ITerminal;
             if (terminal != null)
@@ -63,19 +72,19 @@ namespace TelephoneExchange
             }
         }
 
-        private EventHandler<CallRequestConnect> _connected;
-        private EventHandler<CallRequestConnect> _disconnected;
+        private EventHandler _connected;
+        private EventHandler _disconnected;
         private EventHandler<CallRequestNumber> _calling;
         private EventHandler _accepted;
         private EventHandler _dropped;
         private EventHandler _incomingCall;
 
-        public event EventHandler<CallRequestConnect> Connected
+        public event EventHandler Connected
         {
             add { _connected += value; }
             remove { _connected -= value; }
         }
-        public event EventHandler<CallRequestConnect> Disconnected
+        public event EventHandler Disconnected
         {
             add { _disconnected += value; }
             remove { _disconnected -= value; }
@@ -109,17 +118,17 @@ namespace TelephoneExchange
         {
             if (_disconnected != null) _disconnected(this, null);
         }
-        private void OnDropped(object sender, EventArgs e)
+        private void OnCalling(object sender, CallRequestNumber request)
         {
-            if (_dropped != null) _dropped(this, null);
+            if (_calling != null) _calling(this, request);
         }
         private void OnAccepted(object sender, EventArgs e)
         {
             if (_accepted != null) _accepted(this, null);
         }
-        private void OnCalling(object sender, CallRequestNumber request)
+        private void OnDropped(object sender, EventArgs e)
         {
-            if (_calling != null) _calling(this, request);
+            if (_dropped != null) _dropped(this, null);
         }
         private void OnIncomingCall()
         {
@@ -130,7 +139,6 @@ namespace TelephoneExchange
         {
             OnIncomingCall();
         }
-
         public void Dispose()
         {
             _connected = null;

@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TelephoneExchange
+namespace BillingSystem
 {
-    enum SessionState
+    public class Tariff
     {
-        Open,
-        Connected,
-        Close
     }
 }

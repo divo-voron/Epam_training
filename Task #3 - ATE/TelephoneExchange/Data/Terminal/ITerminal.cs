@@ -8,14 +8,16 @@ namespace TelephoneExchange
 {
     public interface ITerminal : IDisposable
     {
-        event EventHandler<CallRequestConnect> Connected;
-        event EventHandler<CallRequestConnect> Disconnected;
+        TerminalsState State { get; set; }
+
+        event EventHandler Connected;
+        event EventHandler Disconnected;
         event EventHandler<CallRequestNumber> Calling;
         event EventHandler Accepted;
         event EventHandler Dropped;
 
-        void Connect(IPort port);
-        void Disconnect(IPort port);
+        void Connect();
+        void Disconnect();
         void Drop();
         void Accept();
         void Call(PhoneNumber number);

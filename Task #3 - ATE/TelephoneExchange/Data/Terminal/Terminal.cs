@@ -9,24 +9,35 @@ namespace TelephoneExchange
     public class Terminal : ITerminal
     {
         private TerminalsType _terminalType;
+        private TerminalsState _state;
         public TerminalsType TerminalType
         {
             get { return _terminalType; }
             set { _terminalType = value; }
         }
+        public TerminalsState State
+        {
+            get { return _state; }
+            set { _state = value; }
+        }
 
-        private EventHandler<CallRequestConnect> _connected;
-        private EventHandler<CallRequestConnect> _disconnected;
+        public Terminal(TerminalsState state = TerminalsState.Unregistered) 
+        {
+            _state = state;
+        }
+
+        private EventHandler _connected;
+        private EventHandler _disconnected;
         private EventHandler<CallRequestNumber> _calling;
         private EventHandler _accepted;
         private EventHandler _dropped;
 
-        public event EventHandler<CallRequestConnect> Connected
+        public event EventHandler Connected
         {
             add { _connected += value; }
             remove { _connected -= value; }
         }
-        public event EventHandler<CallRequestConnect> Disconnected
+        public event EventHandler Disconnected
         {
             add { _disconnected += value; }
             remove { _disconnected -= value; }
@@ -47,46 +58,46 @@ namespace TelephoneExchange
             remove { _dropped -= value; }
         }
 
-        public void Connect(IPort port)
+        public void Connect()
         {
-            OnConnected(new CallRequestConnect(port));
+            OnConnected();
         }
-        public void Disconnect(IPort port)
+        public void Disconnect()
         {
-            OnDisconnected(new CallRequestConnect(port));
-        }
-        public void Drop()
-        {
-            OnDropped();
-        }
-        public void Accept()
-        {
-            OnAccepted();
+            OnDisconnected();
         }
         public void Call(PhoneNumber number)
         {
             OnCalling(new CallRequestNumber(number));
         }
-        
-        private void OnConnected(CallRequestConnect request)
+        public void Accept()
         {
-            if (_connected != null) _connected(this, request);
+            OnAccepted();
         }
-        private void OnDisconnected(CallRequestConnect request)
+        public void Drop()
         {
-            if (_disconnected != null) _disconnected(this, request);
+            OnDropped();
         }
-        private void OnDropped()
+                        
+        private void OnConnected()
         {
-            if (_dropped != null) _dropped(this, null);
+            if (_connected != null) _connected(this, null);
+        }
+        private void OnDisconnected()
+        {
+            if (_disconnected != null) _disconnected(this, null);
+        }
+        private void OnCalling(CallRequestNumber request)
+        {
+            if (_calling != null) _calling(this, request);
         }
         private void OnAccepted()
         {
             if (_accepted != null) _accepted(this, null);
         }
-        private void OnCalling(CallRequestNumber request)
+        private void OnDropped()
         {
-            if (_calling != null) _calling(this, request);
+            if (_dropped != null) _dropped(this, null);
         }
 
         public void IncomimgCall(object sender, EventArgs e)

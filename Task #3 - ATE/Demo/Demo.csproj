@@ -48,6 +48,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BillingSystem\BillingSystem.csproj">
+      <Project>{20e52ba1-600b-46e2-b866-cffe3b8fc325}</Project>
+      <Name>BillingSystem</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TelephoneExchange\TelephoneExchange.csproj">
       <Project>{cbc25b44-decf-4899-a8ad-0e5a19c24cc2}</Project>
       <Name>TelephoneExchange</Name>

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace BillingSystem
 {
-    class ConnectionHistory : ICollection<ConnectInfo>
+    public class ConnectionHistory : ICollection<Connect>
     {
-        private ICollection<ConnectInfo> _history;
+        private ICollection<Connect> _history;
 
         public ConnectionHistory() 
         {
-            _history = new List<ConnectInfo>();
+            _history = new List<Connect>();
         }
 
-        public void Add(ConnectInfo item)
+        public void Add(Connect item)
         {
             _history.Add(item);
         }
@@ -25,12 +25,12 @@ namespace BillingSystem
             _history.Clear();
         }
 
-        public bool Contains(ConnectInfo item)
+        public bool Contains(Connect item)
         {
             return _history.Contains(item);
         }
 
-        public void CopyTo(ConnectInfo[] array, int arrayIndex)
+        public void CopyTo(Connect[] array, int arrayIndex)
         {
             _history.CopyTo(array, arrayIndex);
         }
@@ -45,12 +45,12 @@ namespace BillingSystem
             get { return _history.IsReadOnly; }
         }
 
-        public bool Remove(ConnectInfo item)
+        public bool Remove(Connect item)
         {
             return _history.Remove(item);
         }
 
-        public IEnumerator<ConnectInfo> GetEnumerator()
+        public IEnumerator<Connect> GetEnumerator()
         {
             return _history.GetEnumerator();
         }

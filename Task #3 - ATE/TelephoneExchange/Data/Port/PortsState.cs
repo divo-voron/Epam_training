@@ -5,10 +5,10 @@ using System.Text;
 
 namespace TelephoneExchange
 {
-    public enum TerminalsType
+    public enum PortsState
     {
-        Stationary,
-        Mobile,
-        Satellite
+        Free,
+        Dialing,
+        Busy
     }
 }

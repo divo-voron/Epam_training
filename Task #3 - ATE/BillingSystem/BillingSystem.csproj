@@ -39,9 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectInfo.cs" />
+    <Compile Include="Billing.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="ClientContainer.cs" />
+    <Compile Include="Connect.cs" />
     <Compile Include="ConnectionHistory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tariff.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TelephoneExchange\TelephoneExchange.csproj">
+      <Project>{cbc25b44-decf-4899-a8ad-0e5a19c24cc2}</Project>
+      <Name>TelephoneExchange</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
