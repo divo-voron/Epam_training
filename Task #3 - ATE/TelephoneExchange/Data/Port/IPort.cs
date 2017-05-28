@@ -9,7 +9,7 @@ namespace TelephoneExchange
     public interface IPort : IDisposable
     {
         PortsState State { get; set; }
-        PhoneNumber Number { get; set; }
+        PhoneNumber Number { get; }
 
         event EventHandler Connected;
         event EventHandler Disconnected;

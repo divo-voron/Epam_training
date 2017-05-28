@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelephoneExchange;
 
 namespace BillingSystem
 {
     public class Connect
     {
         private Client _sourceClient;
-        private Tariff _sourceClientTariff;
         private Client _targetClient;
         private DateTime _start;
         private DateTime _end;
+        private ConnectInfoState _state;
         public Client SourceClient
         {
             get { return _sourceClient; }
-        }
-        public Tariff SourceClientTariff
-        {
-            get { return _sourceClientTariff; }
         }
         public Client TargetClient
         {
@@ -37,14 +34,17 @@ namespace BillingSystem
         {
             get { return _end - _start; }
         }
-
-        public Connect(Client sourceClient,Tariff sourceClientTariff, Client targetClient, DateTime start, DateTime end)
+        public ConnectInfoState State
+        {
+            get { return _state; }
+        }
+        public Connect(Client sourceClient, Client targetClient, DateTime start, DateTime end, ConnectInfoState state)
         {
             _sourceClient = sourceClient;
-            _sourceClientTariff = sourceClientTariff;
             _targetClient = targetClient;
             _start = start;
             _end = end;
+            _state = state;
         }
     }
 }

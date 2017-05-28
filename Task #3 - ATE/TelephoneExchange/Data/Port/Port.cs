@@ -14,7 +14,6 @@ namespace TelephoneExchange
         public PhoneNumber Number
         {
             get { return _number; }
-            set { _number = value; }
         }
         public PortsState State
         {

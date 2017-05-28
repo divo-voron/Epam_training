@@ -106,18 +106,18 @@ namespace TelephoneExchange
             if (source != null)
             {
                 Console.WriteLine("Accept incoming call?");
-                string s = Console.ReadLine().Trim().ToLower();
-                switch (s)
-                {
-                    case "y":
-                        Accept();
-                        break;
-                    case "n":
-                        Drop();
-                        break;
-                    default: 
-                        break;
-                }
+                //string s = Console.ReadLine().Trim().ToLower();
+                //switch (s)
+                //{
+                //    case "y":
+                //        Accept();
+                //        break;
+                //    case "n":
+                //        Drop();
+                //        break;
+                //    default: 
+                //        break;
+                //}
             }
         }
 

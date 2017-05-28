@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Data\CallRequestNumber.cs" />
     <Compile Include="Data\ConnectInfo.cs" />
+    <Compile Include="Data\ConnectInfoState.cs" />
     <Compile Include="Data\Port\IPort.cs" />
     <Compile Include="Data\Terminal\ITerminal.cs" />
     <Compile Include="Data\PhoneNumber.cs" />

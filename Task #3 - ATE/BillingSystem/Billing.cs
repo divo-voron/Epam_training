@@ -6,33 +6,58 @@ using System.Threading.Tasks;
 
 namespace BillingSystem
 {
-    public class Billing
+    public static class Billing
     {
-        private ClientContainer _clients;
-        private ConnectionHistory _history;
-        public ConnectionHistory History
+        private static ClientContainer _clients = new ClientContainer();
+        private static ConnectionHistory _history = new ConnectionHistory();
+        public static ConnectionHistory History
         {
             get { return _history; }
         }
-        public ClientContainer Clients
+        public static ClientContainer Clients
         {
             get { return _clients; }
         }
-        public Billing() 
-        {
-            _history = new ConnectionHistory();
-            _clients = new ClientContainer();
-        }
-        public void AddClient(Client client) 
+        public static void AddClient(Client client)
         {
             if (_clients.Contains(client) == false) _clients.Add(client);
         }
-        public void GetConnectionInfo(object sender, TelephoneExchange.ConnectInfo e)
+        public static void AddConnectionInfo(object sender, TelephoneExchange.ConnectInfo e)
         {
             Client source = _clients.GetClient(e.Source);
             Client target = _clients.GetClient(e.Target);
             if (source != null && target != null)
-                _history.Add(new Connect(source, source.Tarrif, target, e.Start, e.End));
+            {
+                _history.Add(new Connect(source, target, e.Start, e.End, e.State));
+            }
+        }
+        public static IEnumerable<Connect> GetConnection(Client client)
+        {
+            return _history.Where(x => x.SourceClient == client || x.TargetClient == client);
+        }
+        public static IEnumerable<Connect> GetIncomingConnections(Client client)
+        {
+            return _history.Where(x => x.TargetClient == client);
+        }
+        public static IEnumerable<Connect> GetOutgoingConnections(Client client)
+        {
+            return _history.Where(x => x.SourceClient == client);
+        }
+        public static IEnumerable<Connect> GetUnacceptedConnection(Client client)
+        {
+            return _history.Where(x => x.State == TelephoneExchange.ConnectInfoState.Unaccepted && x.TargetClient == client);
+        }
+
+        public static string GetInfo(this IEnumerable<Connect> source)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Show connection info\r\n");
+            foreach (Connect connect in source)
+            {
+                sb.Append(string.Format("From: {0} - To: {1} - Start: {2} - End: {3} - Duration: {4}\r\n",
+                    connect.SourceClient.Name, connect.TargetClient.Name, connect.Start.ToShortTimeString(), connect.End.ToShortTimeString(), connect.Duration));
+            }
+            return sb.ToString();
         }
     }
 }

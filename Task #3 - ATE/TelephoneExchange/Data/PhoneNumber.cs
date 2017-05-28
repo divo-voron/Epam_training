@@ -8,18 +8,23 @@ namespace TelephoneExchange
 {
     public struct PhoneNumber
     {
-        private string _operatorCode;
-        private string _number;
-        public string OperatorCode
+        private ushort _operatorCode;
+        private uint _number;
+        public ushort OperatorCode
         {
             get { return _operatorCode; }
         }
-        public string Number
+        public uint Number
         {
             get { return _number; }
         }
-        public PhoneNumber(string operatorCode, string number)
+        public PhoneNumber(ushort operatorCode, uint number)
         {
+            if (operatorCode > 999)
+                throw new ArgumentException("No more three numbers in operator code");
+            if (number > 999999)
+                throw new ArgumentException("No more six numbers in operator code");
+
             _operatorCode = operatorCode;
             _number = number;
         }
@@ -37,8 +42,8 @@ namespace TelephoneExchange
         public override bool Equals(object obj)
         {
             if (obj is PhoneNumber)
-                return _operatorCode.Equals(((PhoneNumber)obj).OperatorCode) && _number.Equals(((PhoneNumber)obj).Number);
-            else 
+                return _operatorCode == ((PhoneNumber)obj).OperatorCode && _number == ((PhoneNumber)obj).Number;
+            else
                 return false;
         }
 

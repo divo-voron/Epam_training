@@ -164,7 +164,7 @@ namespace TelephoneExchange
                         currentSession.Target.State = PortsState.Free;
                         currentSession.State = SessionState.Close;
 
-                        OnCallEnded(new ConnectInfo(currentSession.Source.Number, currentSession.Target.Number, currentSession.Start, DateTime.Now));
+                        OnCallEnded(new ConnectInfo(currentSession.Source.Number, currentSession.Target.Number, currentSession.Start, DateTime.Now, ConnectInfoState.Accepted));
 
                         _sessionContainer.Remove(currentSession);
 
@@ -175,6 +175,8 @@ namespace TelephoneExchange
                         currentSession.Source.State = PortsState.Free;
                         currentSession.Target.State = PortsState.Free;
                         currentSession.State = SessionState.Close;
+
+                        OnCallEnded(new ConnectInfo(currentSession.Source.Number, currentSession.Target.Number, currentSession.Start, currentSession.Start, ConnectInfoState.Unaccepted));
 
                         _sessionContainer.Remove(currentSession);
 
