@@ -40,16 +40,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Billing.cs" />
-    <Compile Include="Client.cs" />
-    <Compile Include="ClientContainer.cs" />
-    <Compile Include="Connect\Connect.cs" />
-    <Compile Include="Connect\ConnectionHistory.cs" />
-    <Compile Include="Tariff\ITariff.cs" />
+    <Compile Include="Data\Client.cs" />
+    <Compile Include="Data\ClientContainer.cs" />
+    <Compile Include="Data\Connection\Connect.cs" />
+    <Compile Include="Data\ConnectionHistory.cs" />
+    <Compile Include="Data\Tariff\TariffTypes\TariffPerSecond.cs" />
+    <Compile Include="Data\Tariff\ITariff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tariff\TariffChange.cs" />
-    <Compile Include="Tariff\TariffHistory.cs" />
-    <Compile Include="Tariff\TariffPerMinute.cs" />
-    <Compile Include="Tariff\TariffPerSecond.cs" />
+    <Compile Include="Data\Tariff\TariffChange.cs" />
+    <Compile Include="Data\Tariff\TariffHistory.cs" />
+    <Compile Include="Data\Tariff\TariffTypes\TariffWithFreeMinute.cs" />
+    <Compile Include="Data\Tariff\TariffTypes\TariffPerMinute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TelephoneExchange\TelephoneExchange.csproj">

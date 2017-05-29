@@ -1,22 +1,29 @@
 ﻿using BillingSystem;
+using BillingSystem.Data;
+using BillingSystem.Data.Tariff.TariffTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using TelephoneExchange;
+using TelephoneExchange.StationCompoment;
 
 namespace Demo
 {
     class Program
     {
-        private const int maxTime = 3000;
+        private const int maxTime = 5000;
 
         static void Main(string[] args)
         {
-            Billing.AddClient(new Client("Jhon", new PhoneNumber(0, 100), new TariffPerSecond()));
-            Billing.AddClient(new Client("Bob", new PhoneNumber(0, 200), new TariffPerMinute()));
-            Billing.AddClient(new Client("Alice", new PhoneNumber(0, 300), new TariffPerMinute()));
+            Timer timer = new Timer(86400000);
+            timer.AutoReset = true;
+            timer.Start();
+            timer.Elapsed += Billing.TimerElapsed;
+
+            Billing.AddClient(new Client("Jhon", new PhoneNumber(0, 100), new TariffPerSecond(15)));
+            Billing.AddClient(new Client("Bob", new PhoneNumber(0, 200), new TariffPerSecond(5)));
+            Billing.AddClient(new Client("Alice", new PhoneNumber(0, 300), new TariffWithFreeMinute(5, 45)));
 
             Billing.Clients.ElementAt(0).AddMoney(5);
             Billing.Clients.ElementAt(1).AddMoney(24);
@@ -76,8 +83,34 @@ namespace Demo
                 Console.WriteLine(Billing.Clients.ElementAt(2).Bill);
             }
 
-            string s = Billing.GetConnection(Billing.Clients.ElementAt(0)).GetInfo();
-            Console.WriteLine(s);
+            Console.WriteLine();
+
+            Console.WriteLine(Billing.Clients.ElementAt(0).Name);
+            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(0)).GetString());
+            Console.WriteLine();
+
+            Console.WriteLine(Billing.Clients.ElementAt(1).Name);
+            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(1)).GetString());
+            Console.WriteLine();
+
+            Console.WriteLine(Billing.Clients.ElementAt(2).Name);
+            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(2)).GetString());
+            Console.WriteLine();
+
+
+            Console.WriteLine();
+
+            Console.WriteLine(Billing.Clients.ElementAt(0).Name);
+            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(0)).Where(x => x.Cost > 0).GetString());
+            Console.WriteLine();
+
+            Console.WriteLine(Billing.Clients.ElementAt(1).Name);
+            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(1)).OrderByDescending(x => x.Start).GetString());
+            Console.WriteLine();
+
+            Console.WriteLine(Billing.Clients.ElementAt(2).Name);
+            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(2)).Where(x => x.Duration > new TimeSpan(0, 0, 3)).GetString());
+            Console.WriteLine();
         }
     }
 }
