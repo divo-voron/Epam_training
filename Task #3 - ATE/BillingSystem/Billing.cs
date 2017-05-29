@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TelephoneExchange;
 
 namespace BillingSystem
 {
@@ -28,7 +29,9 @@ namespace BillingSystem
             Client target = _clients.GetClient(e.Target);
             if (source != null && target != null)
             {
-                _history.Add(new Connect(source, target, e.Start, e.End, e.State));
+                Connect connect = new Connect(source, target, e.Start, e.End, e.State);
+                _history.Add(connect);
+                source.ReCountBill(connect);
             }
         }
         public static IEnumerable<Connect> GetConnection(Client client)
@@ -55,7 +58,8 @@ namespace BillingSystem
             foreach (Connect connect in source)
             {
                 sb.Append(string.Format("From: {0} - To: {1} - Start: {2} - End: {3} - Duration: {4}\r\n",
-                    connect.SourceClient.Name, connect.TargetClient.Name, connect.Start.ToShortTimeString(), connect.End.ToShortTimeString(), connect.Duration));
+                    connect.SourceClient.Name, connect.TargetClient.Name, 
+                    connect.Start, connect.End, connect.Duration));
             }
             return sb.ToString();
         }

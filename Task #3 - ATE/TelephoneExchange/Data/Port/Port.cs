@@ -10,15 +10,21 @@ namespace TelephoneExchange
     {
         private ITerminal _terminal;
         private PhoneNumber _number;
-        private PortsState _state;
+        private PortStateCall _stateCall;
+        private PortStateLock _stateLock;
         public PhoneNumber Number
         {
             get { return _number; }
         }
-        public PortsState State
+        public PortStateCall StateCall
         {
-            get { return _state; }
-            set { _state = value; }
+            get { return _stateCall; }
+            set { _stateCall = value; }
+        }
+        public PortStateLock StateLock
+        {
+            get { return _stateLock; }
+            set { _stateLock = value; }
         }
         public Port(PhoneNumber number)
         {
@@ -119,7 +125,7 @@ namespace TelephoneExchange
         }
         private void OnCalling(object sender, CallRequestNumber request)
         {
-            if (_calling != null) _calling(this, request);
+            if (_calling != null && _stateLock == PortStateLock.Unlocked) _calling(this, request);
         }
         private void OnAccepted(object sender, EventArgs e)
         {

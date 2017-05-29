@@ -38,7 +38,7 @@ namespace TelephoneExchange
         }
         public bool IsClose()
         {
-            if (_source.State == PortsState.Free && _target.State == PortsState.Free) return true; else return false;
+            if (_source.StateCall == PortStateCall.Free && _target.StateCall == PortStateCall.Free) return true; else return false;
         }
     }
 }

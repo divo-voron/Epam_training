@@ -13,23 +13,10 @@ namespace TelephoneExchange
         public IDictionary<PhoneNumber, IPort> Ports
         {
             get { return _ports; }
-            set { _ports = value; }
         }
         public Station()
         {
             _ports = new Dictionary<PhoneNumber, IPort>();
-            _sessionContainer = new SessionContainer();
-        }
-        public Station(IDictionary<PhoneNumber, IPort> ports)
-        {
-            foreach (IPort port in ports.Values)
-            {
-                UnregisterNumber(port.Number);
-                port.Connected += ConnectStation;
-                port.Disconnected += DisconnectStation;
-            }
-
-            _ports = ports;
             _sessionContainer = new SessionContainer();
         }
 
@@ -44,55 +31,50 @@ namespace TelephoneExchange
             if (_callEnd != null) _callEnd(this, connectInfo);
         }
 
-        public void RegisterNumber(PhoneNumber number)
+        public void RegisterPort(IPort port)
         {
-            if (_ports.ContainsKey(number) == false)
+            if (_ports.Values.Contains(port) == false)
             {
-                IPort port = new Port(number);
                 port.Connected += ConnectStation;
                 port.Disconnected += DisconnectStation;
-                _ports.Add(number, port);
+                _ports.Add(port.Number, port);
             }
-            else 
+            else
             {
-                IPort port = _ports[number];
-                UnregisterNumber(number);
+                UnregisterPort(port);
                 port.Connected += ConnectStation;
                 port.Disconnected += DisconnectStation;
             }
         }
-        public void RegisterNumber(IEnumerable<PhoneNumber> numbers)
+        public void RegisterPort(IEnumerable<IPort> ports)
         {
-            foreach (PhoneNumber number in numbers)
+            foreach (IPort port in ports)
             {
-                if (_ports.ContainsKey(number) == false)
+                if (_ports.Values.Contains(port) == false)
                 {
-                    IPort port = new Port(number);
                     port.Connected += ConnectStation;
                     port.Disconnected += DisconnectStation;
-                    _ports.Add(number, port);
+                    _ports.Add(port.Number, port);
                 }
                 else
                 {
-                    IPort port = _ports[number];
-                    UnregisterNumber(number);
+                    UnregisterPort(port);
                     port.Connected += ConnectStation;
                     port.Disconnected += DisconnectStation;
                 }
             }
         }
-        public void UnregisterNumber(PhoneNumber number)
+        public void UnregisterPort(IPort port)
         {
-            IPort port = _ports[number];
             if (port != null)
             {
                 port.Connected -= ConnectStation;
                 port.Disconnected -= DisconnectStation;
 
-                _ports.Remove(number);
+                //_ports.Remove(port);
             }
         }
-        public void ConnectStation(object sender, EventArgs e)
+        private void ConnectStation(object sender, EventArgs e)
         {
             IPort port = sender as IPort;
             if (port != null)
@@ -104,7 +86,7 @@ namespace TelephoneExchange
                 port.Dropped += DropStation;
             }
         }
-        public void DisconnectStation(object sender, EventArgs e)
+        private void DisconnectStation(object sender, EventArgs e)
         {
             IPort port = sender as IPort;
             if (port != null)
@@ -114,14 +96,14 @@ namespace TelephoneExchange
                 port.Dropped -= DropStation;
             }
         }
-        public void CallStation(object sender, CallRequestNumber e)
+        private void CallStation(object sender, CallRequestNumber e)
         {
             IPort portSource = sender as IPort;
             IPort portTarget = _ports[e.Number];
             if (portSource != null && portTarget != null && portSource != portTarget && 
                 _sessionContainer.IsOpenedSession(portSource, portTarget))
             {
-                portTarget.State = PortsState.Dialing;
+                portTarget.StateCall = PortStateCall.Dialing;
                 _sessionContainer.Add(new Session(portSource, portTarget));
                 portTarget.IncomingCallPort(portTarget, null);
             }
@@ -133,24 +115,24 @@ namespace TelephoneExchange
                 Console.WriteLine("Connection not made");
             }
         }
-        public void AcceptStation(object sender, EventArgs e)
+        private void AcceptStation(object sender, EventArgs e)
         {
             IPort port = sender as IPort;
             Session currentSession = _sessionContainer.GetByTarget(port, SessionState.Open);
             if (currentSession != null)
             {
-                currentSession.Source.State = PortsState.Busy;
-                currentSession.Target.State = PortsState.Busy;
+                currentSession.Source.StateCall = PortStateCall.Busy;
+                currentSession.Target.StateCall = PortStateCall.Busy;
                 currentSession.State = SessionState.Connected;
                 currentSession.Start = DateTime.Now;
-                Console.WriteLine("Icnoming call accepted");
+                Console.WriteLine("Incoming call accepted");
             }
             else
             {
                 Console.WriteLine("Incoming call not found");
             }
         }
-        public void DropStation(object sender, EventArgs e)
+        private void DropStation(object sender, EventArgs e)
         {
             IPort port = sender as IPort;
             if (port != null)
@@ -160,8 +142,8 @@ namespace TelephoneExchange
                 {
                     if (currentSession.State == SessionState.Connected)
                     {
-                        currentSession.Source.State = PortsState.Free;
-                        currentSession.Target.State = PortsState.Free;
+                        currentSession.Source.StateCall = PortStateCall.Free;
+                        currentSession.Target.StateCall = PortStateCall.Free;
                         currentSession.State = SessionState.Close;
 
                         OnCallEnded(new ConnectInfo(currentSession.Source.Number, currentSession.Target.Number, currentSession.Start, DateTime.Now, ConnectInfoState.Accepted));
@@ -172,8 +154,8 @@ namespace TelephoneExchange
                     }
                     else
                     {
-                        currentSession.Source.State = PortsState.Free;
-                        currentSession.Target.State = PortsState.Free;
+                        currentSession.Source.StateCall = PortStateCall.Free;
+                        currentSession.Target.StateCall = PortStateCall.Free;
                         currentSession.State = SessionState.Close;
 
                         OnCallEnded(new ConnectInfo(currentSession.Source.Number, currentSession.Target.Number, currentSession.Start, currentSession.Start, ConnectInfoState.Unaccepted));

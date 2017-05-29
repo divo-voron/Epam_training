@@ -8,7 +8,8 @@ namespace TelephoneExchange
 {
     public interface IPort : IDisposable
     {
-        PortsState State { get; set; }
+        PortStateCall StateCall { get; set; }
+        PortStateLock StateLock { get; set; }
         PhoneNumber Number { get; }
 
         event EventHandler Connected;
@@ -20,7 +21,6 @@ namespace TelephoneExchange
 
         void RegisterTerminal(ITerminal terminal);
         void UnregisterTerminal(ITerminal terminal);
-
         void IncomingCallPort(object sender, EventArgs e);
     }
 }

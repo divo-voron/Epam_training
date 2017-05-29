@@ -23,7 +23,7 @@ namespace TelephoneExchange
             if (operatorCode > 999)
                 throw new ArgumentException("No more three numbers in operator code");
             if (number > 999999)
-                throw new ArgumentException("No more six numbers in operator code");
+                throw new ArgumentException("No more six numbers in number");
 
             _operatorCode = operatorCode;
             _number = number;
@@ -31,20 +31,17 @@ namespace TelephoneExchange
 
         public static bool operator ==(PhoneNumber p1, PhoneNumber p2)
         {
-            return p1.Equals(p2);
+            return p1.OperatorCode == p2.OperatorCode && p1.Number == p2.Number;
         }
 
         public static bool operator !=(PhoneNumber p1, PhoneNumber p2)
         {
-            return !p1.Equals(p2);
+            return !(p1 == p2);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj is PhoneNumber)
-                return _operatorCode == ((PhoneNumber)obj).OperatorCode && _number == ((PhoneNumber)obj).Number;
-            else
-                return false;
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()

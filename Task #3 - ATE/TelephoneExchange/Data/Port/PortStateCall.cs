@@ -5,10 +5,11 @@ using System.Text;
 
 namespace TelephoneExchange
 {
-    public enum PortsState
+    public enum PortStateCall
     {
         Free,
         Dialing,
-        Busy
+        Busy,
+        Lock
     }
 }

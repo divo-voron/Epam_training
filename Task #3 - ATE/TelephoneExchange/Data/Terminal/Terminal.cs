@@ -8,13 +8,7 @@ namespace TelephoneExchange
 {
     public class Terminal : ITerminal
     {
-        private TerminalsType _terminalType;
         private TerminalsState _state;
-        public TerminalsType TerminalType
-        {
-            get { return _terminalType; }
-            set { _terminalType = value; }
-        }
         public TerminalsState State
         {
             get { return _state; }

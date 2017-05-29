@@ -42,14 +42,14 @@
     <Compile Include="Billing.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="ClientContainer.cs" />
-    <Compile Include="Connect.cs" />
-    <Compile Include="ConnectionHistory.cs" />
-    <Compile Include="ITariff.cs" />
+    <Compile Include="Connect\Connect.cs" />
+    <Compile Include="Connect\ConnectionHistory.cs" />
+    <Compile Include="Tariff\ITariff.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TariffChange.cs" />
-    <Compile Include="TariffHistory.cs" />
-    <Compile Include="TariffPerMinute.cs" />
-    <Compile Include="TariffPerSecond.cs" />
+    <Compile Include="Tariff\TariffChange.cs" />
+    <Compile Include="Tariff\TariffHistory.cs" />
+    <Compile Include="Tariff\TariffPerMinute.cs" />
+    <Compile Include="Tariff\TariffPerSecond.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TelephoneExchange\TelephoneExchange.csproj">

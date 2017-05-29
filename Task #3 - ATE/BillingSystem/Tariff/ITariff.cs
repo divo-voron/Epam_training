@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BillingSystem
 {
-    public class TariffPerSecond : ITariff
+    public interface ITariff
     {
-
+        ushort GetPrice(Connect connect);
     }
 }

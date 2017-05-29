@@ -40,9 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\CallRequestNumber.cs" />
-    <Compile Include="Data\ConnectInfo.cs" />
-    <Compile Include="Data\ConnectInfoState.cs" />
+    <Compile Include="Data\Connect\ConnectInfo.cs" />
+    <Compile Include="Data\Connect\ConnectInfoState.cs" />
     <Compile Include="Data\Port\IPort.cs" />
+    <Compile Include="Data\Port\PortStateLock.cs" />
     <Compile Include="Data\Terminal\ITerminal.cs" />
     <Compile Include="Data\PhoneNumber.cs" />
     <Compile Include="Data\Port\Port.cs" />
@@ -50,11 +51,10 @@
     <Compile Include="Data\Session\Session.cs" />
     <Compile Include="Data\SessionContainer.cs" />
     <Compile Include="Data\Session\SessionState.cs" />
-    <Compile Include="Data\Port\PortsState.cs" />
+    <Compile Include="Data\Port\PortStateCall.cs" />
     <Compile Include="Data\Station.cs" />
     <Compile Include="Data\Terminal\Terminal.cs" />
     <Compile Include="Data\Terminal\TerminalsState.cs" />
-    <Compile Include="Data\Terminal\TerminalsType.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

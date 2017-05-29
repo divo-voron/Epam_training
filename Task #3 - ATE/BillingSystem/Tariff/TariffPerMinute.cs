@@ -8,5 +8,9 @@ namespace BillingSystem
 {
     public class TariffPerMinute : ITariff
     {
+        public ushort GetPrice(Connect connect)
+        {
+            return 15;// throw new NotImplementedException();
+        }
     }
 }
