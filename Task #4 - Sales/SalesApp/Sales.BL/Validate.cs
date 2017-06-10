@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,27 @@ namespace Sales.BL
 {
     class Validate
     {
-        public bool Check(string[] data)
+        public bool CheckFileName(string path, out string managerName, out DateTime dateOfFile)
+        {
+            managerName = null;
+            dateOfFile = new DateTime();
+
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            string[] data = fileName.Split('_');
+            if (data.Count() == 2)
+            {
+                DateTime date;
+                if (DateTime.TryParse(data[1], out date))
+                {
+                    managerName = data[0];
+                    return true;
+                }
+                else return false;
+            }
+            else
+                return false;
+        }
+        public bool CheckData(string[] data)
         {
             if (data.Count() != 4) return false;
             else

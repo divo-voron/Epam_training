@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Sales.DataAccess.Components
 {
-    class Client : IClient
+    public class Client
     {
-        private int _id;
+        public int Id { get; private set; }
         public string Name { get; set; }
 
         public Client(int id, string name)
         {
-            _id = id;
+            Id = id;
             Name = name;
         }
     }

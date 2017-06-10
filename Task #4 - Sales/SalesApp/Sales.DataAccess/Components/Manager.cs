@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Sales.DataAccess.Components
 {
-    class Manager : IManager
+    public class Manager
     {
-        private int _id;
+        public int Id { get; private set; }
         public string Name { get; set; }
 
         public Manager(int id, string name)
         {
-            _id = id;
+            Id = id;
             Name = name;
         }
     }

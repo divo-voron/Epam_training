@@ -8,8 +8,9 @@ namespace Sales.DAL
     public partial class SalesContext : DbContext
     {
         public SalesContext()
-            : base("name=SalesModel")
+            : base("SalesModel")
         {
+
         }
 
         public virtual DbSet<Client> Clients { get; set; }

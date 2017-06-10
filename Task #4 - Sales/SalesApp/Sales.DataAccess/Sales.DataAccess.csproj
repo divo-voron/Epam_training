@@ -46,10 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Client.cs" />
-    <Compile Include="Components\IClient.cs" />
-    <Compile Include="Components\IManager.cs" />
-    <Compile Include="Components\IProduct.cs" />
-    <Compile Include="Components\ISession.cs" />
     <Compile Include="Components\Manager.cs" />
     <Compile Include="Components\Operation.cs" />
     <Compile Include="Components\Product.cs" />
@@ -62,9 +58,6 @@
       <Project>{3210cb26-b529-4c33-8d9a-58f3bb8820c5}</Project>
       <Name>Sales.DAL</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

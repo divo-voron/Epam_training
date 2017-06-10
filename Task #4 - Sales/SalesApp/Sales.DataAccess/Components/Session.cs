@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace Sales.DataAccess.Components
 {
-    class Session : ISession
+    public class Session
     {
+        public int Id { get; private set; }
         public DateTime? DateOfOperation { get; set; }
         public int? Name { get; set; }
 
-        public Session(DateTime? dateOfOperation, int? name)
+        public Session(int id, DateTime? dateOfOperation, int? name)
         {
+            Id = id;
             DateOfOperation = dateOfOperation;
             Name = name;
         }
