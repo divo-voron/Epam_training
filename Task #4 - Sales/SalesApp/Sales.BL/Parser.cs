@@ -45,11 +45,12 @@ namespace Sales.BL
 
         private void WriteToBase(string managerName, DateTime dateOfFile)
         {
-            lock (this)
+            lock (_salesData)
             {
                 foreach (Operation operation in _operations)
                 {
-                    _salesData.AddOperation(operation.Date, managerName, operation.ClientName, operation.ProductName, 123, operation.Price);
+                    _salesData.AddOperation(operation.Date, managerName, operation.ClientName, 
+                        operation.ProductName, 123, operation.Price);
                 }
             }
         }

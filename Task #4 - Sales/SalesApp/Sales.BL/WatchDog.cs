@@ -18,28 +18,6 @@ namespace Sales.BL
 
         public void Start()
         {
-            //DataAccess.SalesDataContainer sd = new DataAccess.SalesDataContainer();
-            //var a = sd.Clients.First();
-
-            //Client client = new Client(0, "Vitaly");
-            //Manager manager = sd.Managers.Last();
-            //Product product = sd.Products.Last();
-            //Session session = sd.Sessions.Last();
-
-            //DataAccess.Components.Operation op = new DataAccess.Components.Operation()
-            //{
-            //    Client = client,
-            //    Manager = manager,
-            //    Product = product,
-            //    Session = session,
-            //    DateOfOperation = DateTime.Now,
-            //    Price = 12
-            //};
-
-            //sd.AddOperation(op);
-
-            //sd.Save();
-
             FSW.Created += fsw_Created;
 
             FSW.EnableRaisingEvents = true;
