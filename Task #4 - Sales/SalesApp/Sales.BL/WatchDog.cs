@@ -11,9 +11,12 @@ namespace Sales.BL
     public class WatchDog
     {
         public FileSystemWatcher FSW { get; set; }
+        public Parser Parser { get; private set; }
+
         public WatchDog() 
         {
             FSW = new FileSystemWatcher("D:\\1", "*.csv");
+            Parser = new Parser();
         }
 
         public void Start()
@@ -25,8 +28,8 @@ namespace Sales.BL
 
         private void fsw_Created(object sender, FileSystemEventArgs e)
         {
-            Parser parser = new Parser();
-            parser.Parse(e.FullPath);
+            Task task = new Task(() => Parser.Parse(e.FullPath));
+            task.Start();
         }
     }
 }

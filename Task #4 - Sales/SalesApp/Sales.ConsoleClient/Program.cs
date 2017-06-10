@@ -11,6 +11,10 @@ namespace Sales.ConsoleClient
         static void Main(string[] args)
         {
             BL.WatchDog wd = new BL.WatchDog();
+            Logger logger = new Logger();
+
+            wd.Parser.Loging += logger.Write;
+            
             wd.Start();
 
             Console.ReadLine();

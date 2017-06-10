@@ -22,6 +22,7 @@ namespace Sales.BL
                 if (DateTime.TryParse(data[1], out date))
                 {
                     managerName = data[0];
+                    dateOfFile = date;
                     return true;
                 }
                 else return false;

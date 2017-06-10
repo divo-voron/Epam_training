@@ -11,45 +11,30 @@ namespace Sales.DataAccess
     {
         private DAL.SalesContext _salesContext;
 
-        public SalesDataContainer() 
+        public SalesDataContainer()
         {
             _salesContext = new DAL.SalesContext();
         }
 
         public IEnumerable<Client> Clients
         {
-            get 
-            { 
-                foreach (var client in _salesContext.Clients) yield return ToObject(client); 
-            }
+            get { foreach (var client in _salesContext.Clients) yield return ToObject(client); }
         }
         public IEnumerable<Manager> Managers
         {
-            get
-            {
-                foreach (var manager in _salesContext.Managers) yield return ToObject(manager);
-            }
+            get { foreach (var manager in _salesContext.Managers) yield return ToObject(manager); }
         }
         public IEnumerable<Product> Products
         {
-            get
-            {
-                foreach (var product in _salesContext.Products) yield return ToObject(product);
-            }
+            get { foreach (var product in _salesContext.Products) yield return ToObject(product); }
         }
         public IEnumerable<Session> Sessions
         {
-            get
-            {
-                foreach (var session in _salesContext.Sessions) yield return ToObject(session);
-            }
+            get { foreach (var session in _salesContext.Sessions) yield return ToObject(session); }
         }
         public IEnumerable<Operation> Operations
         {
-            get
-            {
-                foreach (var operation in _salesContext.Operations) yield return ToObject(operation);
-            }
+            get { foreach (var operation in _salesContext.Operations) yield return ToObject(operation); }
         }
 
         public void AddClient(string name)
@@ -58,34 +43,37 @@ namespace Sales.DataAccess
             if (client == null)
                 _salesContext.Clients.Add(new DAL.Client() { Name = name });
         }
-        public void AddOperation(Operation op)
+        public void AddManager(Manager manager)
         {
-            _salesContext.Operations.Add(ToEntity(op));
+            _salesContext.Managers.Add(ToEntity(manager));
         }
-        public void AddOperation(DateTime date, string managerName, string clientName, string productName, int sessionName, int price)
+        public void AddSession(Session session)
         {
-            DAL.Manager manager = _salesContext.Managers.FirstOrDefault(x => x.Name == managerName);
+            _salesContext.Sessions.Add(ToEntity(session));
+        }
+        public void AddOperation(Operation operation)
+        {
+            _salesContext.Operations.Add(ToEntity(operation));
+        }
+        public void AddOperation(DateTime date, Manager manager, string clientName, string productName, Session session, int price)
+        {
             DAL.Client client = _salesContext.Clients.FirstOrDefault(x => x.Name == clientName);
             DAL.Product product = _salesContext.Products.FirstOrDefault(x => x.Name == productName);
-            DAL.Session session = _salesContext.Sessions.FirstOrDefault(x => x.Name == sessionName);
 
-            if (manager == null) manager = new DAL.Manager() { Name = managerName };
             if (client == null) client = new DAL.Client() { Name = clientName };
             if (product == null) product = new DAL.Product() { Name = productName };
-            if (session == null) session = new DAL.Session() { Name = sessionName };
 
             DAL.Operation operation = new DAL.Operation()
             {
                 DateOfOperation = date,
-                Manager = manager,
+                Manager = ToEntity(manager),
                 Client = client,
                 Product = product,
-                Session = session,
+                Session = ToEntity(session),
                 Price = price
             };
 
             _salesContext.Operations.Add(operation);
-            _salesContext.SaveChanges();
         }
 
         public void Save()
