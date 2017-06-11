@@ -24,20 +24,16 @@ namespace Sales.BL
 
         private static Mutex mutexObj = new Mutex();
 
-        private static DataAccess.SalesDataContainer _salesData;
-        private ICollection<Operation> _operations;
-
-        public Parser()
-        {
-            _salesData = new SalesDataContainer();
-            _operations = new List<Operation>();
-        }
         public void Parse(string path)
         {
+            DataAccess.SalesDataContainer _salesData = new SalesDataContainer();
+            ICollection<Operation> _operations = new List<Operation>();
+
             Validate validator = new Validate();
             string managerName;
             DateTime dateOfFile;
-            if (validator.CheckFileName(path, out managerName, out dateOfFile))
+            string fileName;
+            if (validator.CheckFileName(path, out managerName, out dateOfFile, out fileName))
                 using (StreamReader sr = new StreamReader(path))
                 {
                     while (true)
@@ -54,31 +50,33 @@ namespace Sales.BL
                             _operations.Add(new Operation(data));
                     }
 
-                    WriteToBase(managerName, dateOfFile);
+                    if (_operations.Count > 0)
+                        WriteToBase(_salesData, _operations, managerName, dateOfFile, fileName);
                 }
         }
 
-        private void WriteToBase(string managerName, DateTime dateOfFile)
+        private void WriteToBase(DataAccess.SalesDataContainer _salesData, ICollection<Operation> _operations, string managerName, DateTime dateOfFile, string fileName)
         {
             mutexObj.WaitOne();
+
             {
                 DataAccess.Components.Manager manager = _salesData.Managers.FirstOrDefault(x => x.Name == managerName);
-                if (manager == null) 
-                { 
+                if (manager == null)
+                {
                     manager = new DataAccess.Components.Manager(0, managerName);
                     _salesData.AddManager(manager);
                 }
 
-                DataAccess.Components.Session session = new DataAccess.Components.Session(0, dateOfFile, 123);
+                DataAccess.Components.Session session = new DataAccess.Components.Session(0, dateOfFile, fileName);
                 _salesData.AddSession(session);
 
                 foreach (Operation operation in _operations)
                 {
                     _salesData.AddOperation(operation.Date, manager, operation.ClientName,
                         operation.ProductName, session, operation.Price);
-                    _salesData.Save();
                 }
             }
+
             mutexObj.ReleaseMutex();
         }
 

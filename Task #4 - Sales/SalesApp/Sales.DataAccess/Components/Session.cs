@@ -10,9 +10,9 @@ namespace Sales.DataAccess.Components
     {
         public int Id { get; private set; }
         public DateTime? DateOfOperation { get; set; }
-        public int? Name { get; set; }
+        public string Name { get; set; }
 
-        public Session(int id, DateTime? dateOfOperation, int? name)
+        public Session(int id, DateTime? dateOfOperation, string name)
         {
             Id = id;
             DateOfOperation = dateOfOperation;

@@ -37,23 +37,20 @@ namespace Sales.DataAccess
             get { foreach (var operation in _salesContext.Operations) yield return ToObject(operation); }
         }
 
-        public void AddClient(string name)
-        {
-            DAL.Client client = _salesContext.Clients.FirstOrDefault(x => x.Name == name);
-            if (client == null)
-                _salesContext.Clients.Add(new DAL.Client() { Name = name });
-        }
         public void AddManager(Manager manager)
         {
             _salesContext.Managers.Add(ToEntity(manager));
+            _salesContext.SaveChanges();
         }
         public void AddSession(Session session)
         {
             _salesContext.Sessions.Add(ToEntity(session));
+            _salesContext.SaveChanges();
         }
         public void AddOperation(Operation operation)
         {
             _salesContext.Operations.Add(ToEntity(operation));
+            _salesContext.SaveChanges();
         }
         public void AddOperation(DateTime date, Manager manager, string clientName, string productName, Session session, int price)
         {
@@ -74,10 +71,6 @@ namespace Sales.DataAccess
             };
 
             _salesContext.Operations.Add(operation);
-        }
-
-        public void Save()
-        {
             _salesContext.SaveChanges();
         }
 
@@ -105,63 +98,59 @@ namespace Sales.DataAccess
 
         private DAL.Client ToEntity(Client client)
         {
-            DAL.Client clientDAL = _salesContext.Clients.FirstOrDefault(x => x.ID == client.Id);
+            DAL.Client clientDAL = _salesContext.Clients.FirstOrDefault(x => x.Name == client.Name);
             if (clientDAL != null) return clientDAL;
             else
                 return new DAL.Client()
                 {
-                    ID = client.Id,
                     Name = client.Name
                 };
         }
         private DAL.Manager ToEntity(Manager manager)
         {
-            DAL.Manager productDAL = _salesContext.Managers.FirstOrDefault(x => x.ID == manager.Id);
+            DAL.Manager productDAL = _salesContext.Managers.FirstOrDefault(x => x.Name == manager.Name);
             if (productDAL != null) return productDAL;
             else
                 return new DAL.Manager()
                 {
-                    ID = manager.Id,
                     Name = manager.Name
                 };
         }
         private DAL.Product ToEntity(Product product)
         {
-            DAL.Product productDAL = _salesContext.Products.FirstOrDefault(x => x.ID == product.Id);
+            DAL.Product productDAL = _salesContext.Products.FirstOrDefault(x => x.Name == product.Name);
             if (productDAL != null) return productDAL;
             else
                 return new DAL.Product()
                 {
-                    ID = product.Id,
                     Name = product.Name
                 };
         }
         private DAL.Session ToEntity(Session session)
         {
-            DAL.Session sessionDAL = _salesContext.Sessions.FirstOrDefault(x => x.ID == session.Id);
+            DAL.Session sessionDAL = _salesContext.Sessions.FirstOrDefault(x => x.Name == session.Name);
             if (sessionDAL != null) return sessionDAL;
             else
                 return new DAL.Session()
                 {
-                    ID = session.Id,
                     Date = session.DateOfOperation,
                     Name = session.Name
                 };
         }
-
-
         private DAL.Operation ToEntity(Operation operation)
         {
-            return new DAL.Operation()
-            {
-                ID = operation.Id,
-                Client = ToEntity(operation.Client),
-                Manager = ToEntity(operation.Manager),
-                Product = ToEntity(operation.Product),
-                Price = operation.Price,
-                DateOfOperation = operation.DateOfOperation,
-                Session = ToEntity(operation.Session)
-            };
+            DAL.Operation operationDAL = operation.Id != 0 ? _salesContext.Operations.FirstOrDefault(x => x.ID == operation.Id) : null;
+            if (operationDAL != null) return operationDAL;
+            else
+                return new DAL.Operation()
+                {
+                    Client = ToEntity(operation.Client),
+                    Manager = ToEntity(operation.Manager),
+                    Product = ToEntity(operation.Product),
+                    Price = operation.Price,
+                    DateOfOperation = operation.DateOfOperation,
+                    Session = ToEntity(operation.Session)
+                };
         }
     }
 }

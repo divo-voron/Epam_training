@@ -17,7 +17,8 @@ namespace Sales.DAL
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
-        public int? Name { get; set; }
+        [StringLength(50)]
+        public string Name { get; set; }
 
         public DateTime? Date { get; set; }
 

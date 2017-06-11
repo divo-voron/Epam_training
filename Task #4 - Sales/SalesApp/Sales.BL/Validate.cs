@@ -9,12 +9,12 @@ namespace Sales.BL
 {
     class Validate
     {
-        public bool CheckFileName(string path, out string managerName, out DateTime dateOfFile)
+        public bool CheckFileName(string path, out string managerName, out DateTime dateOfFile, out string fileName)
         {
             managerName = null;
             dateOfFile = new DateTime();
-
-            string fileName = Path.GetFileNameWithoutExtension(path);
+            fileName = Path.GetFileNameWithoutExtension(path);
+            
             string[] data = fileName.Split('_');
             if (data.Count() == 2)
             {
