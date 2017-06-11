@@ -33,9 +33,13 @@ namespace Sales.BL
             string managerName;
             DateTime dateOfFile;
             string fileName;
+            
+            Thread.Sleep(1000);
+
             if (validator.CheckFileName(path, out managerName, out dateOfFile, out fileName))
                 using (StreamReader sr = new StreamReader(path))
                 {
+                    Log(string.Format(LogMessages.OpenRead, fileName));
                     while (true)
                     {
                         string line = sr.ReadLine();
@@ -45,10 +49,11 @@ namespace Sales.BL
 
                         string[] data = line.Split(';');
 
-                        if (validator.CheckData(data) == false) LogError(line);
+                        if (validator.CheckData(data) == false) Log(string.Format(LogMessages.Error, line));
                         else
                             _operations.Add(new Operation(data));
                     }
+                    Log(string.Format(LogMessages.ReadDone, fileName));
 
                     if (_operations.Count > 0)
                         WriteToBase(_salesData, _operations, managerName, dateOfFile, fileName);
@@ -60,6 +65,10 @@ namespace Sales.BL
             mutexObj.WaitOne();
 
             {
+                Log(string.Format(LogMessages.BeginCriticalSection, fileName));
+
+                Thread.Sleep(1000);
+
                 DataAccess.Components.Manager manager = _salesData.Managers.FirstOrDefault(x => x.Name == managerName);
                 if (manager == null)
                 {
@@ -75,14 +84,16 @@ namespace Sales.BL
                     _salesData.AddOperation(operation.Date, manager, operation.ClientName,
                         operation.ProductName, session, operation.Price);
                 }
+
+                Log(string.Format(LogMessages.EndCriticalSection, fileName));
             }
 
             mutexObj.ReleaseMutex();
         }
 
-        private void LogError(string line)
+        public void Log(string line)
         {
-            OnLog(new LogInfo() { LogValue = string.Format("Something wrong in: {0}", line) });
+            OnLog(new LogInfo() { LogValue = line });
         }
     }
 }
