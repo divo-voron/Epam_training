@@ -12,6 +12,7 @@ namespace Sales.DataAccess.Components
         public DateTime? DateOfOperation { get; set; }
         public string Name { get; set; }
 
+        public Session() { }
         public Session(int id, DateTime? dateOfOperation, string name)
         {
             Id = id;

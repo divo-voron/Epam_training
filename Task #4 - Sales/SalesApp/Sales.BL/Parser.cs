@@ -63,7 +63,6 @@ namespace Sales.BL
         private void WriteToBase(DataAccess.SalesDataContainer _salesData, ICollection<Operation> _operations, string managerName, DateTime dateOfFile, string fileName)
         {
             mutexObj.WaitOne();
-
             {
                 Log(string.Format(LogMessages.BeginCriticalSection, fileName));
 

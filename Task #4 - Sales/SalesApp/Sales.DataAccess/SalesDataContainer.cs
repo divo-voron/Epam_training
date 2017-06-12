@@ -14,32 +14,45 @@ namespace Sales.DataAccess
         public SalesDataContainer()
         {
             _salesContext = new DAL.SalesContext();
+            DataMapper = new DAMapper();
         }
+
+        public DAMapper DataMapper { get; set; }
 
         public IEnumerable<Client> Clients
         {
-            get { foreach (var client in _salesContext.Clients) yield return ToObject(client); }
+            get { foreach (var client in _salesContext.Clients) yield return DataMapper.Mapping(client); }
         }
         public IEnumerable<Manager> Managers
         {
-            get { foreach (var manager in _salesContext.Managers) yield return ToObject(manager); }
+            get { foreach (var manager in _salesContext.Managers) yield return DataMapper.Mapping(manager); }
         }
         public IEnumerable<Product> Products
         {
-            get { foreach (var product in _salesContext.Products) yield return ToObject(product); }
+            get { foreach (var product in _salesContext.Products) yield return DataMapper.Mapping(product); }
         }
         public IEnumerable<Session> Sessions
         {
-            get { foreach (var session in _salesContext.Sessions) yield return ToObject(session); }
+            get { foreach (var session in _salesContext.Sessions) yield return DataMapper.Mapping(session); }
         }
         public IEnumerable<Operation> Operations
         {
             get { foreach (var operation in _salesContext.Operations) yield return ToObject(operation); }
         }
 
+        public void AddClient(Client client)
+        {
+            _salesContext.Clients.Add(ToEntity(client));
+            _salesContext.SaveChanges();
+        }
         public void AddManager(Manager manager)
         {
             _salesContext.Managers.Add(ToEntity(manager));
+            _salesContext.SaveChanges();
+        }
+        public void AddProduct(Product product)
+        {
+            _salesContext.Products.Add(ToEntity(product));
             _salesContext.SaveChanges();
         }
         public void AddSession(Session session)
@@ -74,26 +87,11 @@ namespace Sales.DataAccess
             _salesContext.SaveChanges();
         }
 
-        private Client ToObject(DAL.Client client)
-        {
-            return new Client(client.ID, client.Name);
-        }
-        private Manager ToObject(DAL.Manager manager)
-        {
-            return new Manager(manager.ID, manager.Name);
-        }
-        private Product ToObject(DAL.Product product)
-        {
-            return new Product(product.ID, product.Name);
-        }
-        private Session ToObject(DAL.Session session)
-        {
-            return new Session(session.ID, session.Date, session.Name);
-        }
         private Operation ToObject(DAL.Operation operation)
         {
-            return new Operation(operation.ID, operation.DateOfOperation, ToObject(operation.Manager),
-                ToObject(operation.Client), ToObject(operation.Product), ToObject(operation.Session), operation.Price);
+            return new Operation(operation.ID, operation.DateOfOperation, DataMapper.Mapping(operation.Manager),
+                DataMapper.Mapping(operation.Client), DataMapper.Mapping(operation.Product),
+                DataMapper.Mapping(operation.Session), operation.Price);
         }
 
         private DAL.Client ToEntity(Client client)
@@ -101,41 +99,28 @@ namespace Sales.DataAccess
             DAL.Client clientDAL = _salesContext.Clients.FirstOrDefault(x => x.Name == client.Name);
             if (clientDAL != null) return clientDAL;
             else
-                return new DAL.Client()
-                {
-                    Name = client.Name
-                };
+                return DataMapper.Mapping(client);
         }
         private DAL.Manager ToEntity(Manager manager)
         {
-            DAL.Manager productDAL = _salesContext.Managers.FirstOrDefault(x => x.Name == manager.Name);
-            if (productDAL != null) return productDAL;
+            DAL.Manager managerDAL = _salesContext.Managers.FirstOrDefault(x => x.Name == manager.Name);
+            if (managerDAL != null) return managerDAL;
             else
-                return new DAL.Manager()
-                {
-                    Name = manager.Name
-                };
+                return DataMapper.Mapping(manager);
         }
         private DAL.Product ToEntity(Product product)
         {
             DAL.Product productDAL = _salesContext.Products.FirstOrDefault(x => x.Name == product.Name);
             if (productDAL != null) return productDAL;
             else
-                return new DAL.Product()
-                {
-                    Name = product.Name
-                };
+                return DataMapper.Mapping(product);
         }
         private DAL.Session ToEntity(Session session)
         {
             DAL.Session sessionDAL = _salesContext.Sessions.FirstOrDefault(x => x.Name == session.Name);
             if (sessionDAL != null) return sessionDAL;
             else
-                return new DAL.Session()
-                {
-                    Date = session.DateOfOperation,
-                    Name = session.Name
-                };
+                return DataMapper.Mapping(session);
         }
         private DAL.Operation ToEntity(Operation operation)
         {

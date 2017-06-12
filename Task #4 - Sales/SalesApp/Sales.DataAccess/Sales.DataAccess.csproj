@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -50,6 +54,7 @@
     <Compile Include="Components\Operation.cs" />
     <Compile Include="Components\Product.cs" />
     <Compile Include="Components\Session.cs" />
+    <Compile Include="DAMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SalesDataContainer.cs" />
   </ItemGroup>
@@ -58,6 +63,9 @@
       <Project>{3210cb26-b529-4c33-8d9a-58f3bb8820c5}</Project>
       <Name>Sales.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
