@@ -10,7 +10,7 @@ namespace Sales.ConsoleClient
     {
         public void Write(object sender, BL.LogInfo e)
         {
-            Console.WriteLine(e.LogValue);
+            Console.WriteLine(string.Format("{0}: {1}\r\n", DateTime.Now, e.LogValue));
         }
     }
 }

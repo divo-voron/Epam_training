@@ -18,7 +18,11 @@ namespace Sales.ServiceClient
         public FileWatcherService()
         {
             InitializeComponent();
-        
+
+            this.CanStop = true; // службу можно остановить
+            this.CanPauseAndContinue = true; // службу можно приостановить и затем продолжить
+            this.AutoLog = true; // служба может вести запись в лог
+
             _wd = new BL.WatchDog();
             _logger = new Logger();
             _task = new Task(_wd.Start);
@@ -26,7 +30,7 @@ namespace Sales.ServiceClient
 
         protected override void OnStart(string[] args)
         {
-            _logger.Write(null, new BL.LogInfo() { LogValue =LogMessages.Start });
+            _logger.Write(null, new BL.LogInfo() { LogValue = LogMessages.Start });
             _wd.Parser.Loging += _logger.Write;
             _task.Start();
         }
@@ -35,15 +39,15 @@ namespace Sales.ServiceClient
         protected override void OnPause()
         {
             _logger.Write(null, new BL.LogInfo() { LogValue = LogMessages.Pause });
-            _task.Wait();
-            base.OnPause();
+            _wd.Parser.Loging -= _logger.Write;
+            _task.Dispose();
         }
 
         protected override void OnContinue()
         {
             _logger.Write(null, new BL.LogInfo() { LogValue = LogMessages.Continue });
+            _wd.Parser.Loging += _logger.Write;
             _task.Start();
-            base.OnContinue();
         }
         protected override void OnStop()
         {

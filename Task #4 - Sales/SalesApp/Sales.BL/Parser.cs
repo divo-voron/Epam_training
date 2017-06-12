@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Sales.BL
 {
-    public class Parser
+    public class Parser : IDisposable
     {
         private EventHandler<LogInfo> _loging;
         public event EventHandler<LogInfo> Loging
@@ -33,7 +33,7 @@ namespace Sales.BL
             string managerName;
             DateTime dateOfFile;
             string fileName;
-            
+
             Thread.Sleep(1000);
 
             if (validator.CheckFileName(path, out managerName, out dateOfFile, out fileName))
@@ -54,10 +54,12 @@ namespace Sales.BL
                             _operations.Add(new Operation(data));
                     }
                     Log(string.Format(LogMessages.ReadDone, fileName));
-
-                    if (_operations.Count > 0)
-                        WriteToBase(_salesData, _operations, managerName, dateOfFile, fileName);
                 }
+
+            if (_operations.Count > 0)
+                WriteToBase(_salesData, _operations, managerName, dateOfFile, fileName);
+
+            ReplaceFile(path);
         }
 
         private void WriteToBase(DataAccess.SalesDataContainer _salesData, ICollection<Operation> _operations, string managerName, DateTime dateOfFile, string fileName)
@@ -69,6 +71,7 @@ namespace Sales.BL
                 Thread.Sleep(1000);
 
                 DataAccess.Components.Manager manager = _salesData.Managers.FirstOrDefault(x => x.Name == managerName);
+
                 if (manager == null)
                 {
                     manager = new DataAccess.Components.Manager(0, managerName);
@@ -90,9 +93,53 @@ namespace Sales.BL
             mutexObj.ReleaseMutex();
         }
 
+        private void ReplaceFile(string path)
+        {
+            Log(string.Format(LogMessages.StartMoveFile, Path.GetFileName(path)));
+
+            string folder = System.Configuration.ConfigurationManager.AppSettings["PathToProcessedReports"];
+            if (folder != null)
+            {
+                if (Directory.Exists(folder) == false)
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(folder);
+                    }
+                    catch (PathTooLongException) { Log(LogMessages.PathTooLongException); }
+                }
+
+                try
+                {
+                    string pathDestination = Path.Combine(folder, Path.GetFileNameWithoutExtension(path));
+                    string extension = Path.GetExtension(path);
+
+                    if (File.Exists(string.Concat(pathDestination, extension)))
+                    {
+                        int i = 1;
+                        while (File.Exists(string.Concat(pathDestination, "_", i.ToString(), extension)))
+                        {
+                            i++;
+                        }
+                        pathDestination = string.Concat(pathDestination, "_", i.ToString());
+                    }
+
+                    File.Move(path, string.Concat(pathDestination, extension));
+                }
+                catch (PathTooLongException) { Log(LogMessages.PathTooLongException); }
+
+                Log(string.Format(LogMessages.EndMoveFile, Path.GetFileName(path)));
+            }
+        }
+
         public void Log(string line)
         {
             OnLog(new LogInfo() { LogValue = line });
+        }
+
+        public void Dispose()
+        {
+            _loging = null;
         }
     }
 }

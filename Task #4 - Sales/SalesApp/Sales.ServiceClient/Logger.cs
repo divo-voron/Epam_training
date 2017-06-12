@@ -14,7 +14,7 @@ namespace Sales.ServiceClient
             string fileName = System.Configuration.ConfigurationManager.AppSettings["PathToLog"];
             if (fileName != null)
             {
-                File.AppendAllText(fileName, e.LogValue);
+                File.AppendAllText(fileName, string.Format("{0}: {1}\r\n", DateTime.Now, e.LogValue));
             }
         }
     }

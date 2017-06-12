@@ -12,7 +12,6 @@ namespace Sales.DAL
         public Product()
         {
             Operations = new HashSet<Operation>();
-            OperationsBuffers = new HashSet<OperationsBuffer>();
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,8 +22,5 @@ namespace Sales.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Operation> Operations { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OperationsBuffer> OperationsBuffers { get; set; }
     }
 }

@@ -123,6 +123,9 @@
   <data name="EndCriticalSection" xml:space="preserve">
     <value>Ending of the critical section on the file: {0}</value>
   </data>
+  <data name="EndMoveFile" xml:space="preserve">
+    <value>File {0} successfully moved</value>
+  </data>
   <data name="Error" xml:space="preserve">
     <value>Something wrong in the next line: {0}</value>
   </data>
@@ -132,8 +135,14 @@
   <data name="OpenRead" xml:space="preserve">
     <value>File {0} is successfully opened for reading</value>
   </data>
+  <data name="PathTooLongException" xml:space="preserve">
+    <value>To long path to folder for processed files</value>
+  </data>
   <data name="ReadDone" xml:space="preserve">
     <value>File {0} reading is done. Prepare of writing to the database</value>
+  </data>
+  <data name="StartMoveFile" xml:space="preserve">
+    <value>Preparing to copy a file: {0}</value>
   </data>
   <data name="WatchDogStart" xml:space="preserve">
     <value>FileSystemWatcher is enabled</value>

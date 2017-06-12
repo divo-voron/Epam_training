@@ -79,6 +79,15 @@ namespace Sales.BL {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File {0} successfully moved.
+        /// </summary>
+        internal static string EndMoveFile {
+            get {
+                return ResourceManager.GetString("EndMoveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Something wrong in the next line: {0}.
         /// </summary>
         internal static string Error {
@@ -106,11 +115,29 @@ namespace Sales.BL {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To long path to folder for processed files.
+        /// </summary>
+        internal static string PathTooLongException {
+            get {
+                return ResourceManager.GetString("PathTooLongException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File {0} reading is done. Prepare of writing to the database.
         /// </summary>
         internal static string ReadDone {
             get {
                 return ResourceManager.GetString("ReadDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preparing to copy a file: {0}.
+        /// </summary>
+        internal static string StartMoveFile {
+            get {
+                return ResourceManager.GetString("StartMoveFile", resourceCulture);
             }
         }
         
