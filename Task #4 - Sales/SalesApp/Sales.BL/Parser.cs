@@ -11,6 +11,8 @@ namespace Sales.BL
 {
     public class Parser : IDisposable
     {
+        private static Mutex mutexObj = new Mutex();
+
         private EventHandler<LogInfo> _loging;
         public event EventHandler<LogInfo> Loging
         {
@@ -21,8 +23,6 @@ namespace Sales.BL
         {
             if (_loging != null) _loging(this, logInfo);
         }
-
-        private static Mutex mutexObj = new Mutex();
 
         public void Parse(string path)
         {
@@ -64,8 +64,10 @@ namespace Sales.BL
 
         private void WriteToBase(DataAccess.SalesDataContainer _salesData, ICollection<Operation> _operations, string managerName, DateTime dateOfFile, string fileName)
         {
-            mutexObj.WaitOne();
+            try
             {
+                mutexObj.WaitOne();
+
                 Log(string.Format(LogMessages.BeginCriticalSection, fileName));
 
                 Thread.Sleep(1000);
@@ -89,47 +91,54 @@ namespace Sales.BL
 
                 Log(string.Format(LogMessages.EndCriticalSection, fileName));
             }
-
-            mutexObj.ReleaseMutex();
+            catch (Exception e) { Log(e.ToString()); }
+            finally
+            {
+                mutexObj.ReleaseMutex();
+            }
         }
 
         private void ReplaceFile(string path)
         {
-            Log(string.Format(LogMessages.StartMoveFile, Path.GetFileName(path)));
-
-            string folder = System.Configuration.ConfigurationManager.AppSettings["PathToProcessedReports"];
-            if (folder != null)
+            try
             {
-                if (Directory.Exists(folder) == false)
+                Log(string.Format(LogMessages.StartMoveFile, Path.GetFileName(path)));
+
+                string folder = System.Configuration.ConfigurationManager.AppSettings["PathToProcessedReports"];
+                if (folder != null)
                 {
+                    if (Directory.Exists(folder) == false)
+                    {
+                        try
+                        {
+                            Directory.CreateDirectory(folder);
+                        }
+                        catch (PathTooLongException) { Log(LogMessages.PathTooLongException); }
+                    }
+
                     try
                     {
-                        Directory.CreateDirectory(folder);
+                        string pathDestination = Path.Combine(folder, Path.GetFileNameWithoutExtension(path));
+                        string extension = Path.GetExtension(path);
+
+                        if (File.Exists(string.Concat(pathDestination, extension)))
+                        {
+                            int i = 1;
+                            while (File.Exists(string.Concat(pathDestination, "_", i.ToString(), extension)))
+                            {
+                                i++;
+                            }
+                            pathDestination = string.Concat(pathDestination, "_", i.ToString());
+                        }
+
+                        File.Move(path, string.Concat(pathDestination, extension));
                     }
                     catch (PathTooLongException) { Log(LogMessages.PathTooLongException); }
+
+                    Log(string.Format(LogMessages.EndMoveFile, Path.GetFileName(path)));
                 }
-
-                try
-                {
-                    string pathDestination = Path.Combine(folder, Path.GetFileNameWithoutExtension(path));
-                    string extension = Path.GetExtension(path);
-
-                    if (File.Exists(string.Concat(pathDestination, extension)))
-                    {
-                        int i = 1;
-                        while (File.Exists(string.Concat(pathDestination, "_", i.ToString(), extension)))
-                        {
-                            i++;
-                        }
-                        pathDestination = string.Concat(pathDestination, "_", i.ToString());
-                    }
-
-                    File.Move(path, string.Concat(pathDestination, extension));
-                }
-                catch (PathTooLongException) { Log(LogMessages.PathTooLongException); }
-
-                Log(string.Format(LogMessages.EndMoveFile, Path.GetFileName(path)));
             }
+            catch (Exception e) { Log(e.ToString()); }
         }
 
         public void Log(string line)

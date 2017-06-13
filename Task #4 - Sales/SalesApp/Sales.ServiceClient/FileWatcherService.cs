@@ -19,9 +19,8 @@ namespace Sales.ServiceClient
         {
             InitializeComponent();
 
-            this.CanStop = true; // службу можно остановить
-            this.CanPauseAndContinue = true; // службу можно приостановить и затем продолжить
-            this.AutoLog = true; // служба может вести запись в лог
+            this.CanStop = true;
+            this.CanPauseAndContinue = true;
 
             _wd = new BL.WatchDog();
             _logger = new Logger();

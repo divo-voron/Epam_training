@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FreeFileInfo.cs" />
     <Compile Include="LogInfo.cs" />
     <Compile Include="LogMessages.Designer.cs">
       <AutoGen>True</AutoGen>
