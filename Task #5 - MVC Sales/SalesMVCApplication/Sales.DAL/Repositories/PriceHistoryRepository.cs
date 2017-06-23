@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sales.DAL.Repositories
 {
-    public class PriceHistoryRepository : IRepository<PriceHistory>
+    class PriceHistoryRepository : IRepository<PriceHistory>
     {
         private Sales.Model.Models.SalesDataBaseContext _context;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Sales.DAL.Repositories
 {
-    public class ManagerRepository:IRepository<Manager>
+    class ManagerRepository:IRepository<Manager>
     {
         private Sales.Model.Models.SalesDataBaseContext _context;
 

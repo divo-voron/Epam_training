@@ -1,4 +1,5 @@
 ﻿using Sales.DAL.Repositories;
+using Sales.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +11,14 @@ namespace Sales.DAL
     public class UnitOfWork : IDisposable
     {
         private Sales.Model.Models.SalesDataBaseContext _context = new Sales.Model.Models.SalesDataBaseContext();
-        private ClientRepository clientRepo;
-        private ManagerRepository managerRepo;
-        private OperationRepository operationRepo;
-        private PriceHistoryRepository priceHistoryRepo;
-        private ProductRepository productRepo;
-        private SessionRepository sessionRepo;
+        private IRepository<Client> clientRepo;
+        private IRepository<Manager> managerRepo;
+        private IRepository<Operation> operationRepo;
+        private IRepository<PriceHistory> priceHistoryRepo;
+        private IRepository<Product> productRepo;
+        private IRepository<Session> sessionRepo;
 
-        public ClientRepository Clients
+        public IRepository<Client> Clients
         {
             get
             {
@@ -26,7 +27,7 @@ namespace Sales.DAL
                 return clientRepo;
             }
         }
-        public ManagerRepository Managers
+        public IRepository<Manager> Managers
         {
             get
             {
@@ -35,7 +36,7 @@ namespace Sales.DAL
                 return managerRepo;
             }
         }
-        public OperationRepository Operations
+        public IRepository<Operation> Operations
         {
             get
             {
@@ -44,7 +45,7 @@ namespace Sales.DAL
                 return operationRepo;
             }
         }
-        public PriceHistoryRepository PriceHistories
+        public IRepository<PriceHistory> PriceHistories
         {
             get
             {
@@ -53,7 +54,7 @@ namespace Sales.DAL
                 return priceHistoryRepo;
             }
         }
-        public ProductRepository Products
+        public IRepository<Product> Products
         {
             get
             {
@@ -62,7 +63,7 @@ namespace Sales.DAL
                 return productRepo;
             }
         }
-        public SessionRepository Sessions
+        public IRepository<Session> Sessions
         {
             get
             {
@@ -71,6 +72,7 @@ namespace Sales.DAL
                 return sessionRepo;
             }
         }
+
         public void Save()
         {
             _context.SaveChanges();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sales.MVCClient.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,20 +9,42 @@ namespace Sales.MVCClient.Controllers
 {
     public class ManagersController : Controller
     {
-        BL.Handler h = new BL.Handler();
-        // GET: Managers
-        public ActionResult Index()
+        BL.Handler handler;
+        MVCMapper mapper;
+        const int pageSize = 3; // количество объектов на страницу
+
+        public ManagersController()
         {
-            return View(h.Method());
-        
-            //return View();
+            handler = new BL.Handler();
+            mapper = new MVCMapper();
+        }
+
+        // GET: Managers
+        public ActionResult Index(int pageNumber = 1)
+        {
+            IEnumerable<Manager> managersPerPages = handler.GetManagerPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x));
+            PageInfo pageInfo = new PageInfo
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalItems = handler.Managers.Count()
+            };
+            IndexViewModelPagination ivmp = new IndexViewModelPagination
+            {
+                PageInfo = pageInfo,
+                Managers = managersPerPages
+            };
+            return View(ivmp);
         }
 
         // GET: Managers/Details/5
         public ActionResult Details(int id)
         {
-            var item = h.Method().FirstOrDefault(x => x.ID == id);
-            return PartialView(item);
+            var manager = handler.Managers.FirstOrDefault(x => x.ID == id);
+            if (manager != null)
+                return View(mapper.Mapping(manager));
+            else
+                return View();
         }
 
         // GET: Managers/Create
@@ -32,12 +55,11 @@ namespace Sales.MVCClient.Controllers
 
         // POST: Managers/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Manager manager)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                handler.AddManager(mapper.Mapping(manager));
                 return RedirectToAction("Index");
             }
             catch
@@ -49,17 +71,20 @@ namespace Sales.MVCClient.Controllers
         // GET: Managers/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var manager = handler.Managers.FirstOrDefault(x => x.ID == id);
+            if (manager != null)
+                return View(mapper.Mapping(manager));
+            else
+                return View();
         }
 
         // POST: Managers/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Manager manager)
         {
             try
             {
-                // TODO: Add update logic here
-
+                handler.EditManager(mapper.Mapping(manager));
                 return RedirectToAction("Index");
             }
             catch
@@ -71,17 +96,20 @@ namespace Sales.MVCClient.Controllers
         // GET: Managers/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var manager = handler.Managers.FirstOrDefault(x => x.ID == id);
+            if (manager != null)
+                return View(mapper.Mapping(manager));
+            else
+                return View();
         }
 
         // POST: Managers/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id, Manager manager)
         {
             try
             {
-                // TODO: Add delete logic here
-
+                handler.DeleteManager(mapper.Mapping(manager));
                 return RedirectToAction("Index");
             }
             catch

@@ -11,7 +11,7 @@ namespace Sales.Client
         static void Main(string[] args)
         {
             BL.Handler h = new BL.Handler();
-            h.Method();
+            //h.Method();
         }
     }
 }

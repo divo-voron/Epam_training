@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DALMapper.cs" />
+    <Compile Include="BLMapper.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="Model\Client.cs" />
     <Compile Include="Model\Manager.cs" />
