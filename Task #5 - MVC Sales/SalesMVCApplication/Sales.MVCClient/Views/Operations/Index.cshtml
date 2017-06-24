@@ -10,15 +10,16 @@
 @{
     ViewBag.Title = "Home Page";
 }
+
 <form method="get">
-    @Html.DropDownListFor(m=>m.Manager, ViewBag.Managers as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.DropDownList("client", ViewBag.Clients as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.DropDownList("product", ViewBag.Products as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.DropDownList("price", ViewBag.PriceHistories as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.DropDownList("session", ViewBag.Sessions as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ActionLink("Filter", "Filter", new { pageNumber = Model.PageInfo.PageNumber, manager = Model.Manager })
-    @*<input type="submit" value="Filter" class=" btn btn-default" />*@
+    @Html.DropDownListFor(m=>m.ItemsList.Managers.SelectedValue, Model.ItemsList.Managers, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.DropDownList("client", Model.ItemsList.Clients, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.DropDownList("product", Model.ItemsList.Products, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.DropDownList("price", Model.ItemsList.PriceHistories, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.DropDownList("session", Model.ItemsList.Sessions, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ActionLink("Filter", "Filter", new { model = Model })
 </form>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -31,7 +32,7 @@
         <td>Товар</td>
         <td>Цена</td>
     </tr>
-    @foreach (var item in Model.Operations)
+    @foreach (var item in Model.OperationsPerPages)
     {
         <tr>
             <td>@item.ID</td>

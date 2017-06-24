@@ -15,13 +15,29 @@ namespace Sales.MVCClient.Models
             get { return (int)Math.Ceiling((decimal)TotalItems / PageSize); }
         }
     }
+    public class ItemsList
+    {
+        public System.Web.Mvc.SelectList Clients { get; set; }
+        public System.Web.Mvc.SelectList Managers { get; set; }
+        public System.Web.Mvc.SelectList Products { get; set; }
+        public System.Web.Mvc.SelectList PriceHistories { get; set; }
+        public System.Web.Mvc.SelectList Sessions { get; set; }
+
+    }
     public class IndexViewModelPagination
     {
-        public IEnumerable<Manager> Managers { get; set; }
-        public IEnumerable<Operation> Operations { get; set; }
+        public IEnumerable<Manager> ManagersPerPages { get; set; }
+        public IEnumerable<Operation> OperationsPerPages { get; set; }
         public PageInfo PageInfo { get; set; }
-        public Manager Manager { get; set; }
+        public ItemsList ItemsList { get; set; }
     }
+    public class OperationCreateEdit
+    {
+        public Operation Operation { get; set; }
+        public ItemsList ItemsList { get; set; }
+    }
+
+    #region Standart models
     public class Client
     {
         public int ID { get; set; }
@@ -67,4 +83,5 @@ namespace Sales.MVCClient.Models
         public Product Product { get; set; }
         public Session Session { get; set; }
     }
+    #endregion
 }

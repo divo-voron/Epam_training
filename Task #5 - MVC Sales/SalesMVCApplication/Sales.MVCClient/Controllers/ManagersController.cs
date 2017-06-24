@@ -32,7 +32,7 @@ namespace Sales.MVCClient.Controllers
             IndexViewModelPagination ivmp = new IndexViewModelPagination
             {
                 PageInfo = pageInfo,
-                Managers = managersPerPages
+                ManagersPerPages = managersPerPages
             };
             return View(ivmp);
         }
