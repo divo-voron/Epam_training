@@ -10,7 +10,7 @@ namespace Sales.MVCClient
 {
     class MVCMapper
     {
-        // To MVC Types
+        // To MVC types
         internal Operation Mapping(BL.Model.Operation operation)
         {
             Mapper.Initialize(cfg => cfg.CreateMap<BL.Model.Operation, Operation>()
@@ -54,9 +54,8 @@ namespace Sales.MVCClient
             Mapper.Initialize(cfg => cfg.CreateMap<BL.Model.Session, Session>());
             return Mapper.Map<BL.Model.Session, Session>(session);
         }
-
-
-        // To BL Types
+        
+        // To BL types
         internal BL.Model.Operation Mapping(Operation operation)
         {
             Mapper.Initialize(cfg => cfg.CreateMap<Operation, BL.Model.Operation>()
@@ -99,6 +98,20 @@ namespace Sales.MVCClient
         {
             Mapper.Initialize(cfg => cfg.CreateMap<Session, BL.Model.Session>());
             return Mapper.Map<Session, BL.Model.Session>(session);
+        }
+
+        // To BLIdentity types
+        internal BLIdentity.DTO.UserDTO Mapping(User user)
+        {
+            Mapper.Initialize(cfg => cfg.CreateMap<User, BLIdentity.DTO.UserDTO>());
+            return Mapper.Map<User, BLIdentity.DTO.UserDTO>(user);
+        }
+
+        // To MVC types
+        internal User Mapping(BLIdentity.DTO.UserDTO user)
+        {
+            Mapper.Initialize(cfg => cfg.CreateMap<BLIdentity.DTO.UserDTO, User>());
+            return Mapper.Map<BLIdentity.DTO.UserDTO, User>(user);
         }
     }
 }

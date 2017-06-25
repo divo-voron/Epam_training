@@ -19,7 +19,6 @@ namespace Sales.MVCClient.Controllers
             mapper = new MVCMapper();
         }
 
-        // GET: Operations
         public ActionResult Index(int pageNumber = 1)
         {
             PageInfo pageInfo = new PageInfo
@@ -34,14 +33,26 @@ namespace Sales.MVCClient.Controllers
                 OperationsPerPages = handler.GetOperationPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x)),
                 ItemsList = GetItemsList()
             };
-
             return View(ivmp);
         }
 
-
-        public ActionResult Filter(params object[] a)
+        [HttpPost]
+        public ActionResult Filter(IndexViewModelPagination model)
         {
-            return View("Index");
+            //PageInfo pageInfo = new PageInfo
+            //{
+            //    PageNumber = pageNumber,
+            //    PageSize = pageSize,
+            //    TotalItems = handler.Operations.Count()
+            //};
+            //IndexViewModelPagination ivmp = new IndexViewModelPagination
+            //{
+            //    PageInfo = pageInfo,
+            //    OperationsPerPages = handler.GetOperationPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x)),
+            //    ItemsList = GetItemsList()
+            //};
+
+            return View("Index", model);
         }
 
         // GET: Operations/Details/5
@@ -116,8 +127,7 @@ namespace Sales.MVCClient.Controllers
                 }
                 catch
                 {
-                    OperationCreateEdit op = new OperationCreateEdit() { ItemsList = GetItemsList() };
-                    return View(op);
+                    return View("Error");
                 }
             else
             {

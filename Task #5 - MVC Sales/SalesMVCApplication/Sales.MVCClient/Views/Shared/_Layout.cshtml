@@ -6,7 +6,6 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -25,7 +24,21 @@
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
-                @Html.Partial("_LoginPartial")
+                <ul class="nav navbar-nav navbar-right">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Войти", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Регистрация", "Register", "Account")</li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a>Привет @User.Identity.Name</a>
+                        </li>
+                        <li>@Html.ActionLink("Выход", "Logout", "Account")</li>
+                    }
+
+                </ul>
             </div>
         </div>
     </div>

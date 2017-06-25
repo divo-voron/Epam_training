@@ -1,10 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace Sales.MVCClient.Models
 {
+    public class User
+    {
+        [Required]
+        public string Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string UserName { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Address { get; set; }
+        [Required]
+        public IEnumerable<string> Roles { get; set; }
+    }
     public class PageInfo
     {
         public int PageNumber { get; set; } // номер текущей страницы
