@@ -106,6 +106,11 @@ namespace Sales.MVCClient
             Mapper.Initialize(cfg => cfg.CreateMap<User, BLIdentity.DTO.UserDTO>());
             return Mapper.Map<User, BLIdentity.DTO.UserDTO>(user);
         }
+        internal BLIdentity.DTO.UserDTO Mapping(UserCreate user)
+        {
+            Mapper.Initialize(cfg => cfg.CreateMap<UserCreate, BLIdentity.DTO.UserDTO>());
+            return Mapper.Map<UserCreate, BLIdentity.DTO.UserDTO>(user);
+        }
 
         // To MVC types
         internal User Mapping(BLIdentity.DTO.UserDTO user)

@@ -88,8 +88,7 @@ namespace Sales.MVCClient.Controllers
                 }
                 catch
                 {
-                    OperationCreateEdit op = new OperationCreateEdit() { ItemsList = GetItemsList() };
-                    return View(op);
+                    return View("Error");
                 }
             else
             {

@@ -37,13 +37,13 @@ namespace Sales.MVCClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginModel model)
+        public ActionResult Login(LoginModel model)
         {
-            await SetInitialDataAsync();
+            SetInitialDataAsync();
             if (ModelState.IsValid == true)
             {
                 UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
-                ClaimsIdentity claim = await UserService.Authenticate(userDto);
+                ClaimsIdentity claim = UserService.Authenticate(userDto);
                 if (claim == null)
                 {
                     ModelState.AddModelError("", "Неверный логин или пароль.");
@@ -71,9 +71,9 @@ namespace Sales.MVCClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterModel model)
+        public ActionResult Register(RegisterModel model)
         {
-            await SetInitialDataAsync();
+            SetInitialDataAsync();
             if (ModelState.IsValid == true)
             {
                 UserDTO userDto = new UserDTO
@@ -84,7 +84,7 @@ namespace Sales.MVCClient.Controllers
                     Name = model.Name,
                     Roles = new List<string>() { "user" }
                 };
-                OperationDetails operationDetails = await UserService.Create(userDto);
+                OperationDetails operationDetails = UserService.Create(userDto);
                 if (operationDetails.Succedeed)
                     return View("SuccessRegister");
                 else
@@ -92,9 +92,9 @@ namespace Sales.MVCClient.Controllers
             }
             return View(model);
         }
-        private async Task SetInitialDataAsync()
+        private void SetInitialDataAsync()
         {
-            await UserService.SetInitialData(new UserDTO
+            UserService.SetInitialData(new UserDTO
             {
                 Email = "somemail@mail.ru",
                 UserName = "somemail@mail.ru",
@@ -117,7 +117,7 @@ namespace Sales.MVCClient.Controllers
             
             if (userDTO != null)
             {
-                ViewBag.RolesDTO = UserService.GetRoles();
+                ViewBag.Roles = UserService.GetRoles();
 
                 User user = mapper.Mapping(userDTO);
                 return View(user);
@@ -129,12 +129,16 @@ namespace Sales.MVCClient.Controllers
         [HttpPost]
         public ActionResult Edit(string id, User user)
         {
+            SetInitialDataAsync();
             if (ModelState.IsValid == true)
                 try
                 {
                     UserDTO userDTO = mapper.Mapping(user);
-                    UserService.Update(userDTO);
-                    return RedirectToAction("Index");
+                    OperationDetails operationDetails = UserService.Update(userDTO);
+                    if (operationDetails.Succedeed)
+                        return View("SuccessRegister");
+                    else
+                        return RedirectToAction("Index");
                 }
                 catch
                 {
@@ -150,6 +154,37 @@ namespace Sales.MVCClient.Controllers
                 }
                 else
                     return View("Error");
+            }
+        }
+
+        // GET: Operations/Create
+        public ActionResult Create()
+        {
+            UserCreate user = new UserCreate();
+            ViewBag.Roles = UserService.GetRoles();
+            return View(user);
+        }
+
+        // POST: Operations/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(UserCreate user)
+        {
+            SetInitialDataAsync();
+            if (ModelState.IsValid == true)
+                try
+                {
+                    OperationDetails operationDetails = UserService.Create(mapper.Mapping(user));
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
+                    return View("Error");
+                }
+            else
+            {
+                ViewBag.Roles = UserService.GetRoles();
+                return View(user);
             }
         }
     }
