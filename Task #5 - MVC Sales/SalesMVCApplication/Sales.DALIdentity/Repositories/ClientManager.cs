@@ -37,7 +37,15 @@ namespace Sales.DALIdentity.Repositories
                 _database.SaveChanges();
             }
         }
-
+        public void Delete(ClientProfile item)
+        {
+            ClientProfile clientProfile = _database.ClientProfiles.FirstOrDefault(x => x.Id == item.Id);
+            if (clientProfile != null)
+            {
+                _database.ClientProfiles.Remove(clientProfile);
+                _database.SaveChanges();
+            }
+        }
         public void Dispose()
         {
             _database.Dispose();

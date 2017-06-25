@@ -13,6 +13,7 @@ namespace Sales.BLIdentity.Interfaces
     {
         OperationDetails Create(UserDTO userDto);
         OperationDetails Update(UserDTO userDto);
+        OperationDetails Delete(UserDTO userDto);
         ClaimsIdentity Authenticate(UserDTO userDto);
         void SetInitialData(UserDTO adminDto, List<string> roles);
 

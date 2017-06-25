@@ -83,11 +83,11 @@ namespace Sales.BLIdentity.Services
             ApplicationUser user = Database.UserManager.FindById(userDto.Id);
             if (user != null)
             {
-                user.Id = userDto.Id;
                 user.Email = userDto.Email;
                 user.UserName = userDto.UserName;
-                user.ClientProfile.Address = userDto.Address;
                 user.Roles.Clear();
+                user.ClientProfile.Address = userDto.Address;
+                user.ClientProfile.Name = userDto.Name;
 
                 var result = Database.UserManager.Update(user);
                 if (result.Errors.Count() > 0)
@@ -99,20 +99,27 @@ namespace Sales.BLIdentity.Services
                     Database.UserManager.AddToRole(user.Id, role);
                 }
 
-                // обновляем профиль клиента
-                user.ClientProfile = new ClientProfile() 
-                {
-                    Id = user.Id,
-                    Address = userDto.Address,
-                    Name = userDto.Name
-                };
-
-                //ClientProfile clientProfile = new ClientProfile { Id = user.Id, Address = userDto.Address, Name = userDto.Name };
-
-                //Database.ClientManager.Create(clientProfile);
-                
                 Database.SaveAsync();
                 
+                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+            }
+            else
+            {
+                return new OperationDetails(false, "Пользователь не существует", "Email");
+            }
+        }
+        public OperationDetails Delete(UserDTO userDto)
+        {
+            ApplicationUser user = Database.UserManager.FindById(userDto.Id);
+            if (user != null)
+            {
+                Database.ClientManager.Delete(user.ClientProfile);
+                var result = Database.UserManager.Delete(user);
+                if (result.Errors.Count() > 0)
+                    return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
+
+                Database.SaveAsync();
+
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
             else

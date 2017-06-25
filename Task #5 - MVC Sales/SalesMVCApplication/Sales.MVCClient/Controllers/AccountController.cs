@@ -125,7 +125,6 @@ namespace Sales.MVCClient.Controllers
             else
                 return View("Error");
         }
-
         [HttpPost]
         public ActionResult Edit(string id, User user)
         {
@@ -136,9 +135,9 @@ namespace Sales.MVCClient.Controllers
                     UserDTO userDTO = mapper.Mapping(user);
                     OperationDetails operationDetails = UserService.Update(userDTO);
                     if (operationDetails.Succedeed)
-                        return View("SuccessRegister");
+                        return RedirectToAction("Users");
                     else
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Error");
                 }
                 catch
                 {
@@ -164,7 +163,6 @@ namespace Sales.MVCClient.Controllers
             ViewBag.Roles = UserService.GetRoles();
             return View(user);
         }
-
         // POST: Operations/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -175,7 +173,7 @@ namespace Sales.MVCClient.Controllers
                 try
                 {
                     OperationDetails operationDetails = UserService.Create(mapper.Mapping(user));
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Users");
                 }
                 catch
                 {
@@ -185,6 +183,31 @@ namespace Sales.MVCClient.Controllers
             {
                 ViewBag.Roles = UserService.GetRoles();
                 return View(user);
+            }
+        }
+
+        // GET: Operations/Delete/5
+        public ActionResult Delete(string id)
+        {
+            var user = UserService.GetUsers().FirstOrDefault(x => x.Id == id);
+            if (user != null)
+                return View(mapper.Mapping(user));
+            else
+                return View("Error");
+        }
+
+        // POST: Operations/Delete/5
+        [HttpPost]
+        public ActionResult Delete(string id, User user)
+        {
+            try
+            {
+                UserService.Delete(mapper.Mapping(user));
+                return RedirectToAction("Users");
+            }
+            catch
+            {
+                return View("Error");
             }
         }
     }
