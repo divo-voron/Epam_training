@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Sales.MVCClient.Controllers
 {
+    [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesUser)]
     public class OperationsController : Controller
     {
         BL.Handler handler;
@@ -66,6 +67,7 @@ namespace Sales.MVCClient.Controllers
         }
 
         // GET: Operations/Create
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Create()
         {
             OperationCreateEdit op = new OperationCreateEdit()
@@ -78,6 +80,7 @@ namespace Sales.MVCClient.Controllers
 
         // POST: Operations/Create
         [HttpPost]
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Create(Operation operation)
         {
             if (ModelState.IsValid == true)
@@ -98,6 +101,7 @@ namespace Sales.MVCClient.Controllers
         }
 
         // GET: Operations/Edit/5
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Edit(int id)
         {
             var operation = handler.Operations.FirstOrDefault(x => x.ID == id);
@@ -116,6 +120,7 @@ namespace Sales.MVCClient.Controllers
 
         // POST: Operations/Edit/5
         [HttpPost]
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Edit(int id, Operation operation)
         {
             if (ModelState.IsValid == true)
@@ -136,6 +141,7 @@ namespace Sales.MVCClient.Controllers
         }
 
         // GET: Operations/Delete/5
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Delete(int id)
         {
             var operation = handler.Operations.FirstOrDefault(x => x.ID == id);
@@ -147,6 +153,7 @@ namespace Sales.MVCClient.Controllers
 
         // POST: Operations/Delete/5
         [HttpPost]
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Delete(int id, Operation operation)
         {
             try

@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Sales.MVCClient.Controllers
 {
+    [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesUser)]
     public class ManagersController : Controller
     {
         BL.Handler handler;
@@ -48,6 +49,7 @@ namespace Sales.MVCClient.Controllers
         }
 
         // GET: Managers/Create
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Create()
         {
             return View();
@@ -55,6 +57,7 @@ namespace Sales.MVCClient.Controllers
 
         // POST: Managers/Create
         [HttpPost]
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Create(Manager manager)
         {
             try
@@ -69,6 +72,7 @@ namespace Sales.MVCClient.Controllers
         }
 
         // GET: Managers/Edit/5
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Edit(int id)
         {
             var manager = handler.Managers.FirstOrDefault(x => x.ID == id);
@@ -80,6 +84,7 @@ namespace Sales.MVCClient.Controllers
 
         // POST: Managers/Edit/5
         [HttpPost]
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Edit(int id, Manager manager)
         {
             try
@@ -94,6 +99,7 @@ namespace Sales.MVCClient.Controllers
         }
 
         // GET: Managers/Delete/5
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Delete(int id)
         {
             var manager = handler.Managers.FirstOrDefault(x => x.ID == id);
@@ -105,6 +111,7 @@ namespace Sales.MVCClient.Controllers
 
         // POST: Managers/Delete/5
         [HttpPost]
+        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Delete(int id, Manager manager)
         {
             try

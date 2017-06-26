@@ -157,12 +157,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AccountManagerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagersController.cs" />
     <Compile Include="Controllers\OperationsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\MagicString.cs" />
     <Compile Include="Helper\PagingHelpers.cs" />
     <Compile Include="Models\DataModels.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -221,10 +223,10 @@
     <Content Include="Views\Operations\Details.cshtml" />
     <Content Include="Views\Operations\Edit.cshtml" />
     <Content Include="Views\Operations\Index.cshtml" />
-    <Content Include="Views\Account\Users.cshtml" />
-    <Content Include="Views\Account\Edit.cshtml" />
-    <Content Include="Views\Account\Create.cshtml" />
-    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\AccountManager\Edit.cshtml" />
+    <Content Include="Views\AccountManager\Create.cshtml" />
+    <Content Include="Views\AccountManager\Delete.cshtml" />
+    <Content Include="Views\AccountManager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
