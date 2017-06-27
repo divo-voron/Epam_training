@@ -1,5 +1,6 @@
 ﻿using Antlr.Runtime.Misc;
 using Sales.MVCClient.Models;
+using Sales.MVCClient.Models.Pagination;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;

@@ -11,8 +11,8 @@ namespace Sales.Model.Models
             Database.SetInitializer<SalesDataBaseContext>(null);
         }
 
-        public SalesDataBaseContext()
-            : base("Name=SalesDataBaseContext")
+        public SalesDataBaseContext(string connectionString)
+            : base(connectionString)
         {
         }
 
@@ -21,7 +21,6 @@ namespace Sales.Model.Models
         public DbSet<Operation> Operations { get; set; }
         public DbSet<PriceHistory> PriceHistories { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<Session> Sessions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -30,7 +29,6 @@ namespace Sales.Model.Models
             modelBuilder.Configurations.Add(new OperationMap());
             modelBuilder.Configurations.Add(new PriceHistoryMap());
             modelBuilder.Configurations.Add(new ProductMap());
-            modelBuilder.Configurations.Add(new SessionMap());
         }
     }
 }

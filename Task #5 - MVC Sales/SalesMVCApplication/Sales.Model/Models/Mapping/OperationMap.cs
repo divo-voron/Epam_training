@@ -19,7 +19,6 @@ namespace Sales.Model.Models.Mapping
             this.Property(t => t.Client_ID).HasColumnName("Client_ID");
             this.Property(t => t.Product_ID).HasColumnName("Product_ID");
             this.Property(t => t.PriceHistory_ID).HasColumnName("PriceHistory_ID");
-            this.Property(t => t.Session_ID).HasColumnName("Session_ID");
 
             // Relationships
             this.HasRequired(t => t.Client)
@@ -34,10 +33,6 @@ namespace Sales.Model.Models.Mapping
             this.HasRequired(t => t.Product)
                 .WithMany(t => t.Operations)
                 .HasForeignKey(d => d.Product_ID);
-            this.HasRequired(t => t.Session)
-                .WithMany(t => t.Operations)
-                .HasForeignKey(d => d.Session_ID);
-
         }
     }
 }

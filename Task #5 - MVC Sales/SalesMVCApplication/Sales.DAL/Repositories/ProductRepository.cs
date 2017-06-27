@@ -1,4 +1,5 @@
-﻿using Sales.Model.Models;
+﻿using Sales.DAL.Interfaces;
+using Sales.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +23,19 @@ namespace Sales.DAL.Repositories
 
         public Product Get(int id)
         {
-            return _context.Products.FirstOrDefault(x => x.ID == id);
+            return _context.Products.Find(id);
         }
 
         public void Create(Product item)
         {
-            Sales.Model.Models.Product product = _context.Products.FirstOrDefault(x => x.ID == item.ID);
+            Sales.Model.Models.Product product = _context.Products.Find(item.ID);
             if (product == null)
                 _context.Products.Add(item);
         }
 
         public void Update(Product item)
         {
-            Sales.Model.Models.Product product = _context.Products.FirstOrDefault(x => x.ID == item.ID);
+            Sales.Model.Models.Product product = _context.Products.Find(item.ID);
             if (product != null)
             {
                 product.Name = item.Name;
@@ -44,7 +45,7 @@ namespace Sales.DAL.Repositories
 
         public void Delete(int id)
         {
-            Sales.Model.Models.Product product = _context.Products.FirstOrDefault(x => x.ID == id);
+            Sales.Model.Models.Product product = _context.Products.Find(id);
             if (product != null)
                 _context.Products.Remove(product);
         }

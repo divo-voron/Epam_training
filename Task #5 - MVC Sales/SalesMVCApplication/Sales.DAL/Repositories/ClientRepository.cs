@@ -1,4 +1,5 @@
-﻿using Sales.Model.Models;
+﻿using Sales.DAL.Interfaces;
+using Sales.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +23,19 @@ namespace Sales.DAL.Repositories
 
         public Client Get(int id)
         {
-            return _context.Clients.FirstOrDefault(x => x.ID == id);
+            return _context.Clients.Find(id);
         }
 
         public void Create(Client item)
         {
-            Sales.Model.Models.Client client = _context.Clients.FirstOrDefault(x => x.ID == item.ID);
+            Sales.Model.Models.Client client = _context.Clients.Find(item.ID);
             if (client == null)
                 _context.Clients.Add(item);
         }
 
         public void Update(Client item)
         {
-            Sales.Model.Models.Client client = _context.Clients.FirstOrDefault(x => x.ID == item.ID);
+            Sales.Model.Models.Client client = _context.Clients.Find(item.ID);
             if (client != null)
             {
                 client.Name = item.Name;
@@ -44,7 +45,7 @@ namespace Sales.DAL.Repositories
 
         public void Delete(int id)
         {
-            Sales.Model.Models.Client client = _context.Clients.FirstOrDefault(x => x.ID == id);
+            Sales.Model.Models.Client client = _context.Clients.Find(id);
             if (client != null)
                 _context.Clients.Remove(client);
         }

@@ -1,4 +1,5 @@
-﻿using Sales.Model.Models;
+﻿using Sales.DAL.Interfaces;
+using Sales.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,19 +23,19 @@ namespace Sales.DAL.Repositories
 
         public PriceHistory Get(int id)
         {
-            return _context.PriceHistories.FirstOrDefault(x => x.ID == id);
+            return _context.PriceHistories.Find(id);
         }
 
         public void Create(PriceHistory item)
         {
-            Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.FirstOrDefault(x => x.ID == item.ID);
+            Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.Find(item.ID);
             if (priceHistory == null)
                 _context.PriceHistories.Add(item);
         }
 
         public void Update(PriceHistory item)
         {
-            Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.FirstOrDefault(x => x.ID == item.ID);
+            Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.Find(item.ID);
             if (priceHistory != null)
             {
                 priceHistory.Date = item.Date;
@@ -46,7 +47,7 @@ namespace Sales.DAL.Repositories
 
         public void Delete(int id)
         {
-            Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.FirstOrDefault(x => x.ID == id);
+            Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.Find(id);
             if (priceHistory != null)
                 _context.PriceHistories.Remove(priceHistory);
         }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Sales.MVCClient.Models.CreateEdit;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -41,12 +42,18 @@ namespace Sales.MVCClient.Controllers
         [HttpPost]
         public ActionResult Create(UserCreate user)
         {
-            //SetInitialDataAsync();
             if (ModelState.IsValid == true)
                 try
                 {
                     OperationDetails operationDetails = UserService.Create(mapper.Mapping(user));
-                    return RedirectToAction("Index");
+                    if (operationDetails.Succedeed)
+                        return RedirectToAction("Index");
+                    else
+                    {
+                        ModelState.AddModelError("", operationDetails.Message);
+                        ViewBag.Roles = UserService.GetRoles();
+                        return View(user);
+                    }
                 }
                 catch
                 {
@@ -62,7 +69,7 @@ namespace Sales.MVCClient.Controllers
         // GET: AccountManager/Edit/5
         public ActionResult Edit(string id)
         {
-            UserDTO userDTO = UserService.GetUsers().FirstOrDefault(x => x.Id == id);
+            UserDto userDTO = UserService.GetUsers().FirstOrDefault(x => x.Id == id);
 
             if (userDTO != null)
             {
@@ -79,16 +86,19 @@ namespace Sales.MVCClient.Controllers
         [HttpPost]
         public ActionResult Edit(string id, User user)
         {
-            //SetInitialDataAsync();
             if (ModelState.IsValid == true)
                 try
                 {
-                    UserDTO userDTO = mapper.Mapping(user);
+                    UserDto userDTO = mapper.Mapping(user);
                     OperationDetails operationDetails = UserService.Update(userDTO);
                     if (operationDetails.Succedeed)
                         return RedirectToAction("Index");
                     else
-                        return RedirectToAction("Error");
+                    {
+                        ModelState.AddModelError("", operationDetails.Message);
+                        ViewBag.Roles = UserService.GetRoles();
+                        return View(user);
+                    }
                 }
                 catch
                 {
@@ -96,10 +106,10 @@ namespace Sales.MVCClient.Controllers
                 }
             else
             {
-                UserDTO userDTO = UserService.GetUsers().FirstOrDefault(x => x.Id == id);
+                UserDto userDTO = UserService.GetUsers().FirstOrDefault(x => x.Id == id);
                 if (userDTO != null)
                 {
-                    ViewBag.RolesDTO = UserService.GetRoles();
+                    ViewBag.Roles = UserService.GetRoles();
                     return View(mapper.Mapping(userDTO));
                 }
                 else

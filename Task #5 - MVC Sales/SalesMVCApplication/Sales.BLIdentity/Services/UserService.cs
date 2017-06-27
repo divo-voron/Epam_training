@@ -13,18 +13,18 @@ using System.Threading.Tasks;
 
 namespace Sales.BLIdentity.Services
 {
-    public class UserService : IUserService
+    class UserService : IUserService
     {
-        IUnitOfWork Database { get; set; }
+        IIdentityUnitOfWork Database { get; set; }
 
-        public UserService(IUnitOfWork uow)
+        public UserService(IIdentityUnitOfWork uow)
         {
             Database = uow;
         }
 
-        public ICollection<UserDTO> GetUsers()
+        public ICollection<UserDto> GetUsers()
         {
-            ICollection<UserDTO> usersDTO = new List<UserDTO>();
+            ICollection<UserDto> usersDTO = new List<UserDto>();
 
             foreach (var user in Database.UserManager.Users)
             {
@@ -32,7 +32,7 @@ namespace Sales.BLIdentity.Services
 
                 IEnumerable<string> userRolesId = user.Roles.Select(x => x.RoleId);
 
-                usersDTO.Add(new UserDTO()
+                usersDTO.Add(new UserDto()
                 {
                     Id = user.Id,
                     Name = user.ClientProfile.Name,
@@ -51,7 +51,7 @@ namespace Sales.BLIdentity.Services
             return Database.RoleManager.Roles.Select(x => x.Name);
         }
 
-        public OperationDetails Create(UserDTO userDto)
+        public OperationDetails Create(UserDto userDto)
         {
             ApplicationUser user = Database.UserManager.FindByEmail(userDto.Email);
             if (user == null)
@@ -78,7 +78,7 @@ namespace Sales.BLIdentity.Services
                 return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
             }
         }
-        public OperationDetails Update(UserDTO userDto)
+        public OperationDetails Update(UserDto userDto)
         {
             ApplicationUser user = Database.UserManager.FindById(userDto.Id);
             if (user != null)
@@ -108,7 +108,7 @@ namespace Sales.BLIdentity.Services
                 return new OperationDetails(false, "Пользователь не существует", "Email");
             }
         }
-        public OperationDetails Delete(UserDTO userDto)
+        public OperationDetails Delete(UserDto userDto)
         {
             ApplicationUser user = Database.UserManager.FindById(userDto.Id);
             if (user != null)
@@ -127,7 +127,7 @@ namespace Sales.BLIdentity.Services
                 return new OperationDetails(false, "Пользователь не существует", "Email");
             }
         }
-        public ClaimsIdentity Authenticate(UserDTO userDto)
+        public ClaimsIdentity Authenticate(UserDto userDto)
         {
             ClaimsIdentity claim = null;
             // находим пользователя
@@ -139,7 +139,7 @@ namespace Sales.BLIdentity.Services
         }
 
         // начальная инициализация бд
-        public void SetInitialData(UserDTO adminDto, List<string> roles)
+        public void SetInitialData(UserDto adminDto, List<string> roles)
         {
             foreach (string roleName in roles)
             {

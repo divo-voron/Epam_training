@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Sales.DALIdentity.Repositories
 {
-    public class IdentityUnitOfWork : IUnitOfWork
+    public class IdentityUnitOfWork : IIdentityUnitOfWork
     {
         private ApplicationContext _db;
 

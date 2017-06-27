@@ -11,11 +11,9 @@ namespace Sales.Model.Models
         public int Client_ID { get; set; }
         public int Product_ID { get; set; }
         public int PriceHistory_ID { get; set; }
-        public int Session_ID { get; set; }
         public virtual Client Client { get; set; }
         public virtual Manager Manager { get; set; }
         public virtual PriceHistory PriceHistory { get; set; }
         public virtual Product Product { get; set; }
-        public virtual Session Session { get; set; }
     }
 }

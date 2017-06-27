@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using Sales.MVCClient.Models.Account;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -40,11 +41,11 @@ namespace Sales.MVCClient.Controllers
             SetInitialDataAsync();
             if (ModelState.IsValid == true)
             {
-                UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
+                UserDto userDto = new UserDto { Email = model.Email, Password = model.Password };
                 ClaimsIdentity claim = UserService.Authenticate(userDto);
                 if (claim == null)
                 {
-                    ModelState.AddModelError("", "Неверный логин или пароль.");
+                    ModelState.AddModelError("", Sales.MVCClient.Helper.MagicString.ErrorWrongLoginOrPassword);
                 }
                 else
                 {
@@ -74,7 +75,7 @@ namespace Sales.MVCClient.Controllers
             SetInitialDataAsync();
             if (ModelState.IsValid == true)
             {
-                UserDTO userDto = new UserDTO
+                UserDto userDto = new UserDto
                 {
                     Email = model.Email,
                     Password = model.Password,
@@ -92,13 +93,13 @@ namespace Sales.MVCClient.Controllers
         }
         private void SetInitialDataAsync()
         {
-            UserService.SetInitialData(new UserDTO
+            UserService.SetInitialData(new UserDto
             {
-                Email = "somemail@mail.ru",
-                UserName = "somemail@mail.ru",
-                Password = "ad46D_ewr3",
-                Name = "Семен Семенович Горбунков",
-                Address = "ул. Спортивная, д.30, кв.75",
+                Email = "admin@mail.ru",
+                UserName = "admin@mail.ru",
+                Password = "Qwe123!",
+                Name = "adminName",
+                Address = "adminHome",
                 Roles = new List<string> 
                 { 
                     Sales.MVCClient.Helper.MagicString.RolesUser,

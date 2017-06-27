@@ -1,0 +1,42 @@
+﻿@model Sales.MVCClient.Models.Operation
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Operation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>@Html.DisplayNameFor(model => model.DateOfOperation)</dt>
+        <dd>@Html.DisplayFor(model => model.DateOfOperation)</dd>
+        
+        <dt>@Html.DisplayNameFor(model => model.Manager_ID)</dt>
+        <dd>@Html.DisplayFor(model => model.Manager_ID)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Manager.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Manager.Name)</dd>
+        
+        <dt>@Html.DisplayNameFor(model => model.Client_ID)</dt>
+        <dd>@Html.DisplayFor(model => model.Client_ID)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Client.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Client.Name)</dd>
+        
+        <dt>@Html.DisplayNameFor(model => model.Product_ID)</dt>
+        <dd>@Html.DisplayFor(model => model.Product_ID)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Product.Name)</dt>
+        <dd>@Html.DisplayFor(model => model.Product.Name)</dd>
+        
+        <dt>@Html.DisplayNameFor(model => model.PriceHistory_ID)</dt>
+        <dd>@Html.DisplayFor(model => model.PriceHistory_ID)</dd>
+        <dt>@Html.DisplayNameFor(model => model.PriceHistory.Price)</dt>
+        <dd>@Html.DisplayFor(model => model.PriceHistory.Price)</dd>
+        
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

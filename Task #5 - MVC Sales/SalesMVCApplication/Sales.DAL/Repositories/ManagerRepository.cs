@@ -1,4 +1,5 @@
-﻿using Sales.Model.Models;
+﻿using Sales.DAL.Interfaces;
+using Sales.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Sales.DAL.Repositories
 {
-    class ManagerRepository:IRepository<Manager>
+    class ManagerRepository : IRepository<Manager>
     {
         private Sales.Model.Models.SalesDataBaseContext _context;
 
@@ -22,19 +23,19 @@ namespace Sales.DAL.Repositories
 
         public Manager Get(int id)
         {
-            return _context.Managers.FirstOrDefault(x => x.ID == id);
+            return _context.Managers.Find(id);
         }
 
         public void Create(Manager item)
         {
-            Sales.Model.Models.Manager manager = _context.Managers.FirstOrDefault(x => x.ID == item.ID);
+            Sales.Model.Models.Manager manager = _context.Managers.Find(item.ID);
             if (manager == null)
                 _context.Managers.Add(item);
         }
 
         public void Update(Manager item)
         {
-            Sales.Model.Models.Manager manager = _context.Managers.FirstOrDefault(x => x.ID == item.ID);
+            Sales.Model.Models.Manager manager = _context.Managers.Find(item.ID);
             if (manager != null)
             {
                 manager.Name = item.Name;
@@ -44,7 +45,7 @@ namespace Sales.DAL.Repositories
 
         public void Delete(int id)
         {
-            Sales.Model.Models.Manager manager = _context.Managers.FirstOrDefault(x => x.ID == id);
+            Sales.Model.Models.Manager manager = _context.Managers.Find(id);
             if (manager != null)
                 _context.Managers.Remove(manager);
         }

@@ -52,12 +52,11 @@
   <ItemGroup>
     <Compile Include="BLMapper.cs" />
     <Compile Include="Handler.cs" />
-    <Compile Include="Model\Client.cs" />
-    <Compile Include="Model\Manager.cs" />
-    <Compile Include="Model\Operation.cs" />
-    <Compile Include="Model\PriceHistory.cs" />
-    <Compile Include="Model\Product.cs" />
-    <Compile Include="Model\Session.cs" />
+    <Compile Include="DTO\ClientDto.cs" />
+    <Compile Include="DTO\ManagerDto.cs" />
+    <Compile Include="DTO\OperationDto.cs" />
+    <Compile Include="DTO\PriceHistoryDto.cs" />
+    <Compile Include="DTO\ProductDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

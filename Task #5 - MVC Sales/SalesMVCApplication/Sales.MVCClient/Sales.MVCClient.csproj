@@ -158,17 +158,26 @@
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AccountManagerController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManagersController.cs" />
-    <Compile Include="Controllers\OperationsController.cs" />
+    <Compile Include="Controllers\ManagerController.cs" />
+    <Compile Include="Controllers\OperationController.cs" />
+    <Compile Include="Controllers\PriceHistoryController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\MagicString.cs" />
     <Compile Include="Helper\PagingHelpers.cs" />
+    <Compile Include="Models\CreateEdit\OperationCreateEdit.cs" />
+    <Compile Include="Models\CreateEdit\PriceHistoryCreateEdit.cs" />
+    <Compile Include="Models\CreateEdit\UserCreate.cs" />
     <Compile Include="Models\DataModels.cs" />
-    <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\Account\LoginModel.cs" />
+    <Compile Include="Models\Pagination\IndexViewModelPagination.cs" />
+    <Compile Include="Models\Pagination\ItemsList.cs" />
+    <Compile Include="Models\Pagination\PageInfo.cs" />
+    <Compile Include="Models\Account\RegisterModel.cs" />
     <Compile Include="MVCMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -213,20 +222,35 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\SuccessRegister.cshtml" />
-    <Content Include="Views\Managers\Create.cshtml" />
-    <Content Include="Views\Managers\Delete.cshtml" />
-    <Content Include="Views\Managers\Details.cshtml" />
-    <Content Include="Views\Managers\Edit.cshtml" />
-    <Content Include="Views\Managers\Index.cshtml" />
-    <Content Include="Views\Operations\Create.cshtml" />
-    <Content Include="Views\Operations\Delete.cshtml" />
-    <Content Include="Views\Operations\Details.cshtml" />
-    <Content Include="Views\Operations\Edit.cshtml" />
-    <Content Include="Views\Operations\Index.cshtml" />
+    <Content Include="Views\Manager\Create.cshtml" />
+    <Content Include="Views\Manager\Delete.cshtml" />
+    <Content Include="Views\Manager\Details.cshtml" />
+    <Content Include="Views\Manager\Edit.cshtml" />
+    <Content Include="Views\Manager\Index.cshtml" />
+    <Content Include="Views\Operation\Create.cshtml" />
+    <Content Include="Views\Operation\Delete.cshtml" />
+    <Content Include="Views\Operation\Details.cshtml" />
+    <Content Include="Views\Operation\Edit.cshtml" />
+    <Content Include="Views\Operation\Index.cshtml" />
     <Content Include="Views\AccountManager\Edit.cshtml" />
     <Content Include="Views\AccountManager\Create.cshtml" />
     <Content Include="Views\AccountManager\Delete.cshtml" />
     <Content Include="Views\AccountManager\Index.cshtml" />
+    <Content Include="Views\Client\Index.cshtml" />
+    <Content Include="Views\Client\Create.cshtml" />
+    <Content Include="Views\Client\Delete.cshtml" />
+    <Content Include="Views\Client\Details.cshtml" />
+    <Content Include="Views\Client\Edit.cshtml" />
+    <Content Include="Views\Product\Create.cshtml" />
+    <Content Include="Views\Product\Delete.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
+    <Content Include="Views\Product\Edit.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\PriceHistory\Index.cshtml" />
+    <Content Include="Views\PriceHistory\Create.cshtml" />
+    <Content Include="Views\PriceHistory\Delete.cshtml" />
+    <Content Include="Views\PriceHistory\Details.cshtml" />
+    <Content Include="Views\PriceHistory\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

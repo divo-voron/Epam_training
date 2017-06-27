@@ -20,9 +20,15 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+
+                    <li>@Html.ActionLink("Клиенты", "Index", "Client")</li>
+                    <li>@Html.ActionLink("Менеджеры", "Index", "Manager")</li>
+                    <li>@Html.ActionLink("Товары", "Index", "Product")</li>
+                    <li>@Html.ActionLink("Операции", "Index", "Operation")</li>
+                    <li>@Html.ActionLink("Управление аккаунтами", "Index", "AccountManager")</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (!User.Identity.IsAuthenticated)

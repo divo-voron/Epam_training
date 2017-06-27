@@ -23,7 +23,7 @@ namespace Sales.MVCClient.App_Start
 
         private IUserService CreateUserService()
         {
-            return serviceCreator.CreateUserService("SalesAccountDataBaseContext");
+            return serviceCreator.CreateUserService(Sales.MVCClient.Helper.MagicString.PathAccountDataBase);
         }
     }
 }

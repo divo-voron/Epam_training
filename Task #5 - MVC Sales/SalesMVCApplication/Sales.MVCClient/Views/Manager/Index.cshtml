@@ -1,0 +1,39 @@
+﻿@model Sales.MVCClient.Models.Pagination.IndexViewModelPagination
+@using Sales.MVCClient.Helper
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <td>@Html.DisplayNameFor(m => m.ManagerForLabel.Name)</td>
+        <td>@MagicString.DisplayOperationLabel</td>
+    </tr>
+    @foreach (var item in Model.ManagersPerPages)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>
+                @Html.ActionLink(MagicString.DisplayOperationLabelEdit, "Edit", new { id = item.ID }) |
+                @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID }) |
+                @Html.ActionLink(MagicString.DisplayOperationLabelDelete, "Delete", new { id = item.ID })
+        </td>
+    </tr>
+    }
+</table>
+<br />
+
+
+<div class="btn-group">
+    @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { pageNumber = x }))
+</div>
+
