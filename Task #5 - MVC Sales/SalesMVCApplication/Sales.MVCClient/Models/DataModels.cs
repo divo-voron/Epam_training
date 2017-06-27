@@ -34,6 +34,7 @@ namespace Sales.MVCClient.Models
         [Required]
         public IEnumerable<string> Roles { get; set; }
     }
+
     public class Client
     {
         [System.Web.Mvc.HiddenInput(DisplayValue = false)]
@@ -89,7 +90,7 @@ namespace Sales.MVCClient.Models
         [System.Web.Mvc.HiddenInput(DisplayValue = false)]
         public int ID { get; set; }
 
-        [Display(Name = MagicString.DisplayOperaionDate)]
+        [Display(Name = MagicString.DisplayOperationDate)]
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime DateOfOperation { get; set; }
@@ -103,11 +104,11 @@ namespace Sales.MVCClient.Models
         public int Client_ID { get; set; }
         
         [Required]
-        [Display(Name = MagicString.DisaplyOpertionProduct)]
+        [Display(Name = MagicString.DisplayOperationProduct)]
         public int Product_ID { get; set; }
         
         [Required]
-        [Display(Name = MagicString.DisplayOpertionPrice)]
+        [Display(Name = MagicString.DisplayOperationPrice)]
         public int PriceHistory_ID { get; set; }
         
 
