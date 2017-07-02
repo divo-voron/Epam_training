@@ -15,7 +15,6 @@
     @Html.DropDownList("manager", Model.ItemsList.Managers, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
     @Html.DropDownList("client", Model.ItemsList.Clients, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
     @Html.DropDownList("product", Model.ItemsList.Products, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.DropDownList("price", Model.ItemsList.PriceHistories, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
     <input type="submit" value="Filter" class="btn btn-default" />
 </form>
 
@@ -39,11 +38,20 @@
             <td>@item.Client.Name</td>
             <td>@item.Product.Name</td>
             <td>@item.PriceHistory.Price</td>
-            <td>
-                @Html.ActionLink(MagicString.DisplayOperationLabelEdit, "Edit", new { id = item.ID }) |
-                @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID }) |
-                @Html.ActionLink(MagicString.DisplayOperationLabelDelete, "Delete", new { id = item.ID })
-            </td>
+            @if (ViewBag.IsAdmin)
+            {
+                <td>
+                    @Html.ActionLink(MagicString.DisplayOperationLabelEdit, "Edit", new { id = item.ID }) |
+                    @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID }) |
+                    @Html.ActionLink(MagicString.DisplayOperationLabelDelete, "Delete", new { id = item.ID })
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID })
+                </td>
+            }
         </tr>
     }
 </table>

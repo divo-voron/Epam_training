@@ -178,6 +178,8 @@
     <Compile Include="Models\Pagination\ItemsList.cs" />
     <Compile Include="Models\Pagination\PageInfo.cs" />
     <Compile Include="Models\Account\RegisterModel.cs" />
+    <Compile Include="Models\Visualization\PriceHistoryChartData.cs" />
+    <Compile Include="Models\Visualization\PriceHistoryChartItem.cs" />
     <Compile Include="MVCMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -246,14 +248,16 @@
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\PriceHistory\Index.cshtml" />
+    <Content Include="Views\PriceHistory\Chart.cshtml" />
     <Content Include="Views\PriceHistory\Create.cshtml" />
     <Content Include="Views\PriceHistory\Delete.cshtml" />
     <Content Include="Views\PriceHistory\Details.cshtml" />
     <Content Include="Views\PriceHistory\Edit.cshtml" />
+    <Content Include="Views\PriceHistory\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

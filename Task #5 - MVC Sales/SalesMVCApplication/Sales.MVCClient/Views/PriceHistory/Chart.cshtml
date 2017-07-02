@@ -1,0 +1,62 @@
+﻿@model Sales.MVCClient.Models.Product
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] })
+    </script>
+</head>
+
+<h2>Index</h2>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<form method="get">
+    @Html.DropDownListFor(m=>m.ID, ViewBag.ProductsList as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+
+    <button type="button" onclick="drawChart(@Model.ID)">Edit</button>
+</form>
+
+
+<body>
+    
+    <section id="chart_divSection">
+        <div id="chart_div"></div>
+    </section>
+
+    <script type="text/javascript">
+        function drawChart(productId) {
+            var options = {
+                title: 'Price history',
+                hAxis: {
+                    title: 'Date', titleTextStyle: { color: 'red' },
+                }
+            };
+
+
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Date');
+            data.addColumn('number', 'Price');
+
+            $.getJSON('@Url.Action("GetChartData", "PriceHistory")', {id : productId},
+            function (result) {
+                if (result.length) {
+                    $.each(result, function (index, r) {
+                        data.addRow(
+                            [r.Year, r.Price]
+                        );
+                    });
+                    var chart = new google.visualization.AreaChart(
+                                    document.getElementById('chart_div'));
+                    chart.draw(data, options);
+                };
+            });
+        }
+    </script>
+</body>

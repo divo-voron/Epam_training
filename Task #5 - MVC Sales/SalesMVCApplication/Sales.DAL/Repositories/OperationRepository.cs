@@ -20,7 +20,10 @@ namespace Sales.DAL.Repositories
         {
             return _context.Operations;
         }
-
+        public int Count()
+        {
+            return _context.Operations.Count(); 
+        }
         public Operation Get(int id)
         {
             return _context.Operations.Find(id);
@@ -33,9 +36,21 @@ namespace Sales.DAL.Repositories
             {
                 if (_context.Clients.Any(x => x.ID == item.Client_ID) &&
                     _context.Managers.Any(x => x.ID == item.Manager_ID) &&
-                    _context.PriceHistories.Any(x => x.ID == item.PriceHistory_ID) &&
                     _context.Products.Any(x => x.ID == item.Product_ID))
-                    _context.Operations.Add(item);
+                {
+                    item.PriceHistory.Product_ID = item.Product_ID;
+
+                    var price = _context.PriceHistories.Where(x => x.Product_ID == item.Product_ID).ToList().Last();
+                    if (price != null)
+                    {
+                        if (price.Price == item.PriceHistory.Price)
+                            item.PriceHistory = price;
+                        else
+                            item.PriceHistory.Date = DateTime.Now;
+
+                        _context.Operations.Add(item);
+                    }
+                }
                 else
                     throw new ArgumentException("Невозможно добавить запись в базу.");
             }

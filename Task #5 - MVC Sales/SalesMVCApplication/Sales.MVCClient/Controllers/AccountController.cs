@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using Sales.MVCClient.Models.Account;
+using System.Threading.Tasks;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -36,13 +37,13 @@ namespace Sales.MVCClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel model)
+        public async Task<ActionResult> Login(LoginModel model)
         {
-            SetInitialDataAsync();
+            await SetInitialDataAsync();
             if (ModelState.IsValid == true)
             {
                 UserDto userDto = new UserDto { Email = model.Email, Password = model.Password };
-                ClaimsIdentity claim = UserService.Authenticate(userDto);
+                ClaimsIdentity claim = await UserService.Authenticate(userDto);
                 if (claim == null)
                 {
                     ModelState.AddModelError("", Sales.MVCClient.Helper.MagicString.ErrorWrongLoginOrPassword);
@@ -70,9 +71,9 @@ namespace Sales.MVCClient.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterModel model)
+        public async Task<ActionResult> Register(RegisterModel model)
         {
-            SetInitialDataAsync();
+            await SetInitialDataAsync();
             if (ModelState.IsValid == true)
             {
                 UserDto userDto = new UserDto
@@ -83,7 +84,7 @@ namespace Sales.MVCClient.Controllers
                     Name = model.Name,
                     Roles = new List<string>() { Sales.MVCClient.Helper.MagicString.RolesUser }
                 };
-                OperationDetails operationDetails = UserService.Create(userDto);
+                OperationDetails operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
                     return View("SuccessRegister");
                 else
@@ -91,9 +92,9 @@ namespace Sales.MVCClient.Controllers
             }
             return View(model);
         }
-        private void SetInitialDataAsync()
+        private async Task SetInitialDataAsync()
         {
-            UserService.SetInitialData(new UserDto
+            await UserService.SetInitialData(new UserDto
             {
                 Email = "admin@mail.ru",
                 UserName = "admin@mail.ru",
@@ -105,7 +106,7 @@ namespace Sales.MVCClient.Controllers
                     Sales.MVCClient.Helper.MagicString.RolesUser,
                     Sales.MVCClient.Helper.MagicString.RolesAdmin 
                 }
-            }, 
+            },
             new List<string> 
             {
                 Sales.MVCClient.Helper.MagicString.RolesUser, 

@@ -20,7 +20,10 @@ namespace Sales.DAL.Repositories
         {
             return _context.Managers;
         }
-
+        public int Count()
+        {
+             return _context.Managers.Count();
+        }
         public Manager Get(int id)
         {
             return _context.Managers.Find(id);

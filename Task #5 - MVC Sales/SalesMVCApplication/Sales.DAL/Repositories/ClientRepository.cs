@@ -20,7 +20,10 @@ namespace Sales.DAL.Repositories
         {
             return _context.Clients;
         }
-
+        public int Count()
+        {
+            return _context.Clients.Count();
+        }
         public Client Get(int id)
         {
             return _context.Clients.Find(id);
@@ -31,6 +34,8 @@ namespace Sales.DAL.Repositories
             Sales.Model.Models.Client client = _context.Clients.Find(item.ID);
             if (client == null)
                 _context.Clients.Add(item);
+            else
+                throw new ArgumentException("Сlient with this ID already exists");
         }
 
         public void Update(Client item)

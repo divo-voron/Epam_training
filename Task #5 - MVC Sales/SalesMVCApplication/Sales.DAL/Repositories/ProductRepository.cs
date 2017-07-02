@@ -20,7 +20,10 @@ namespace Sales.DAL.Repositories
         {
             return _context.Products;
         }
-
+        public int Count()
+        {
+            return _context.Products.Count();
+        }
         public Product Get(int id)
         {
             return _context.Products.Find(id);

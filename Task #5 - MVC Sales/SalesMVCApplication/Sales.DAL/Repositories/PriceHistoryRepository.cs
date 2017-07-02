@@ -20,7 +20,10 @@ namespace Sales.DAL.Repositories
         {
             return _context.PriceHistories;
         }
-
+        public int Count()
+        {
+            return _context.PriceHistories.Count();
+        }
         public PriceHistory Get(int id)
         {
             return _context.PriceHistories.Find(id);

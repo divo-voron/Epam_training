@@ -18,25 +18,38 @@ namespace Sales.MVCClient.Controllers
 
         public OperationController()
         {
-            handler = new BL.Handler(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
+            handler = new BL.Handler();
+            handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
             mapper = new MVCMapper();
         }
         // GET: Operations
-        public ActionResult Index(int? client, int? manager, int? product, int? price, int pageNumber = 1)
+        public ActionResult Index(int? client, int? manager, int? product, int pageNumber = 1)
         {
-            PageInfo pageInfo = new PageInfo
+            if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                ViewBag.IsAdmin = true;
+            else
+                ViewBag.IsAdmin = false; 
+            try
             {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalItems = handler.Operations.Count()
-            };
-            IndexViewModelPagination ivmp = new IndexViewModelPagination
+                PageInfo pageInfo = new PageInfo
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalItems = handler.Operations.Count()
+                };
+                IndexViewModelPagination ivmp = new IndexViewModelPagination
+                {
+                    PageInfo = pageInfo,
+                    OperationsPerPages = handler.GetOperationPerPage(pageSize, pageNumber, client, manager, product).Select(x => mapper.Mapping(x)),
+                    ItemsList = GetItemsList()
+                };
+                return View(ivmp);
+            }
+            catch (Exception e)
             {
-                PageInfo = pageInfo,
-                OperationsPerPages = handler.GetOperationPerPage(pageSize, pageNumber, client, manager, product, price).Select(x => mapper.Mapping(x)),
-                ItemsList = GetItemsList()
-            };
-            return View(ivmp);
+                ViewBag.ErrorMessage = e.Message;
+                return View("Error");
+            }
         }
 
         // GET: Operations/Details/5
@@ -136,13 +149,13 @@ namespace Sales.MVCClient.Controllers
         }
 
         // POST: Operations/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
-        public ActionResult Delete(int id, Operation operation)
+        public ActionResult DeleteConfirmed(int id)
         {
             try
             {
-                handler.DeleteOperation(mapper.Mapping(operation));
+                handler.DeleteOperation(id);
                 return RedirectToAction("Index");
             }
             catch

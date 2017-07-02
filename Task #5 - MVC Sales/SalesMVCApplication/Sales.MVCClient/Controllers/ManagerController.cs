@@ -17,25 +17,38 @@ namespace Sales.MVCClient.Controllers
 
         public ManagerController()
         {
-            handler = new BL.Handler(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
+            handler = new BL.Handler();
+            handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
             mapper = new MVCMapper();
         }
 
         // GET: Managers
         public ActionResult Index(int pageNumber = 1)
         {
-            PageInfo pageInfo = new PageInfo
+            if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                ViewBag.IsAdmin = true;
+            else
+                ViewBag.IsAdmin = false; 
+            try
             {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalItems = handler.Managers.Count()
-            };
-            IndexViewModelPagination ivmp = new IndexViewModelPagination
+                PageInfo pageInfo = new PageInfo
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalItems = handler.Managers.Count()
+                };
+                IndexViewModelPagination ivmp = new IndexViewModelPagination
+                {
+                    PageInfo = pageInfo,
+                    ManagersPerPages = handler.GetManagerPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
+                };
+                return View(ivmp);
+            }
+            catch (Exception e)
             {
-                PageInfo = pageInfo,
-                ManagersPerPages = handler.GetManagerPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
-            };
-            return View(ivmp);
+                ViewBag.ErrorMessage = e.Message;
+                return View("Error");
+            }
         }
 
         // GET: Managers/Details/5
@@ -118,13 +131,13 @@ namespace Sales.MVCClient.Controllers
         }
 
         // POST: Managers/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
-        public ActionResult Delete(int id, Manager manager)
+        public ActionResult DeleteConfirmed(int id)
         {
             try
             {
-                handler.DeleteManager(mapper.Mapping(manager));
+                handler.DeleteManager(id);
                 return RedirectToAction("Index");
             }
             catch

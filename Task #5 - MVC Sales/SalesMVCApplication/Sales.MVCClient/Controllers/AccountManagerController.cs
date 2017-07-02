@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Sales.MVCClient.Models.CreateEdit;
+using System.Threading.Tasks;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -40,12 +41,12 @@ namespace Sales.MVCClient.Controllers
 
         // POST: AccountManager/Create
         [HttpPost]
-        public ActionResult Create(UserCreate user)
+        public async Task<ActionResult> Create(UserCreate user)
         {
             if (ModelState.IsValid == true)
                 try
                 {
-                    OperationDetails operationDetails = UserService.Create(mapper.Mapping(user));
+                    OperationDetails operationDetails = await UserService.Create(mapper.Mapping(user));
                     if (operationDetails.Succedeed)
                         return RedirectToAction("Index");
                     else
@@ -84,13 +85,13 @@ namespace Sales.MVCClient.Controllers
 
         // POST: AccountManager/Edit/5
         [HttpPost]
-        public ActionResult Edit(string id, User user)
+        public async Task<ActionResult> Edit(string id, User user)
         {
             if (ModelState.IsValid == true)
                 try
                 {
                     UserDto userDTO = mapper.Mapping(user);
-                    OperationDetails operationDetails = UserService.Update(userDTO);
+                    OperationDetails operationDetails = await UserService.Update(userDTO);
                     if (operationDetails.Succedeed)
                         return RedirectToAction("Index");
                     else
@@ -133,7 +134,7 @@ namespace Sales.MVCClient.Controllers
         {
             try
             {
-                UserService.Delete(mapper.Mapping(user));
+                UserService.Delete(id);
                 return RedirectToAction("Index");
             }
             catch

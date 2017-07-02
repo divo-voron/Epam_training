@@ -51,26 +51,23 @@ namespace Sales.BLIdentity.Services
             return Database.RoleManager.Roles.Select(x => x.Name);
         }
 
-        public OperationDetails Create(UserDto userDto)
+        public async Task<OperationDetails> Create(UserDto userDto)
         {
-            ApplicationUser user = Database.UserManager.FindByEmail(userDto.Email);
+            ApplicationUser user = await Database.UserManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
                 user = new ApplicationUser { Email = userDto.Email, UserName = userDto.Email };
-                var result = Database.UserManager.Create(user, userDto.Password);
+                var result = await Database.UserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
-                
-                // добавляем роли
-                foreach (var role in userDto.Roles)
-                {
-                    Database.UserManager.AddToRole(user.Id, role);
-                }
 
+                // добавляем роли
+                await Database.UserManager.AddToRolesAsync(user.Id, userDto.Roles.ToArray());
+                
                 // создаем профиль клиента
                 ClientProfile clientProfile = new ClientProfile { Id = user.Id, Address = userDto.Address, Name = userDto.Name };
                 Database.ClientManager.Create(clientProfile);
-                Database.SaveAsync();
+                await Database.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
             else
@@ -78,9 +75,9 @@ namespace Sales.BLIdentity.Services
                 return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
             }
         }
-        public OperationDetails Update(UserDto userDto)
+        public async Task<OperationDetails> Update(UserDto userDto)
         {
-            ApplicationUser user = Database.UserManager.FindById(userDto.Id);
+            ApplicationUser user = await Database.UserManager.FindByIdAsync(userDto.Id);
             if (user != null)
             {
                 user.Email = userDto.Email;
@@ -89,18 +86,15 @@ namespace Sales.BLIdentity.Services
                 user.ClientProfile.Address = userDto.Address;
                 user.ClientProfile.Name = userDto.Name;
 
-                var result = Database.UserManager.Update(user);
+                var result = await Database.UserManager.UpdateAsync(user);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
 
                 // добавляем новые роли
-                foreach (var role in userDto.Roles)
-                {
-                    Database.UserManager.AddToRole(user.Id, role);
-                }
-
-                Database.SaveAsync();
+                await Database.UserManager.AddToRolesAsync(user.Id, userDto.Roles.ToArray());
                 
+                await Database.SaveAsync();
+
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
             else
@@ -108,9 +102,9 @@ namespace Sales.BLIdentity.Services
                 return new OperationDetails(false, "Пользователь не существует", "Email");
             }
         }
-        public OperationDetails Delete(UserDto userDto)
+        public async Task<OperationDetails> Delete(string id)
         {
-            ApplicationUser user = Database.UserManager.FindById(userDto.Id);
+            ApplicationUser user = await Database.UserManager.FindByIdAsync(id);
             if (user != null)
             {
                 Database.ClientManager.Delete(user.ClientProfile);
@@ -118,7 +112,7 @@ namespace Sales.BLIdentity.Services
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
 
-                Database.SaveAsync();
+                await Database.SaveAsync();
 
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
@@ -127,30 +121,30 @@ namespace Sales.BLIdentity.Services
                 return new OperationDetails(false, "Пользователь не существует", "Email");
             }
         }
-        public ClaimsIdentity Authenticate(UserDto userDto)
+        public async Task<ClaimsIdentity> Authenticate(UserDto userDto)
         {
             ClaimsIdentity claim = null;
             // находим пользователя
-            ApplicationUser user = Database.UserManager.Find(userDto.Email, userDto.Password);
+            ApplicationUser user = await Database.UserManager.FindAsync(userDto.Email, userDto.Password);
             // авторизуем его и возвращаем объект ClaimsIdentity
             if (user != null)
-                claim = Database.UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
         }
 
         // начальная инициализация бд
-        public void SetInitialData(UserDto adminDto, List<string> roles)
+        public async Task SetInitialData(UserDto adminDto, List<string> roles)
         {
             foreach (string roleName in roles)
             {
-                var role = Database.RoleManager.FindByName(roleName);
+                var role = await Database.RoleManager.FindByNameAsync(roleName);
                 if (role == null)
                 {
                     role = new ApplicationRole { Name = roleName };
-                    Database.RoleManager.Create(role);
+                    await Database.RoleManager.CreateAsync(role);
                 }
             }
-            Create(adminDto);
+            await Create(adminDto);
         }
 
         public void Dispose()

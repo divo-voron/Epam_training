@@ -8,6 +8,7 @@ namespace Sales.DAL.Interfaces
 {
     public interface IRepository<T> where T : class
     {
+        int Count();
         IEnumerable<T> GetAll();
         T Get(int id);
         void Create(T item);

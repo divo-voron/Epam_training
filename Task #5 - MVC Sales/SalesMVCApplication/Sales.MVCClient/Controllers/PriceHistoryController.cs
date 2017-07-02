@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Sales.MVCClient.Models;
 using Sales.MVCClient.Models.CreateEdit;
 using Sales.MVCClient.Models.Pagination;
+using Sales.MVCClient.Models.Visualization;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -18,25 +19,38 @@ namespace Sales.MVCClient.Controllers
 
         public PriceHistoryController()
         {
-            handler = new BL.Handler(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
+            handler = new BL.Handler();
+            handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
             mapper = new MVCMapper();
         }
 
         // GET: PriceHistory
         public ActionResult Index(int pageNumber = 1)
         {
-            PageInfo pageInfo = new PageInfo
+            if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                ViewBag.IsAdmin = true;
+            else
+                ViewBag.IsAdmin = false; 
+            try
             {
-                PageNumber = pageNumber,
-                PageSize = pageSize,
-                TotalItems = handler.PriceHistories.Count()
-            };
-            IndexViewModelPagination ivmp = new IndexViewModelPagination
+                PageInfo pageInfo = new PageInfo
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    TotalItems = handler.PriceHistories.Count()
+                };
+                IndexViewModelPagination ivmp = new IndexViewModelPagination
+                {
+                    PageInfo = pageInfo,
+                    PriceHistoriesPerPages = handler.GetPriceHistoryPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
+                };
+                return View(ivmp);
+            }
+            catch (Exception e)
             {
-                PageInfo = pageInfo,
-                PriceHistoriesPerPages = handler.GetPriceHistoryPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
-            };
-            return View(ivmp);
+                ViewBag.ErrorMessage = e.Message;
+                return View("Error");
+            }
         }
 
         // GET: PriceHistory/Details/5
@@ -130,13 +144,13 @@ namespace Sales.MVCClient.Controllers
         }
 
         // POST: PriceHistory/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
-        public ActionResult Delete(int id, PriceHistory priceHistory)
+        public ActionResult DeleteConfirmed(int id)
         {
             try
             {
-                handler.DeletePriceHistory(mapper.Mapping(priceHistory));
+                handler.DeletePriceHistory(id);
                 return RedirectToAction("Index");
             }
             catch
@@ -148,6 +162,21 @@ namespace Sales.MVCClient.Controllers
         private SelectList GetProductsSelectList()
         {
             return new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name");
+        }
+
+        public ActionResult Chart()
+        {
+            ViewBag.ProductsList = new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name");
+            return View(new Product());
+        }
+
+        public JsonResult GetChartData(object id)
+        {
+            var result = handler.PriceHistories
+                .Where(x => x.Product_ID == 1)
+                .Select(x => new PriceHistoryChartItem() { Date = x.Date.ToShortDateString(), Price = x.Price });
+            
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

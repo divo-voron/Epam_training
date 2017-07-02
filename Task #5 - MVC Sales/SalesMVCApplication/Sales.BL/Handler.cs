@@ -12,73 +12,15 @@ namespace Sales.BL
         Sales.DAL.Interfaces.ISalesUnitOfWork unit;
         BLMapper Mapper;
 
-        public Handler(string connectionString)
+        public Handler()
         {
-            unit = new Sales.DAL.Repositories.SalesUnitOfWork(connectionString);
             Mapper = new BLMapper();
         }
 
-        #region Manager CRUD
-        public IEnumerable<ManagerDto> Managers
+        public void Connect(string connectionString)
         {
-            get { return unit.Managers.GetAll().Select(x => Mapper.Mapping(x)); }
+            unit = new Sales.DAL.Repositories.SalesUnitOfWork(connectionString);
         }
-        public IEnumerable<ManagerDto> GetManagerPerPage(int pageSize, int pageNumber)
-        {
-            return unit.Managers.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
-        }
-        public void AddManager(ManagerDto manager)
-        {
-            unit.Managers.Create(Mapper.Mapping(manager));
-            unit.Save();
-        }
-        public void EditManager(ManagerDto manager)
-        {
-            unit.Managers.Update(Mapper.Mapping(manager));
-            unit.Save();
-        }
-        public void DeleteManager(ManagerDto manager)
-        {
-            unit.Managers.Delete(manager.ID);
-            unit.Save();
-        }
-        #endregion
-
-        #region Opertion CRUD
-        public IEnumerable<OperationDto> Operations
-        {
-            get { return unit.Operations.GetAll().Select(x => Mapper.Mapping(x)); }
-        }
-        public IEnumerable<OperationDto> GetOperationPerPage(int pageSize, int pageNumber)
-        {
-            return unit.Operations.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
-        }
-        public IEnumerable<OperationDto> GetOperationPerPage(int pageSize, int pageNumber, int? client, int? manager, int? product, int? price)
-        {
-            return unit.Operations.GetAll()
-                .Where(x => (client != null ? x.Client_ID == client : true) &&
-                            (manager != null ? x.Manager_ID == manager : true) &&
-                            (product != null ? x.Product_ID == product : true) &&
-                            (price != null ? x.PriceHistory_ID == price : true))
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize).Select(x => Mapper.Mapping(x));
-        }
-        public void AddOperation(OperationDto operation)
-        {
-            unit.Operations.Create(Mapper.Mapping(operation));
-            unit.Save();
-        }
-        public void EditOperation(OperationDto operation)
-        {
-            unit.Operations.Update(Mapper.Mapping(operation));
-            unit.Save();
-        }
-        public void DeleteOperation(OperationDto operation)
-        {
-            unit.Operations.Delete(operation.ID);
-            unit.Save();
-        }
-        #endregion
 
         #region Client CRUD
         public IEnumerable<ClientDto> Clients
@@ -87,7 +29,10 @@ namespace Sales.BL
         }
         public IEnumerable<ClientDto> GetClientPerPage(int pageSize, int pageNumber)
         {
-            return unit.Clients.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            if (unit.Managers.Count() > (pageNumber - 1) * pageSize)
+                return unit.Clients.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            else
+                throw new IndexOutOfRangeException("End of Clients");
         }
         public void AddClient(ClientDto client)
         {
@@ -99,9 +44,79 @@ namespace Sales.BL
             unit.Clients.Update(Mapper.Mapping(client));
             unit.Save();
         }
-        public void DeleteClient(ClientDto client)
+        public void DeleteClient(int id)
         {
-            unit.Clients.Delete(client.ID);
+            unit.Clients.Delete(id);
+            unit.Save();
+        }
+        #endregion
+
+        #region Manager CRUD
+        public IEnumerable<ManagerDto> Managers
+        {
+            get { return unit.Managers.GetAll().Select(x => Mapper.Mapping(x)); }
+        }
+        public IEnumerable<ManagerDto> GetManagerPerPage(int pageSize, int pageNumber)
+        {
+            if (unit.Managers.Count() > (pageNumber - 1) * pageSize)
+                return unit.Managers.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            else
+                throw new IndexOutOfRangeException("End of Managers");
+        }
+        public void AddManager(ManagerDto manager)
+        {
+            unit.Managers.Create(Mapper.Mapping(manager));
+            unit.Save();
+        }
+        public void EditManager(ManagerDto manager)
+        {
+            unit.Managers.Update(Mapper.Mapping(manager));
+            unit.Save();
+        }
+        public void DeleteManager(int id)
+        {
+            unit.Managers.Delete(id);
+            unit.Save();
+        }
+        #endregion
+
+        #region Opertion CRUD
+        public IEnumerable<OperationDto> Operations
+        {
+            get { return unit.Operations.GetAll().Select(x => Mapper.Mapping(x)); }
+        }
+        public IEnumerable<OperationDto> GetOperationPerPage(int pageSize, int pageNumber)
+        {
+            if (unit.Managers.Count() > (pageNumber - 1) * pageSize)
+                return unit.Operations.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            else 
+                throw new IndexOutOfRangeException("End of Operations");
+        }
+        public IEnumerable<OperationDto> GetOperationPerPage(int pageSize, int pageNumber, int? client, int? manager, int? product)
+        {
+            var result = unit.Operations.GetAll()
+                            .Where(x => (client != null ? x.Client_ID == client : true) &&
+                                        (manager != null ? x.Manager_ID == manager : true) &&
+                                        (product != null ? x.Product_ID == product : true));
+            if (result.Count() >= (pageNumber - 1) * pageSize)
+                return result.Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            else
+                throw new IndexOutOfRangeException("End of Operations");
+            
+        }
+        public void AddOperation(OperationDto operation)
+        {
+            unit.Operations.Create(Mapper.Mapping(operation));
+            unit.Save();
+        }
+        public void EditOperation(OperationDto operation)
+        {
+            unit.Operations.Update(Mapper.Mapping(operation));
+            unit.Save();
+        }
+        public void DeleteOperation(int id)
+        {
+            unit.Operations.Delete(id);
             unit.Save();
         }
         #endregion
@@ -113,7 +128,10 @@ namespace Sales.BL
         }
         public IEnumerable<ProductDto> GetProductPerPage(int pageSize, int pageNumber)
         {
-            return unit.Products.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            if (unit.Managers.Count() > (pageNumber - 1) * pageSize)
+                return unit.Products.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            else
+                throw new IndexOutOfRangeException("End of Products");
         }
         public void AddProduct(ProductDto product)
         {
@@ -125,9 +143,9 @@ namespace Sales.BL
             unit.Products.Update(Mapper.Mapping(product));
             unit.Save();
         }
-        public void DeleteProduct(ProductDto product)
+        public void DeleteProduct(int id)
         {
-            unit.Products.Delete(product.ID);
+            unit.Products.Delete(id);
             unit.Save();
         }
         #endregion
@@ -139,7 +157,10 @@ namespace Sales.BL
         }
         public IEnumerable<PriceHistoryDto> GetPriceHistoryPerPage(int pageSize, int pageNumber)
         {
-            return unit.PriceHistories.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            if (unit.Managers.Count() > (pageNumber - 1) * pageSize)
+                return unit.PriceHistories.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
+            else
+                throw new IndexOutOfRangeException("End of PriceHistories");
         }
         public void AddPriceHistory(PriceHistoryDto priceHistory)
         {
@@ -151,9 +172,9 @@ namespace Sales.BL
             unit.PriceHistories.Update(Mapper.Mapping(priceHistory));
             unit.Save();
         }
-        public void DeletePriceHistory(PriceHistoryDto priceHistory)
+        public void DeletePriceHistory(int id)
         {
-            unit.PriceHistories.Delete(priceHistory.ID);
+            unit.PriceHistories.Delete(id);
             unit.Save();
         }
         #endregion

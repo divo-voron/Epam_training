@@ -22,11 +22,20 @@
     {
         <tr>
             <td>@item.Name</td>
-            <td>
-                @Html.ActionLink(MagicString.DisplayOperationLabelEdit, "Edit", new { id = item.ID }) |
-                @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID }) |
-                @Html.ActionLink(MagicString.DisplayOperationLabelDelete, "Delete", new { id = item.ID })
-        </td>
+            @if (ViewBag.IsAdmin)
+            {
+                <td>
+                    @Html.ActionLink(MagicString.DisplayOperationLabelEdit, "Edit", new { id = item.ID }) |
+                    @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID }) |
+                    @Html.ActionLink(MagicString.DisplayOperationLabelDelete, "Delete", new { id = item.ID })
+                </td>
+            }
+            else
+            {
+                <td>
+                    @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID })
+                </td>
+            }
     </tr>
     }
 </table>

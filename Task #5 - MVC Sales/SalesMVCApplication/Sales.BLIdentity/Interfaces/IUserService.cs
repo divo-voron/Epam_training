@@ -11,11 +11,11 @@ namespace Sales.BLIdentity.Interfaces
 {
     public interface IUserService : IDisposable
     {
-        OperationDetails Create(UserDto userDto);
-        OperationDetails Update(UserDto userDto);
-        OperationDetails Delete(UserDto userDto);
-        ClaimsIdentity Authenticate(UserDto userDto);
-        void SetInitialData(UserDto adminDto, List<string> roles);
+        Task<OperationDetails> Create(UserDto userDto);
+        Task<OperationDetails> Update(UserDto userDto);
+        Task<OperationDetails> Delete(string id);
+        Task<ClaimsIdentity> Authenticate(UserDto userDto);
+        Task SetInitialData(UserDto adminDto, List<string> roles);
 
         ICollection<UserDto> GetUsers();
         IEnumerable<string> GetRoles();

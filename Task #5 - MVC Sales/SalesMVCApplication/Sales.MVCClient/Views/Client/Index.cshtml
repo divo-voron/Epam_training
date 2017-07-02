@@ -22,12 +22,21 @@
     {
         <tr>
             <td>@item.Name</td>
+            @if (ViewBag.IsAdmin)
+            {
             <td>
                 @Html.ActionLink(MagicString.DisplayOperationLabelEdit, "Edit", new { id = item.ID }) |
                 @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID }) |
                 @Html.ActionLink(MagicString.DisplayOperationLabelDelete, "Delete", new { id = item.ID })
             </td>
-        </tr>
+            }
+            else
+            {
+                <td>
+                @Html.ActionLink(MagicString.DisplayOperationLabelDetails, "Details", new { id = item.ID })
+                </td>
+            }
+</tr>
     }
 </table>
 <br />
@@ -36,4 +45,3 @@
 <div class="btn-group">
     @Html.PageLinks(Model.PageInfo, x => Url.Action("Index", new { pageNumber = x }))
 </div>
-
