@@ -6,20 +6,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Sales.MVCClient.Models.CreateEdit;
+using Sales.BL.Interfaces;
 
 namespace Sales.MVCClient.Controllers
 {
     [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesUser)]
     public class OperationController : Controller
     {
-        BL.Handler handler;
+        Sales.BL.Handler handler;
+        IOperationCRUD operationCRUD;
         MVCMapper mapper;
-        const int pageSize = 5;
+        const int pageSize = 3;
 
-        public OperationController()
+        public OperationController(IOperationCRUD opCRUD)
         {
             handler = new BL.Handler();
             handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
+            operationCRUD = opCRUD;
             mapper = new MVCMapper();
         }
         // GET: Operations
@@ -35,12 +38,12 @@ namespace Sales.MVCClient.Controllers
                 {
                     PageNumber = pageNumber,
                     PageSize = pageSize,
-                    TotalItems = handler.Operations.Count()
+                    TotalItems = operationCRUD.Operations.Count()
                 };
                 IndexViewModelPagination ivmp = new IndexViewModelPagination
                 {
                     PageInfo = pageInfo,
-                    OperationsPerPages = handler.GetOperationPerPage(pageSize, pageNumber, client, manager, product).Select(x => mapper.Mapping(x)),
+                    OperationsPerPages = operationCRUD.GetOperationPerPage(pageSize, pageNumber, client, manager, product).Select(x => mapper.Mapping(x)),
                     ItemsList = GetItemsList()
                 };
                 return View(ivmp);
@@ -55,7 +58,7 @@ namespace Sales.MVCClient.Controllers
         // GET: Operations/Details/5
         public ActionResult Details(int id)
         {
-            var operation = handler.Operations.FirstOrDefault(x => x.ID == id);
+            var operation = operationCRUD.Operations.FirstOrDefault(x => x.ID == id);
             if (operation != null)
                 return View(mapper.Mapping(operation));
             else
@@ -82,7 +85,7 @@ namespace Sales.MVCClient.Controllers
             if (ModelState.IsValid == true)
                 try
                 {
-                    handler.AddOperation(mapper.Mapping(operation));
+                    operationCRUD.AddOperation(mapper.Mapping(operation));
                     return RedirectToAction("Index");
                 }
                 catch (Exception e)
@@ -101,7 +104,7 @@ namespace Sales.MVCClient.Controllers
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Edit(int id)
         {
-            var operation = handler.Operations.FirstOrDefault(x => x.ID == id);
+            var operation = operationCRUD.Operations.FirstOrDefault(x => x.ID == id);
             if (operation != null)
             {
                 OperationCreateEdit op = new OperationCreateEdit()
@@ -123,7 +126,7 @@ namespace Sales.MVCClient.Controllers
             if (ModelState.IsValid == true)
                 try
                 {
-                    handler.EditOperation(mapper.Mapping(operation));
+                    operationCRUD.EditOperation(mapper.Mapping(operation));
                     return RedirectToAction("Index");
                 }
                 catch
@@ -141,7 +144,7 @@ namespace Sales.MVCClient.Controllers
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Delete(int id)
         {
-            var operation = handler.Operations.FirstOrDefault(x => x.ID == id);
+            var operation = operationCRUD.Operations.FirstOrDefault(x => x.ID == id);
             if (operation != null)
                 return View(mapper.Mapping(operation));
             else
@@ -155,7 +158,7 @@ namespace Sales.MVCClient.Controllers
         {
             try
             {
-                handler.DeleteOperation(id);
+                operationCRUD.DeleteOperation(id);
                 return RedirectToAction("Index");
             }
             catch

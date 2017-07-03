@@ -6,20 +6,20 @@ using System.Web.Mvc;
 using Sales.MVCClient.Models;
 using Sales.MVCClient.Models.Pagination;
 using System.Threading.Tasks;
+using Sales.BL.Interfaces;
 
 namespace Sales.MVCClient.Controllers
 {
     [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesUser)]
     public class ClientController : Controller
     {
-        BL.Handler handler;
+        IClientCRUD handler;
         MVCMapper mapper;
         const int pageSize = 3;
 
-        public ClientController()
+        public ClientController(IClientCRUD handlerCRUD)
         {
-            handler = new BL.Handler();
-            handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
+            handler = handlerCRUD;
             mapper = new MVCMapper();
         }
 

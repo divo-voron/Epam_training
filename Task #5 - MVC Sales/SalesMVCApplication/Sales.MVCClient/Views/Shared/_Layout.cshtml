@@ -18,31 +18,41 @@
                 </button>
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
+
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">
+                            Information
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Clients", "Index", "Client")</li>
+                            <li>@Html.ActionLink("Managers", "Index", "Manager")</li>
+                            <li>@Html.ActionLink("Products", "Index", "Product")</li>
+                            <li>@Html.ActionLink("Operations", "Index", "Operation")</li>
+                            <li>@Html.ActionLink("Price History", "Index", "PriceHistory")</li>
+                            <li>@Html.ActionLink("Chart", "Chart", "PriceHistory")</li>
+                            
+                        </ul>
+                    </li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-
-                    <li>@Html.ActionLink("Клиенты", "Index", "Client")</li>
-                    <li>@Html.ActionLink("Менеджеры", "Index", "Manager")</li>
-                    <li>@Html.ActionLink("Товары", "Index", "Product")</li>
-                    <li>@Html.ActionLink("Операции", "Index", "Operation")</li>
-                    <li>@Html.ActionLink("История цен", "Index", "PriceHistory")</li>
-                    <li>@Html.ActionLink("Управление аккаунтами", "Index", "AccountManager")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Manage accounts", "Index", "AccountManager")</li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (!User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Войти", "Login", "Account")</li>
-                        <li>@Html.ActionLink("Регистрация", "Register", "Account")</li>
+                        <li>@Html.ActionLink("Login", "Login", "Account")</li>
+                        <li>@Html.ActionLink("Register", "Register", "Account")</li>
                     }
                     else
                     {
                         <li>
                             <a>Привет @User.Identity.Name</a>
                         </li>
-                        <li>@Html.ActionLink("Выход", "Logout", "Account")</li>
+                        <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
                     }
 
                 </ul>

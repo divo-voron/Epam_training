@@ -40,16 +40,13 @@ namespace Sales.DAL.Repositories
                 {
                     item.PriceHistory.Product_ID = item.Product_ID;
 
-                    var price = _context.PriceHistories.Where(x => x.Product_ID == item.Product_ID).ToList().Last();
-                    if (price != null)
-                    {
-                        if (price.Price == item.PriceHistory.Price)
-                            item.PriceHistory = price;
-                        else
-                            item.PriceHistory.Date = DateTime.Now;
+                    var price = _context.PriceHistories.Where(x => x.Product_ID == item.Product_ID).ToList();
+                    if (price.Count > 0 && price.Last().Price == item.PriceHistory.Price)
+                        item.PriceHistory = price.Last();
+                    else
+                        item.PriceHistory.Date = DateTime.Now;
 
-                        _context.Operations.Add(item);
-                    }
+                    _context.Operations.Add(item);
                 }
                 else
                     throw new ArgumentException("Невозможно добавить запись в базу.");
@@ -63,13 +60,18 @@ namespace Sales.DAL.Repositories
             {
                 if (_context.Clients.Any(x => x.ID == item.Client_ID) &&
                     _context.Managers.Any(x => x.ID == item.Manager_ID) &&
-                    _context.PriceHistories.Any(x => x.ID == item.PriceHistory_ID) &&
                     _context.Products.Any(x => x.ID == item.Product_ID))
                 {
+                    var price = _context.PriceHistories.Where(x => x.Product_ID == item.Product_ID && x.Date <= item.PriceHistory.Date).ToList();
+                    if (price.Count > 0 && price.Last().Price == item.PriceHistory.Price)
+                        item.PriceHistory = price.Last();
+                    else
+                        item.PriceHistory.Date = DateTime.Now;
+
                     operation.Client_ID = item.Client_ID;
                     operation.DateOfOperation = item.DateOfOperation;
                     operation.Manager_ID = item.Manager_ID;
-                    operation.PriceHistory_ID = item.PriceHistory_ID;
+
                     operation.Product_ID = item.Product_ID;
                     _context.Entry<Operation>(operation).State = System.Data.Entity.EntityState.Modified;
                 }

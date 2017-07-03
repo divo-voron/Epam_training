@@ -19,12 +19,12 @@
 <form method="get">
     @Html.DropDownListFor(m=>m.ID, ViewBag.ProductsList as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
 
+    @*<button type="button" onclick="drawChart(@Model.ID)">Edit</button>*@
     <button type="button" onclick="drawChart(@Model.ID)">Edit</button>
 </form>
 
 
 <body>
-    
     <section id="chart_divSection">
         <div id="chart_div"></div>
     </section>
@@ -37,8 +37,6 @@
                     title: 'Date', titleTextStyle: { color: 'red' },
                 }
             };
-
-
 
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Date');

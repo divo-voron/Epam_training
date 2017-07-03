@@ -5,22 +5,21 @@ using System.Web;
 using System.Web.Mvc;
 using Sales.MVCClient.Models;
 using Sales.MVCClient.Models.Pagination;
+using Sales.BL.Interfaces;
 
 namespace Sales.MVCClient.Controllers
 {
     [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesUser)]
     public class ProductController : Controller
     {
-        BL.Handler handler;
+        IProductCRUD handler;
         MVCMapper mapper;
         const int pageSize = 3;
 
-        public ProductController()
+        public ProductController(IProductCRUD handlerCRUD)
         {
-            handler = new BL.Handler();
-            handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
-        
-            mapper = new MVCMapper();        
+            handler = handlerCRUD;
+            mapper = new MVCMapper();
         }
 
         // GET: Products

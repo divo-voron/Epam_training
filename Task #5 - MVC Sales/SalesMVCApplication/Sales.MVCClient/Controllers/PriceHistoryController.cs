@@ -7,20 +7,23 @@ using Sales.MVCClient.Models;
 using Sales.MVCClient.Models.CreateEdit;
 using Sales.MVCClient.Models.Pagination;
 using Sales.MVCClient.Models.Visualization;
+using Sales.BL.Interfaces;
 
 namespace Sales.MVCClient.Controllers
 {
     [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesUser)]
     public class PriceHistoryController : Controller
     {
-        BL.Handler handler;
+        Sales.BL.Handler handler;
+        IPriceHistoryCRUD priceHistoryCRUD;
         MVCMapper mapper;
         const int pageSize = 3;
 
-        public PriceHistoryController()
+        public PriceHistoryController(IPriceHistoryCRUD phCRUD)
         {
             handler = new BL.Handler();
             handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
+            priceHistoryCRUD = phCRUD;
             mapper = new MVCMapper();
         }
 
@@ -37,12 +40,12 @@ namespace Sales.MVCClient.Controllers
                 {
                     PageNumber = pageNumber,
                     PageSize = pageSize,
-                    TotalItems = handler.PriceHistories.Count()
+                    TotalItems = priceHistoryCRUD.PriceHistories.Count()
                 };
                 IndexViewModelPagination ivmp = new IndexViewModelPagination
                 {
                     PageInfo = pageInfo,
-                    PriceHistoriesPerPages = handler.GetPriceHistoryPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
+                    PriceHistoriesPerPages = priceHistoryCRUD.GetPriceHistoryPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
                 };
                 return View(ivmp);
             }
@@ -56,50 +59,18 @@ namespace Sales.MVCClient.Controllers
         // GET: PriceHistory/Details/5
         public ActionResult Details(int id)
         {
-            var priceHistory = handler.PriceHistories.FirstOrDefault(x => x.ID == id);
+            var priceHistory = priceHistoryCRUD.PriceHistories.FirstOrDefault(x => x.ID == id);
             if (priceHistory != null)
                 return View(mapper.Mapping(priceHistory));
             else
                 return View("Error");
         }
 
-        // GET: PriceHistory/Create
-        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
-        public ActionResult Create()
-        {
-            PriceHistoryCreateEdit price = new PriceHistoryCreateEdit()
-            {
-                Products = GetProductsSelectList()
-            };
-            return View(price);
-        }
-
-        // POST: PriceHistory/Create
-        [HttpPost]
-        [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
-        public ActionResult Create(PriceHistory priceHistory)
-        {
-            if (ModelState.IsValid == true)
-            {
-                try
-                {
-                    handler.AddPriceHistory(mapper.Mapping(priceHistory));
-                    return RedirectToAction("Index");
-                }
-                catch
-                {
-                    return View("Error");
-                }
-            }
-            else
-                return View(priceHistory);
-        }
-
         // GET: PriceHistory/Edit/5
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Edit(int id)
         {
-            var priceHistory = handler.PriceHistories.FirstOrDefault(x => x.ID == id);
+            var priceHistory = priceHistoryCRUD.PriceHistories.FirstOrDefault(x => x.ID == id);
             if (priceHistory != null)
             {
                 PriceHistoryCreateEdit price = new PriceHistoryCreateEdit()
@@ -121,7 +92,7 @@ namespace Sales.MVCClient.Controllers
             if (ModelState.IsValid == true)
                 try
                 {
-                    handler.EditPriceHistory(mapper.Mapping(priceHistory));
+                    priceHistoryCRUD.EditPriceHistory(mapper.Mapping(priceHistory));
                     return RedirectToAction("Index");
                 }
                 catch
@@ -136,7 +107,7 @@ namespace Sales.MVCClient.Controllers
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Delete(int id)
         {
-            var priceHistory = handler.PriceHistories.FirstOrDefault(x => x.ID == id);
+            var priceHistory = priceHistoryCRUD.PriceHistories.FirstOrDefault(x => x.ID == id);
             if (priceHistory != null)
                 return View(mapper.Mapping(priceHistory));
             else
@@ -150,7 +121,7 @@ namespace Sales.MVCClient.Controllers
         {
             try
             {
-                handler.DeletePriceHistory(id);
+                priceHistoryCRUD.DeletePriceHistory(id);
                 return RedirectToAction("Index");
             }
             catch
@@ -159,24 +130,30 @@ namespace Sales.MVCClient.Controllers
             }
         }
 
-        private SelectList GetProductsSelectList()
-        {
-            return new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name");
-        }
-
         public ActionResult Chart()
         {
             ViewBag.ProductsList = new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name");
             return View(new Product());
         }
 
+        private SelectList GetProductsSelectList()
+        {
+            return new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name");
+        }
+
         public JsonResult GetChartData(object id)
         {
-            var result = handler.PriceHistories
-                .Where(x => x.Product_ID == 1)
-                .Select(x => new PriceHistoryChartItem() { Date = x.Date.ToShortDateString(), Price = x.Price });
-            
-            return Json(result, JsonRequestBehavior.AllowGet);
+            int productId;
+            //if (Int32.TryParse(id.ToString(), out productId))
+            {
+                var result = priceHistoryCRUD.PriceHistories
+                    .Where(x => x.Product_ID == 2)
+                    .Select(x => new PriceHistoryChartItem() { Date = x.Date.ToShortDateString(), Price = x.Price });
+
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            //else
+              //  return null;
         }
     }
 }
