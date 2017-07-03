@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using Sales.BL.Interfaces;
+using Sales.MVCClient.Helper;
 using Sales.MVCClient.Models;
 using Sales.MVCClient.Models.CreateEdit;
 using Sales.MVCClient.Models.Pagination;
 using Sales.MVCClient.Models.Visualization;
-using Sales.BL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -51,7 +52,8 @@ namespace Sales.MVCClient.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.ErrorMessage = e.Message;
+                if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                    ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                 return View("Error");
             }
         }

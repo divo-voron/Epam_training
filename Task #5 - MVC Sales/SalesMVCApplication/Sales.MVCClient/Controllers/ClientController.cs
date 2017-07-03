@@ -7,48 +7,53 @@ using Sales.MVCClient.Models;
 using Sales.MVCClient.Models.Pagination;
 using System.Threading.Tasks;
 using Sales.BL.Interfaces;
+using Sales.MVCClient.Helper;
 
 namespace Sales.MVCClient.Controllers
 {
     [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesUser)]
     public class ClientController : Controller
     {
-        IClientCRUD handler;
+        Sales.BL.Handler handler;
+        IClientCRUD clientCRUD;
         MVCMapper mapper;
         const int pageSize = 3;
 
         public ClientController(IClientCRUD handlerCRUD)
         {
-            handler = handlerCRUD;
+            handler = new BL.Handler();
+            handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
+            clientCRUD = handlerCRUD;
             mapper = new MVCMapper();
         }
 
         // GET: Clients
         public ActionResult Index(int pageNumber = 1)
         {
-            if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
-                ViewBag.IsAdmin = true;
-            else
-                ViewBag.IsAdmin = false; 
             try
             {
+                if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                    ViewBag.IsAdmin = true;
+                else
+                    ViewBag.IsAdmin = false; 
+
                 PageInfo pageInfo = new PageInfo
                 {
                     PageNumber = pageNumber,
                     PageSize = pageSize,
-                    TotalItems = handler.Clients.Count()
+                    TotalItems = clientCRUD.Clients.Count()
                 };
                 IndexViewModelPagination ivmp = new IndexViewModelPagination
                 {
                     PageInfo = pageInfo,
-                    ClientsPerPages = handler.GetClientPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
+                    ClientsPerPages = clientCRUD.GetClientPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
                 };
                 return View(ivmp);
             }
             catch (Exception e)
             {
                 if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
-                    ViewBag.ErrorMessage = e.Message;
+                    ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                 return View("Error");
             }
         }
@@ -56,7 +61,7 @@ namespace Sales.MVCClient.Controllers
         // GET: Clients/Details/5
         public ActionResult Details(int id)
         {
-            var client = handler.Clients.FirstOrDefault(x => x.ID == id);
+            var client = clientCRUD.Clients.FirstOrDefault(x => x.ID == id);
             if (client != null)
                 return View(mapper.Mapping(client));
             else
@@ -79,12 +84,12 @@ namespace Sales.MVCClient.Controllers
             {
                 try
                 {
-                    handler.AddClient(mapper.Mapping(client));
+                    clientCRUD.AddClient(mapper.Mapping(client));
                     return RedirectToAction("Index");
                 }
                 catch (Exception e)
                 {
-                    ViewBag.ErrorMessage = e.Message;
+                    ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                     return View("Error");
                 }
             }
@@ -96,7 +101,7 @@ namespace Sales.MVCClient.Controllers
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Edit(int id)
         {
-            var client = handler.Clients.FirstOrDefault(x => x.ID == id);
+            var client = clientCRUD.Clients.FirstOrDefault(x => x.ID == id);
             if (client != null)
                 return View(mapper.Mapping(client));
             else
@@ -111,7 +116,7 @@ namespace Sales.MVCClient.Controllers
             if (ModelState.IsValid == true)
                 try
                 {
-                    handler.EditClient(mapper.Mapping(client));
+                    clientCRUD.EditClient(mapper.Mapping(client));
                     return RedirectToAction("Index");
                 }
                 catch
@@ -126,7 +131,7 @@ namespace Sales.MVCClient.Controllers
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Delete(int id)
         {
-            var client = handler.Clients.FirstOrDefault(x => x.ID == id);
+            var client = clientCRUD.Clients.FirstOrDefault(x => x.ID == id);
             if (client != null)
                 return View(mapper.Mapping(client));
             else
@@ -140,7 +145,7 @@ namespace Sales.MVCClient.Controllers
         {
             try
             {
-                handler.DeleteClient(id);
+                clientCRUD.DeleteClient(id);
                 return RedirectToAction("Index");
             }
             catch

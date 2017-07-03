@@ -6,19 +6,23 @@ using System.Web.Mvc;
 using Sales.MVCClient.Models;
 using Sales.MVCClient.Models.Pagination;
 using Sales.BL.Interfaces;
+using Sales.MVCClient.Helper;
 
 namespace Sales.MVCClient.Controllers
 {
     [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesUser)]
     public class ProductController : Controller
     {
-        IProductCRUD handler;
+        Sales.BL.Handler handler;
+        IProductCRUD productCRUD;
         MVCMapper mapper;
         const int pageSize = 3;
 
         public ProductController(IProductCRUD handlerCRUD)
         {
-            handler = handlerCRUD;
+            handler = new BL.Handler();
+            handler.Connect(Sales.MVCClient.Helper.MagicString.PathSalesDataBase);
+            productCRUD = handlerCRUD;
             mapper = new MVCMapper();
         }
 
@@ -35,18 +39,19 @@ namespace Sales.MVCClient.Controllers
                 {
                     PageNumber = pageNumber,
                     PageSize = pageSize,
-                    TotalItems = handler.Products.Count()
+                    TotalItems = productCRUD.Products.Count()
                 };
                 IndexViewModelPagination ivmp = new IndexViewModelPagination
                 {
                     PageInfo = pageInfo,
-                    ProductsPerPages = handler.GetProductPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
+                    ProductsPerPages = productCRUD.GetProductPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
                 };
                 return View(ivmp);
             }
             catch (Exception e)
             {
-                ViewBag.ErrorMessage = e.Message;
+                if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                    ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                 return View("Error");
             }
         }
@@ -54,7 +59,7 @@ namespace Sales.MVCClient.Controllers
         // GET: Products/Details/5
         public ActionResult Details(int id)
         {
-            var product = handler.Products.FirstOrDefault(x => x.ID == id);
+            var product = productCRUD.Products.FirstOrDefault(x => x.ID == id);
             if (product != null)
                 return View(mapper.Mapping(product));
             else
@@ -77,7 +82,7 @@ namespace Sales.MVCClient.Controllers
             {
                 try
                 {
-                    handler.AddProduct(mapper.Mapping(product));
+                    productCRUD.AddProduct(mapper.Mapping(product));
                     return RedirectToAction("Index");
                 }
                 catch
@@ -93,7 +98,7 @@ namespace Sales.MVCClient.Controllers
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Edit(int id)
         {
-            var product = handler.Products.FirstOrDefault(x => x.ID == id);
+            var product = productCRUD.Products.FirstOrDefault(x => x.ID == id);
             if (product != null)
                 return View(mapper.Mapping(product));
             else
@@ -108,7 +113,7 @@ namespace Sales.MVCClient.Controllers
             if (ModelState.IsValid == true)
                 try
                 {
-                    handler.EditProduct(mapper.Mapping(product));
+                    productCRUD.EditProduct(mapper.Mapping(product));
                     return RedirectToAction("Index");
                 }
                 catch
@@ -123,7 +128,7 @@ namespace Sales.MVCClient.Controllers
         [Authorize(Roles = Sales.MVCClient.Helper.MagicString.RolesAdmin)]
         public ActionResult Delete(int id)
         {
-            var product = handler.Products.FirstOrDefault(x => x.ID == id);
+            var product = productCRUD.Products.FirstOrDefault(x => x.ID == id);
             if (product != null)
                 return View(mapper.Mapping(product));
             else
@@ -137,7 +142,7 @@ namespace Sales.MVCClient.Controllers
         {
             try
             {
-                handler.DeleteProduct(id);
+                productCRUD.DeleteProduct(id);
                 return RedirectToAction("Index");
             }
             catch

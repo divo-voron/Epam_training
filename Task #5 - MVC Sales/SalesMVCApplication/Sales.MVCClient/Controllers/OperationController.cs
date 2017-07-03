@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Sales.MVCClient.Models.CreateEdit;
 using Sales.BL.Interfaces;
+using Sales.MVCClient.Helper;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -28,12 +29,13 @@ namespace Sales.MVCClient.Controllers
         // GET: Operations
         public ActionResult Index(int? client, int? manager, int? product, int pageNumber = 1)
         {
-            if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
-                ViewBag.IsAdmin = true;
-            else
-                ViewBag.IsAdmin = false; 
             try
             {
+                if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                    ViewBag.IsAdmin = true;
+                else
+                    ViewBag.IsAdmin = false; 
+
                 PageInfo pageInfo = new PageInfo
                 {
                     PageNumber = pageNumber,
@@ -50,7 +52,8 @@ namespace Sales.MVCClient.Controllers
             }
             catch (Exception e)
             {
-                ViewBag.ErrorMessage = e.Message;
+                if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                    ViewBag.ErrorMessage = e.Message;
                 return View("Error");
             }
         }
@@ -90,7 +93,8 @@ namespace Sales.MVCClient.Controllers
                 }
                 catch (Exception e)
                 {
-                    ViewBag.ErrorMessage = GetExceptionMessage(e);
+                    if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
+                        ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                     return View("Error");
                 }
             else
@@ -176,18 +180,6 @@ namespace Sales.MVCClient.Controllers
                 Products = new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name"),
                 PriceHistories = new SelectList(handler.PriceHistories.Select(x => mapper.Mapping(x)), "ID", "Price")
             };
-        }
-        private string GetExceptionMessage(Exception e)
-        {
-            if (e.InnerException != null)
-            {
-                if (e.InnerException.InnerException != null)
-                    return e.InnerException.InnerException.Message;
-                else
-                    return e.InnerException.Message;
-            }
-            else
-                return e.Message;
         }
     }
 }

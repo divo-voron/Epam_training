@@ -49,8 +49,10 @@ namespace Sales.DAL.Repositories
                     _context.Operations.Add(item);
                 }
                 else
-                    throw new ArgumentException("Невозможно добавить запись в базу.");
+                    throw new ArgumentException("Can not add an operation to the database");
             }
+            else
+                throw new ArgumentException("Operation with this ID already exists");
         }
 
         public void Update(Operation item)
@@ -76,8 +78,10 @@ namespace Sales.DAL.Repositories
                     _context.Entry<Operation>(operation).State = System.Data.Entity.EntityState.Modified;
                 }
                 else
-                    throw new ArgumentException("Невозможно обновить запись в базе");
+                    throw new ArgumentException("Unable to update operation in database");
             }
+            else
+                throw new ArgumentException("Operation with this ID not found");
         }
 
         public void Delete(int id)

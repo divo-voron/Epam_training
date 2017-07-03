@@ -34,6 +34,8 @@ namespace Sales.DAL.Repositories
             Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.Find(item.ID);
             if (priceHistory == null)
                 _context.PriceHistories.Add(item);
+            else
+                throw new ArgumentException("PriceHistory with this ID already exists");
         }
 
         public void Update(PriceHistory item)
@@ -46,6 +48,8 @@ namespace Sales.DAL.Repositories
                 priceHistory.Product_ID = item.Product_ID;
                 _context.Entry<PriceHistory>(priceHistory).State = System.Data.Entity.EntityState.Modified;
             }
+            else
+                throw new ArgumentException("PriceHistory with this ID not found");
         }
 
         public void Delete(int id)

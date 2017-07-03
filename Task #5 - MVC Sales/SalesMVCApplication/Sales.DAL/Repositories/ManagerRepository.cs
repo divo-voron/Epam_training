@@ -34,6 +34,8 @@ namespace Sales.DAL.Repositories
             Sales.Model.Models.Manager manager = _context.Managers.Find(item.ID);
             if (manager == null)
                 _context.Managers.Add(item);
+            else
+                throw new ArgumentException("Manager with this ID already exists");
         }
 
         public void Update(Manager item)
@@ -44,6 +46,8 @@ namespace Sales.DAL.Repositories
                 manager.Name = item.Name;
                 _context.Entry<Manager>(manager).State = System.Data.Entity.EntityState.Modified;
             }
+            else
+                throw new ArgumentException("Manager with this ID not found");
         }
 
         public void Delete(int id)

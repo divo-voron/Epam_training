@@ -9,6 +9,8 @@ using System.Web;
 using System.Web.Mvc;
 using Sales.MVCClient.Models.CreateEdit;
 using System.Threading.Tasks;
+using System;
+using Sales.MVCClient.Helper;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -130,15 +132,16 @@ namespace Sales.MVCClient.Controllers
 
         // POST: AccountManager/Delete/5
         [HttpPost]
-        public ActionResult Delete(string id, User user)
+        public async Task<ActionResult> Delete(string id, User user)
         {
             try
             {
-                UserService.Delete(id);
+                await UserService.Delete(id);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception e)
             {
+                ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                 return View("Error");
             }
         }

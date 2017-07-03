@@ -68,11 +68,11 @@ namespace Sales.BLIdentity.Services
                 ClientProfile clientProfile = new ClientProfile { Id = user.Id, Address = userDto.Address, Name = userDto.Name };
                 unit.ClientManager.Create(clientProfile);
                 await unit.SaveAsync();
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                return new OperationDetails(true, "Registration successful", "");
             }
             else
             {
-                return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
+                return new OperationDetails(false, "User with such login already exists", "Email");
             }
         }
         public async Task<OperationDetails> Update(UserDto userDto)
@@ -95,11 +95,11 @@ namespace Sales.BLIdentity.Services
                 
                 await unit.SaveAsync();
 
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                return new OperationDetails(true, "Registration successful", "");
             }
             else
             {
-                return new OperationDetails(false, "Пользователь не существует", "Email");
+                return new OperationDetails(false, "User does not exist", "Email");
             }
         }
         public async Task<OperationDetails> Delete(string id)
@@ -114,11 +114,11 @@ namespace Sales.BLIdentity.Services
 
                 await unit.SaveAsync();
 
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                return new OperationDetails(true, "Registration successful", "");
             }
             else
             {
-                return new OperationDetails(false, "Пользователь не существует", "Email");
+                return new OperationDetails(false, "User does not exist", "Email");
             }
         }
         public async Task<ClaimsIdentity> Authenticate(UserDto userDto)

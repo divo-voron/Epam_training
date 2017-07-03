@@ -34,6 +34,8 @@ namespace Sales.DAL.Repositories
             Sales.Model.Models.Product product = _context.Products.Find(item.ID);
             if (product == null)
                 _context.Products.Add(item);
+            else
+                throw new ArgumentException("Product with this ID already exists");
         }
 
         public void Update(Product item)
@@ -44,6 +46,8 @@ namespace Sales.DAL.Repositories
                 product.Name = item.Name;
                 _context.Entry<Product>(product).State = System.Data.Entity.EntityState.Modified;
             }
+            else
+                throw new ArgumentException("Product with this ID not found");
         }
 
         public void Delete(int id)

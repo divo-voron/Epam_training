@@ -10,7 +10,6 @@ namespace Sales.DALIdentity.Interfaces
     public interface IClientManager : IDisposable
     {
         void Create(ClientProfile item);
-        void Update(ClientProfile item);
         void Delete(ClientProfile item);
     }
 }

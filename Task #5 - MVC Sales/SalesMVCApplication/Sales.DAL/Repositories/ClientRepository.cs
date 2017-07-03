@@ -46,6 +46,8 @@ namespace Sales.DAL.Repositories
                 client.Name = item.Name;
                 _context.Entry<Client>(client).State = System.Data.Entity.EntityState.Modified;
             }
+            else
+                throw new ArgumentException("Сlient with this ID not found");
         }
 
         public void Delete(int id)
