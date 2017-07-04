@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sales.BL.Infrastructure;
 
 namespace Sales.BL.Services
 {
@@ -27,7 +28,7 @@ namespace Sales.BL.Services
             if (unit.Products.Count() >= (pageNumber - 1) * pageSize)
                 return unit.Products.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
             else
-                throw new IndexOutOfRangeException("End of Products");
+                throw new MyInvalidOperationException("End of Products");
         }
         public void AddProduct(ProductDto product)
         {

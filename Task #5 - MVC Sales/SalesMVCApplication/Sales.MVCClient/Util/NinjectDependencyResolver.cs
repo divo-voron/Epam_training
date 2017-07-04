@@ -29,7 +29,7 @@ namespace Sales.MVCClient.Util
         {
             kernel.Bind<IClientCRUD>().To<ClientCRUD>();
             kernel.Bind<IManagerCRUD>().To<ManagerCRUD>();
-            kernel.Bind<IOperationCRUD>().To<IOperationCRUD>();
+            kernel.Bind<IOperationCRUD>().To<OperationCRUD>();
             kernel.Bind<IPriceHistoryCRUD>().To<PriceHistoryCRUD>();
             kernel.Bind<IProductCRUD>().To<ProductCRUD>();
         }

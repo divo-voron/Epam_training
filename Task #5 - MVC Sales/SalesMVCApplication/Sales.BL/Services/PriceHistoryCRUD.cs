@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sales.BL.Infrastructure;
 
 namespace Sales.BL.Services
 {
@@ -27,7 +28,7 @@ namespace Sales.BL.Services
             if (unit.PriceHistories.Count() >= (pageNumber - 1) * pageSize)
                 return unit.PriceHistories.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
             else
-                throw new IndexOutOfRangeException("End of PriceHistories");
+                throw new MyInvalidOperationException("End of PriceHistories");
         }
         public void AddPriceHistory(PriceHistoryDto priceHistory)
         {

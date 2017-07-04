@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sales.BL.Infrastructure;
 
 namespace Sales.BL.Services
 {
@@ -26,8 +27,8 @@ namespace Sales.BL.Services
         {
             if (unit.Operations.Count() >= (pageNumber - 1) * pageSize)
                 return unit.Operations.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
-            else 
-                throw new IndexOutOfRangeException("End of Operations");
+            else
+                throw new MyInvalidOperationException("End of Operations");
         }
         public IEnumerable<OperationDto> GetOperationPerPage(int pageSize, int pageNumber, int? client, int? manager, int? product)
         {
@@ -38,7 +39,7 @@ namespace Sales.BL.Services
             if (result.Count() >= (pageNumber - 1) * pageSize)
                 return result.Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
             else
-                throw new IndexOutOfRangeException("End of Operations");
+                throw new MyInvalidOperationException("End of Operations");
             
         }
         public void AddOperation(OperationDto operation)

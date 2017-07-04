@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sales.BL.Infrastructure;
 
 namespace Sales.BL.Services
 {
@@ -27,7 +28,7 @@ namespace Sales.BL.Services
             if (unit.Clients.Count() >= (pageNumber - 1) * pageSize)
                 return unit.Clients.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
             else
-                throw new IndexOutOfRangeException("End of Clients");
+                throw new MyInvalidOperationException("End of Clients");
         }
         public void AddClient(ClientDto client)
         {

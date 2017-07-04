@@ -10,17 +10,16 @@
     </script>
 </head>
 
-<h2>Index</h2>
+<h2>Chart</h2>
 
 @{
     ViewBag.Title = "Home Page";
 }
 
 <form method="get">
-    @Html.DropDownListFor(m=>m.ID, ViewBag.ProductsList as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.DropDownList("productId", ViewBag.Products as SelectList, string.Empty, new { htmlAttributes = new { @class = "form-control" } })
 
-    @*<button type="button" onclick="drawChart(@Model.ID)">Edit</button>*@
-    <button type="button" onclick="drawChart(@Model.ID)">Edit</button>
+    <button type="button" onclick="drawChart()">Show</button>
 </form>
 
 
@@ -30,24 +29,25 @@
     </section>
 
     <script type="text/javascript">
-        function drawChart(productId) {
+        var e = document.getElementById("productId");
+
+        function drawChart() {
             var options = {
                 title: 'Price history',
-                hAxis: {
-                    title: 'Date', titleTextStyle: { color: 'red' },
-                }
+                hAxis: { title: 'Date', titleTextStyle: { color: '#333' } },
+                pointSize: 5,
             };
 
             var data = new google.visualization.DataTable();
             data.addColumn('string', 'Date');
             data.addColumn('number', 'Price');
 
-            $.getJSON('@Url.Action("GetChartData", "PriceHistory")', {id : productId},
+            $.getJSON('@Url.Action("GetChartData", "PriceHistory")', { id: e.value },
             function (result) {
                 if (result.length) {
                     $.each(result, function (index, r) {
                         data.addRow(
-                            [r.Year, r.Price]
+                            [r.Date, r.Price]
                         );
                     });
                     var chart = new google.visualization.AreaChart(

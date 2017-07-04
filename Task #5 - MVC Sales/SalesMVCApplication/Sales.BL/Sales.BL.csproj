@@ -60,6 +60,7 @@
     <Compile Include="DTO\OperationDto.cs" />
     <Compile Include="DTO\PriceHistoryDto.cs" />
     <Compile Include="DTO\ProductDto.cs" />
+    <Compile Include="Infrastructure\MyInvalidOperationException.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
     <Compile Include="Interfaces\IClientCRUD.cs" />
     <Compile Include="Interfaces\IManagerCRUD.cs" />

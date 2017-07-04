@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Sales.BL.Infrastructure;
 
 namespace Sales.BL.Services
 {
@@ -27,7 +28,7 @@ namespace Sales.BL.Services
             if (unit.Managers.Count() >= (pageNumber - 1) * pageSize)
                 return unit.Managers.GetAll().Skip((pageNumber - 1) * pageSize).Take(pageSize).Select(x => Mapper.Mapping(x));
             else
-                throw new IndexOutOfRangeException("End of Managers");
+                throw new MyInvalidOperationException("End of Managers");
         }
         public void AddManager(ManagerDto manager)
         {

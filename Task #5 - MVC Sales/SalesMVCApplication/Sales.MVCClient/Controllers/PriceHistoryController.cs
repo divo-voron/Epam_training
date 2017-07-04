@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Sales.BL.Infrastructure;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -49,6 +50,12 @@ namespace Sales.MVCClient.Controllers
                     PriceHistoriesPerPages = priceHistoryCRUD.GetPriceHistoryPerPage(pageSize, pageNumber).Select(x => mapper.Mapping(x))
                 };
                 return View(ivmp);
+            }
+            catch (MyInvalidOperationException e)
+            {
+                ViewBag.Title = "Invalid Operation";
+                ViewBag.ErrorMessage = e.ErrorMessage;
+                return View("Error");
             }
             catch (Exception e)
             {
@@ -97,8 +104,9 @@ namespace Sales.MVCClient.Controllers
                     priceHistoryCRUD.EditPriceHistory(mapper.Mapping(priceHistory));
                     return RedirectToAction("Index");
                 }
-                catch
+                catch (Exception e)
                 {
+                    ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                     return View("Error");
                 }
             else
@@ -126,15 +134,16 @@ namespace Sales.MVCClient.Controllers
                 priceHistoryCRUD.DeletePriceHistory(id);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception e)
             {
+                ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                 return View("Error");
             }
         }
 
         public ActionResult Chart()
         {
-            ViewBag.ProductsList = new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name");
+            ViewBag.Products = new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name");
             return View(new Product());
         }
 
@@ -143,19 +152,19 @@ namespace Sales.MVCClient.Controllers
             return new SelectList(handler.Products.Select(x => mapper.Mapping(x)), "ID", "Name");
         }
 
-        public JsonResult GetChartData(object id)
+        public JsonResult GetChartData(string id)
         {
             int productId;
-            //if (Int32.TryParse(id.ToString(), out productId))
+            if (Int32.TryParse(id.ToString(), out productId))
             {
                 var result = priceHistoryCRUD.PriceHistories
-                    .Where(x => x.Product_ID == 2)
+                    .Where(x => x.Product_ID == productId)
                     .Select(x => new PriceHistoryChartItem() { Date = x.Date.ToShortDateString(), Price = x.Price });
 
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
-            //else
-              //  return null;
+            else
+                return null;
         }
     }
 }

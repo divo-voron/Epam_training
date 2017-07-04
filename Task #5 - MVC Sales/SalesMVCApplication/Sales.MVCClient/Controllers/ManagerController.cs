@@ -7,6 +7,7 @@ using Sales.MVCClient.Models;
 using Sales.MVCClient.Models.Pagination;
 using Sales.BL.Interfaces;
 using Sales.MVCClient.Helper;
+using Sales.BL.Infrastructure;
 
 namespace Sales.MVCClient.Controllers
 {
@@ -49,6 +50,12 @@ namespace Sales.MVCClient.Controllers
                 };
                 return View(ivmp);
             }
+            catch (MyInvalidOperationException e)
+            {
+                ViewBag.Title = "Invalid Operation";
+                ViewBag.ErrorMessage = e.ErrorMessage;
+                return View("Error");
+            }
             catch (Exception e)
             {
                 if (User.IsInRole(Sales.MVCClient.Helper.MagicString.RolesAdmin))
@@ -86,8 +93,9 @@ namespace Sales.MVCClient.Controllers
                     managerCRUD.AddManager(mapper.Mapping(manager));
                     return RedirectToAction("Index");
                 }
-                catch
+                catch (Exception e)
                 {
+                    ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                     return View("Error");
                 }
             }
@@ -117,8 +125,9 @@ namespace Sales.MVCClient.Controllers
                     managerCRUD.EditManager(mapper.Mapping(manager));
                     return RedirectToAction("Index");
                 }
-                catch
+                catch (Exception e)
                 {
+                    ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                     return View("Error");
                 }
             else
@@ -146,8 +155,9 @@ namespace Sales.MVCClient.Controllers
                 managerCRUD.DeleteManager(id);
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception e)
             {
+                ViewBag.ErrorMessage = new ErrorMessage().Get(e);
                 return View("Error");
             }
         }
