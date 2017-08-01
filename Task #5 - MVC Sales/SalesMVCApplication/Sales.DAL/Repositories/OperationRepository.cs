@@ -8,28 +8,17 @@ using System.Threading.Tasks;
 
 namespace Sales.DAL.Repositories
 {
-    class OperationRepository : IRepository<Operation>
+    class OperationRepository : AbstractRepository<Operation>
     {
         private Sales.Model.Models.SalesDataBaseContext _context;
 
-        public OperationRepository(Sales.Model.Models.SalesDataBaseContext context)
+        public OperationRepository(Sales.Model.Models.SalesDataBaseContext context) :
+            base(context)
         {
             _context = context;
         }
-        public IEnumerable<Operation> GetAll()
-        {
-            return _context.Operations;
-        }
-        public int Count()
-        {
-            return _context.Operations.Count(); 
-        }
-        public Operation Get(int id)
-        {
-            return _context.Operations.Find(id);
-        }
 
-        public void Create(Operation item)
+        public override void Create(Operation item)
         {
             Sales.Model.Models.Operation operation = _context.Operations.Find(item.ID);
             if (operation == null)
@@ -55,7 +44,7 @@ namespace Sales.DAL.Repositories
                 throw new ArgumentException("Operation with this ID already exists");
         }
 
-        public void Update(Operation item)
+        public override void Update(Operation item)
         {
             Sales.Model.Models.Operation operation = _context.Operations.Find(item.ID);
             if (operation != null)
@@ -82,13 +71,6 @@ namespace Sales.DAL.Repositories
             }
             else
                 throw new ArgumentException("Operation with this ID not found");
-        }
-
-        public void Delete(int id)
-        {
-            Sales.Model.Models.Operation operation = _context.Operations.Find(id);
-            if (operation != null)
-                _context.Operations.Remove(operation);
         }
     }
 }

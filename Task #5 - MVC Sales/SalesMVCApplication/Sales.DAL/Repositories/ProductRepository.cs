@@ -8,53 +8,13 @@ using System.Threading.Tasks;
 
 namespace Sales.DAL.Repositories
 {
-    class ProductRepository : IRepository<Product>
+    class ProductRepository : AbstractRepository<Product>
     {
         private Sales.Model.Models.SalesDataBaseContext _context;
 
-        public ProductRepository(Sales.Model.Models.SalesDataBaseContext context)
+        public ProductRepository(Sales.Model.Models.SalesDataBaseContext context) :
+            base(context)
         {
-            _context = context;
-        }
-        public IEnumerable<Product> GetAll()
-        {
-            return _context.Products;
-        }
-        public int Count()
-        {
-            return _context.Products.Count();
-        }
-        public Product Get(int id)
-        {
-            return _context.Products.Find(id);
-        }
-
-        public void Create(Product item)
-        {
-            Sales.Model.Models.Product product = _context.Products.Find(item.ID);
-            if (product == null)
-                _context.Products.Add(item);
-            else
-                throw new ArgumentException("Product with this ID already exists");
-        }
-
-        public void Update(Product item)
-        {
-            Sales.Model.Models.Product product = _context.Products.Find(item.ID);
-            if (product != null)
-            {
-                product.Name = item.Name;
-                _context.Entry<Product>(product).State = System.Data.Entity.EntityState.Modified;
-            }
-            else
-                throw new ArgumentException("Product with this ID not found");
-        }
-
-        public void Delete(int id)
-        {
-            Sales.Model.Models.Product product = _context.Products.Find(id);
-            if (product != null)
-                _context.Products.Remove(product);
         }
     }
 }

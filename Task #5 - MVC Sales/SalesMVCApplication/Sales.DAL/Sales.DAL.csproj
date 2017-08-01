@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interfaces\ISalesUnitOfWork.cs" />
+    <Compile Include="Repositories\AbstractRepository.cs" />
     <Compile Include="Repositories\PriceHistoryRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />

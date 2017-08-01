@@ -20,48 +20,15 @@ namespace Sales.DAL.Repositories
         public SalesUnitOfWork(string connectionString)
         {
             _context = new Sales.Model.Models.SalesDataBaseContext(connectionString);
+            clientRepo = new ClientRepository(_context);
+            managerRepo = new ManagerRepository(_context);
+            operationRepo = new OperationRepository(_context);
+            priceHistoryRepo = new PriceHistoryRepository(_context);
+            productRepo = new ProductRepository(_context);
         }
 
-        public IRepository<Client> Clients
-        {
-            get
-            {
-                if (clientRepo == null) clientRepo = new ClientRepository(_context);
-                return clientRepo;
-            }
-        }
-        public IRepository<Manager> Managers
-        {
-            get
-            {
-                if (managerRepo == null) managerRepo = new ManagerRepository(_context);
-                return managerRepo;
-            }
-        }
-        public IRepository<Operation> Operations
-        {
-            get
-            {
-                if (operationRepo == null) operationRepo = new OperationRepository(_context);
-                return operationRepo;
-            }
-        }
-        public IRepository<PriceHistory> PriceHistories
-        {
-            get
-            {
-                if (priceHistoryRepo == null) priceHistoryRepo = new PriceHistoryRepository(_context);
-                return priceHistoryRepo;
-            }
-        }
-        public IRepository<Product> Products
-        {
-            get
-            {
-                if (productRepo == null) productRepo = new ProductRepository(_context);
-                return productRepo;
-            }
-        }
+
+
         public void Save()
         {
             _context.SaveChanges();

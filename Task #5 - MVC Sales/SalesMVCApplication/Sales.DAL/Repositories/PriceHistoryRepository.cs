@@ -8,28 +8,17 @@ using System.Threading.Tasks;
 
 namespace Sales.DAL.Repositories
 {
-    class PriceHistoryRepository : IRepository<PriceHistory>
+    class PriceHistoryRepository : AbstractRepository<PriceHistory>
     {
         private Sales.Model.Models.SalesDataBaseContext _context;
 
-        public PriceHistoryRepository(Sales.Model.Models.SalesDataBaseContext context)
+        public PriceHistoryRepository(Sales.Model.Models.SalesDataBaseContext context):
+            base(context)
         {
             _context = context;
         }
-        public IEnumerable<PriceHistory> GetAll()
-        {
-            return _context.PriceHistories;
-        }
-        public int Count()
-        {
-            return _context.PriceHistories.Count();
-        }
-        public PriceHistory Get(int id)
-        {
-            return _context.PriceHistories.Find(id);
-        }
-
-        public void Create(PriceHistory item)
+        
+        public override void Create(PriceHistory item)
         {
             Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.Find(item.ID);
             if (priceHistory == null)
@@ -50,13 +39,6 @@ namespace Sales.DAL.Repositories
             }
             else
                 throw new ArgumentException("PriceHistory with this ID not found");
-        }
-
-        public void Delete(int id)
-        {
-            Sales.Model.Models.PriceHistory priceHistory = _context.PriceHistories.Find(id);
-            if (priceHistory != null)
-                _context.PriceHistories.Remove(priceHistory);
         }
     }
 }
