@@ -6,18 +6,14 @@ namespace BillingSystem.Data.Tariff.TariffTypes
 {
     public class TariffPerSecond : ITariff
     {
-        private uint _costSecond;
-        public uint CostSecond
-        {
-            get { return _costSecond; }
-        }
+        public uint CostSecond { get; }
         public TariffPerSecond(uint costSecond) 
         {
-            _costSecond = costSecond;
+            CostSecond = costSecond;
         }
         public int GetPrice(IEnumerable<Data.Connection.Connect> connects)
         {
-            return connects.Last().Duration.Seconds * Convert.ToInt32(_costSecond);
+            return connects.Last().Duration.Seconds * Convert.ToInt32(CostSecond);
         }
     }
 }

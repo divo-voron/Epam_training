@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using TelephoneExchange.StationCompoment.SessionComponent;
+using TelephoneExchange.StationComponent.SessionComponent;
 
-namespace TelephoneExchange.StationCompoment
+namespace TelephoneExchange.StationComponent
 {
     class SessionContainer : ICollection<Session>
     {
-        private ICollection<Session> _sessions;
+        private readonly ICollection<Session> _sessions;
         public SessionContainer()
         {
             _sessions = new List<Session>();
@@ -62,15 +62,9 @@ namespace TelephoneExchange.StationCompoment
             _sessions.CopyTo(array, arrayIndex);
         }
 
-        public int Count
-        {
-            get { return _sessions.Count; }
-        }
+        public int Count => _sessions.Count;
 
-        public bool IsReadOnly
-        {
-            get { return _sessions.IsReadOnly; }
-        }
+        public bool IsReadOnly => _sessions.IsReadOnly;
 
         public bool Remove(Session item)
         {

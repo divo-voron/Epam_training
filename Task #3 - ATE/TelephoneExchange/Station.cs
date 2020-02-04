@@ -1,44 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using TelephoneExchange.StationCompoment;
-using TelephoneExchange.StationCompoment.ConnectComponent;
-using TelephoneExchange.StationCompoment.PortComponent;
-using TelephoneExchange.StationCompoment.SessionComponent;
+using TelephoneExchange.StationComponent;
+using TelephoneExchange.StationComponent.ConnectComponent;
+using TelephoneExchange.StationComponent.PortComponent;
+using TelephoneExchange.StationComponent.SessionComponent;
 
 namespace TelephoneExchange
 {
     public class Station
     {
-        private SessionContainer _sessionContainer;
-        private IDictionary<PhoneNumber, IPort> _ports;
-        public IDictionary<PhoneNumber, IPort> Ports
-        {
-            get { return _ports; }
-        }
+        private readonly SessionContainer _sessionContainer;
+
+        public IDictionary<PhoneNumber, IPort> Ports { get; }
+
         public Station()
         {
-            _ports = new Dictionary<PhoneNumber, IPort>();
+            Ports = new Dictionary<PhoneNumber, IPort>();
             _sessionContainer = new SessionContainer();
         }
 
-        private EventHandler<ConnectInfo> _callEnd;
-        public event EventHandler<ConnectInfo> CallEnd
-        {
-            add { _callEnd += value; }
-            remove { _callEnd -= value; }
-        }
+        public event EventHandler<ConnectInfo> CallEnd;
+
         private void OnCallEnded(ConnectInfo connectInfo)
         {
-            if (_callEnd != null) _callEnd(this, connectInfo);
+            CallEnd?.Invoke(this, connectInfo);
         }
 
         public void RegisterPort(IPort port)
         {
-            if (_ports.Values.Contains(port) == false)
+            if (Ports.Values.Contains(port) == false)
             {
                 port.Connected += ConnectStation;
                 port.Disconnected += DisconnectStation;
-                _ports.Add(port.Number, port);
+                Ports.Add(port.Number, port);
             }
             else
             {
@@ -47,24 +41,7 @@ namespace TelephoneExchange
                 port.Disconnected += DisconnectStation;
             }
         }
-        public void RegisterPort(IEnumerable<IPort> ports)
-        {
-            foreach (IPort port in ports)
-            {
-                if (_ports.Values.Contains(port) == false)
-                {
-                    port.Connected += ConnectStation;
-                    port.Disconnected += DisconnectStation;
-                    _ports.Add(port.Number, port);
-                }
-                else
-                {
-                    UnregisterPort(port);
-                    port.Connected += ConnectStation;
-                    port.Disconnected += DisconnectStation;
-                }
-            }
-        }
+
         public void UnregisterPort(IPort port)
         {
             if (port != null)
@@ -75,10 +52,10 @@ namespace TelephoneExchange
                 //_ports.Remove(port);
             }
         }
+
         private void ConnectStation(object sender, EventArgs e)
         {
-            IPort port = sender as IPort;
-            if (port != null)
+            if (sender is IPort port)
             {
                 DisconnectStation(sender, e);
 
@@ -87,20 +64,21 @@ namespace TelephoneExchange
                 port.Dropped += DropStation;
             }
         }
+
         private void DisconnectStation(object sender, EventArgs e)
         {
-            IPort port = sender as IPort;
-            if (port != null)
+            if (sender is IPort port)
             {
                 port.Calling -= CallStation;
                 port.Accepted -= AcceptStation;
                 port.Dropped -= DropStation;
             }
         }
+
         private void CallStation(object sender, CallRequestNumber e)
         {
-            IPort portSource = sender as IPort;
-            IPort portTarget = _ports[e.Number];
+            var portSource = sender as IPort;
+            var portTarget = Ports[e.Number];
             if (portSource != null && portTarget != null && portSource != portTarget && 
                 _sessionContainer.IsOpenedSession(portSource, portTarget))
             {
@@ -116,10 +94,11 @@ namespace TelephoneExchange
                 Console.WriteLine("Connection not made");
             }
         }
+
         private void AcceptStation(object sender, EventArgs e)
         {
-            IPort port = sender as IPort;
-            Session currentSession = _sessionContainer.GetByTarget(port, SessionState.Open);
+            var port = sender as IPort;
+            var currentSession = _sessionContainer.GetByTarget(port, SessionState.Open);
             if (currentSession != null)
             {
                 currentSession.Source.StateCall = PortStateCall.Busy;
@@ -133,12 +112,12 @@ namespace TelephoneExchange
                 Console.WriteLine("Incoming call not found");
             }
         }
+
         private void DropStation(object sender, EventArgs e)
         {
-            IPort port = sender as IPort;
-            if (port != null)
+            if (sender is IPort port)
             {
-                Session currentSession = _sessionContainer.GetByAny(port);
+                var currentSession = _sessionContainer.GetByAny(port);
                 if (currentSession != null)
                 {
                     if (currentSession.State == SessionState.Connected)
@@ -151,7 +130,7 @@ namespace TelephoneExchange
 
                         _sessionContainer.Remove(currentSession);
 
-                        Console.WriteLine("Сurrent call is completed");
+                        Console.WriteLine("Current call is completed");
                     }
                     else
                     {
@@ -163,7 +142,7 @@ namespace TelephoneExchange
 
                         _sessionContainer.Remove(currentSession);
 
-                        Console.WriteLine("Сurrent dialing is interrupted");
+                        Console.WriteLine("Current dialing is interrupted");
                     }
                 }
                 else

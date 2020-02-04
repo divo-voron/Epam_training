@@ -1,5 +1,5 @@
 ﻿
-namespace TelephoneExchange.StationCompoment.ConnectComponent
+namespace TelephoneExchange.StationComponent.ConnectComponent
 {
     public enum ConnectInfoState
     {

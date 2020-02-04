@@ -6,28 +6,22 @@ namespace BillingSystem.Data.Tariff.TariffTypes
 {
     public class TariffWithFreeMinute : ITariff
     {
-        private uint _freeMinutes;
-        private uint _costMinute;
-        public uint FreeMinutes
-        {
-            get { return _freeMinutes; }
-        }
-        public uint CostMinute
-        {
-            get { return _costMinute; }
-        }
+        public uint FreeMinutes { get; }
+        public uint CostMinute { get; }
         public TariffWithFreeMinute(uint freeMinutes, uint costMinute)
         {
-            _freeMinutes = freeMinutes;
-            _costMinute = costMinute;
+            FreeMinutes = freeMinutes;
+            CostMinute = costMinute;
         }
-        public int GetPrice(IEnumerable<Data.Connection.Connect> connects)
+        public int GetPrice(IEnumerable<Connection.Connect> connects)
         {
-            int allMinutes = connects.Sum(x => x.Duration.Minutes);
-            if (_freeMinutes >= allMinutes)
+            var allMinutes = connects.Sum(x => x.Duration.Minutes);
+            if (FreeMinutes >= allMinutes)
+            {
                 return 0;
-            else
-                return connects.Last().Duration.Minutes * Convert.ToInt32(_costMinute);
+            }
+
+            return connects.Last().Duration.Minutes * Convert.ToInt32(CostMinute);
         }
     }
 }

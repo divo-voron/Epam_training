@@ -2,114 +2,131 @@
 using BillingSystem.Data;
 using BillingSystem.Data.Tariff.TariffTypes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using BillingSystem.Extensions;
 using TelephoneExchange;
-using TelephoneExchange.StationCompoment;
+using TelephoneExchange.StationComponent;
 
 namespace Demo
 {
     class Program
     {
-        private const int maxTime = 5000;
+        private const int maxTime = 2000;
 
         static void Main(string[] args)
         {
-            Timer timer = new Timer(86400000);
-            timer.AutoReset = true;
+            var timer = new Timer(86400000)
+            {
+                AutoReset = true
+            };
+
             timer.Start();
             timer.Elapsed += Billing.TimerElapsed;
 
-            Billing.AddClient(new Client("Jhon", new PhoneNumber(0, 100), new TariffPerSecond(15)));
-            Billing.AddClient(new Client("Bob", new PhoneNumber(0, 200), new TariffPerSecond(5)));
-            Billing.AddClient(new Client("Alice", new PhoneNumber(0, 300), new TariffWithFreeMinute(5, 45)));
+            var johnClient = new Client("John", new PhoneNumber(0, 100), new TariffPerSecond(15), 5);
+            var bobClient = new Client("Bob", new PhoneNumber(0, 200), new TariffPerSecond(5), 24);
+            var aliceClient = new Client("Alice", new PhoneNumber(0, 300), new TariffWithFreeMinute(5, 45), 12);
 
-            Billing.Clients.ElementAt(0).AddMoney(5);
-            Billing.Clients.ElementAt(1).AddMoney(24);
-            Billing.Clients.ElementAt(2).AddMoney(12);
+            Billing.AddClient(johnClient);
+            Billing.AddClient(bobClient);
+            Billing.AddClient(aliceClient);
 
-            Station station = new Station();
+            var station = new Station();
             station.CallEnd += Billing.AddConnectionInfo;
 
-            ICollection<ITerminal> terminals = new List<ITerminal>() { new Terminal(), new Terminal(), new Terminal() };
+            var johnTerminal = new Terminal();
+            var bobTerminal = new Terminal();
+            var aliceTerminal = new Terminal();
 
-            station.RegisterPort(Billing.Clients.Select(x => x.Port));
+            station.RegisterPort(johnClient.Port);
+            station.RegisterPort(bobClient.Port);
+            station.RegisterPort(aliceClient.Port);
 
-            station.Ports.Values.ElementAt(0).RegisterTerminal(terminals.ElementAt(0));
-            station.Ports.Values.ElementAt(1).RegisterTerminal(terminals.ElementAt(1));
-            station.Ports.Values.ElementAt(2).RegisterTerminal(terminals.ElementAt(2));
-            
-            terminals.ElementAt(0).Connect();
-            terminals.ElementAt(1).Connect();
-            terminals.ElementAt(2).Connect();
+            station.Ports[johnClient.Port.Number].RegisterTerminal(johnTerminal);
+            station.Ports[bobClient.Port.Number].RegisterTerminal(bobTerminal);
+            station.Ports[aliceClient.Port.Number].RegisterTerminal(aliceTerminal);
 
-            for (int i = 0; i < 2; i++)
+            johnTerminal.Connect();
+            bobTerminal.Connect();
+            aliceTerminal.Connect();
+
+            for (var i = 0; i < 1; i++)
             {
-                terminals.ElementAt(0).Call(new PhoneNumber(0, 200));
-                terminals.ElementAt(1).Accept();
+                johnTerminal.Call(new PhoneNumber(0, 200));
+                bobTerminal.Accept();
                 System.Threading.Thread.Sleep(new Random().Next(maxTime));
-                terminals.ElementAt(1).Drop();
-                Console.WriteLine(Billing.Clients.ElementAt(0).Bill);
+                bobTerminal.Drop();
+                Console.WriteLine(johnClient.Bill);
 
-                terminals.ElementAt(0).Call(new PhoneNumber(0, 300));
-                terminals.ElementAt(2).Accept();
+                johnTerminal.Call(new PhoneNumber(0, 300));
+                aliceTerminal.Accept();
                 System.Threading.Thread.Sleep(new Random().Next(maxTime));
-                terminals.ElementAt(2).Drop();
-                Console.WriteLine(Billing.Clients.ElementAt(0).Bill);
+                aliceTerminal.Drop();
+                Console.WriteLine(johnClient.Bill);
 
-                terminals.ElementAt(1).Call(new PhoneNumber(0, 100));
-                terminals.ElementAt(0).Accept();
+                bobTerminal.Call(new PhoneNumber(0, 100));
+                johnTerminal.Accept();
                 System.Threading.Thread.Sleep(new Random().Next(maxTime));
-                terminals.ElementAt(0).Drop();
-                Console.WriteLine(Billing.Clients.ElementAt(1).Bill);
+                johnTerminal.Drop();
+                Console.WriteLine(bobClient.Bill);
 
-                terminals.ElementAt(1).Call(new PhoneNumber(0, 300));
-                terminals.ElementAt(2).Accept();
+                bobTerminal.Call(new PhoneNumber(0, 300));
+                aliceTerminal.Accept();
                 System.Threading.Thread.Sleep(new Random().Next(maxTime));
-                terminals.ElementAt(2).Drop();
-                Console.WriteLine(Billing.Clients.ElementAt(1).Bill);
+                aliceTerminal.Drop();
+                Console.WriteLine(bobClient.Bill);
 
-                terminals.ElementAt(2).Call(new PhoneNumber(0, 100));
-                terminals.ElementAt(0).Accept();
+                aliceTerminal.Call(new PhoneNumber(0, 100));
+                johnTerminal.Accept();
                 System.Threading.Thread.Sleep(new Random().Next(maxTime));
-                terminals.ElementAt(0).Drop();
-                Console.WriteLine(Billing.Clients.ElementAt(2).Bill);
+                johnTerminal.Drop();
+                Console.WriteLine(aliceClient.Bill);
 
-                terminals.ElementAt(2).Call(new PhoneNumber(0, 200));
-                terminals.ElementAt(1).Accept();
+                aliceTerminal.Call(new PhoneNumber(0, 200));
+                bobTerminal.Accept();
                 System.Threading.Thread.Sleep(new Random().Next(maxTime));
-                terminals.ElementAt(1).Drop();
-                Console.WriteLine(Billing.Clients.ElementAt(2).Bill);
+                bobTerminal.Drop();
+                Console.WriteLine(aliceClient.Bill);
             }
 
             Console.WriteLine();
 
-            Console.WriteLine(Billing.Clients.ElementAt(0).Name);
-            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(0)).GetString());
+            Console.WriteLine(johnClient.Name);
+
+            Console.WriteLine(Billing.GetConnections(By.Client(johnClient))
+                .GetString());
             Console.WriteLine();
 
-            Console.WriteLine(Billing.Clients.ElementAt(1).Name);
-            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(1)).GetString());
+            Console.WriteLine(bobClient.Name);
+            Console.WriteLine(Billing.GetConnections(By.Client(bobClient))
+                .GetString());
             Console.WriteLine();
 
-            Console.WriteLine(Billing.Clients.ElementAt(2).Name);
-            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(2)).GetString());
+            Console.WriteLine(aliceClient.Name);
+            Console.WriteLine(Billing.GetConnections(By.Client(aliceClient))
+                .GetString());
             Console.WriteLine();
 
 
             Console.WriteLine();
 
-            Console.WriteLine(Billing.Clients.ElementAt(0).Name);
-            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(0)).Where(x => x.Cost > 0).GetString());
+            Console.WriteLine(johnClient.Name);
+            Console.WriteLine(Billing.GetConnections(By.Client(johnClient))
+                .Where(x => x.Cost > 0)
+                .GetString());
             Console.WriteLine();
 
-            Console.WriteLine(Billing.Clients.ElementAt(1).Name);
-            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(1)).OrderByDescending(x => x.Start).GetString());
+            Console.WriteLine(bobClient.Name);
+            Console.WriteLine(Billing.GetConnections(By.Client(bobClient))
+                .OrderByDescending(x => x.Start)
+                .GetString());
             Console.WriteLine();
 
-            Console.WriteLine(Billing.Clients.ElementAt(2).Name);
-            Console.WriteLine(Billing.GetConnection(Billing.Clients.ElementAt(2)).Where(x => x.Duration > new TimeSpan(0, 0, 3)).GetString());
+            Console.WriteLine(aliceClient.Name);
+            Console.WriteLine(Billing.GetConnections(By.Client(aliceClient))
+                .Where(x => x.Duration > new TimeSpan(0, 0, 3))
+                .GetString());
             Console.WriteLine();
         }
     }

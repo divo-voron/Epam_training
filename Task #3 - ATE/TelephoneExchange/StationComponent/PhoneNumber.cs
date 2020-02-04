@@ -1,19 +1,13 @@
 ﻿using System;
 
-namespace TelephoneExchange.StationCompoment
+namespace TelephoneExchange.StationComponent
 {
     public struct PhoneNumber
     {
-        private ushort _operatorCode;
-        private uint _number;
-        public ushort OperatorCode
-        {
-            get { return _operatorCode; }
-        }
-        public uint Number
-        {
-            get { return _number; }
-        }
+        public ushort OperatorCode { get; }
+
+        public uint Number { get; }
+
         public PhoneNumber(ushort operatorCode, uint number)
         {
             if (operatorCode > 999)
@@ -21,8 +15,8 @@ namespace TelephoneExchange.StationCompoment
             if (number > 999999)
                 throw new ArgumentException("No more six numbers in number");
 
-            _operatorCode = operatorCode;
-            _number = number;
+            OperatorCode = operatorCode;
+            Number = number;
         }
 
         public static bool operator ==(PhoneNumber p1, PhoneNumber p2)
@@ -35,14 +29,22 @@ namespace TelephoneExchange.StationCompoment
             return !(p1 == p2);
         }
 
+        public bool Equals(PhoneNumber other)
+        {
+            return OperatorCode == other.OperatorCode && Number == other.Number;
+        }
+
         public override bool Equals(object obj)
         {
-            return base.Equals(obj);
+            return obj is PhoneNumber other && Equals(other);
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            unchecked
+            {
+                return (OperatorCode.GetHashCode() * 397) ^ (int)Number;
+            }
         }
     }
 }

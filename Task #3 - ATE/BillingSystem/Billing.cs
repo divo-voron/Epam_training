@@ -1,75 +1,58 @@
-﻿using BillingSystem.Data;
+﻿using System;
+using BillingSystem.Data;
 using BillingSystem.Data.Connection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TelephoneExchange.StationComponent;
 
 namespace BillingSystem
 {
     public static class Billing
     {
-        private static ClientContainer _clients = new ClientContainer();
-        private static ConnectionHistory _history = new ConnectionHistory();
-        public static ConnectionHistory History
-        {
-            get { return _history; }
-        }
-        public static ClientContainer Clients
-        {
-            get { return _clients; }
-        }
+        public static List<Connect> History { get; } = new List<Connect>();
+
+        public static List<Client> Clients { get; } = new List<Client>();
+
         public static void AddClient(Client client)
         {
-            if (_clients.Contains(client) == false) 
-                _clients.Add(client);
+            if (Clients.Contains(client) == false)
+            {
+                Clients.Add(client);
+            }
         }
-        public static void AddConnectionInfo(object sender, TelephoneExchange.StationCompoment.ConnectInfo e)
+
+        public static void AddConnectionInfo(object sender, ConnectInfo e)
         {
-            Client source = _clients.GetClient(e.Source);
-            Client target = _clients.GetClient(e.Target);
+            var source = Clients.FirstOrDefault(x => x.Port.Number == e.Source);
+            var target = Clients.FirstOrDefault(x => x.Port.Number == e.Source);
             if (source != null && target != null)
             {
-                Connect connect = new Connect(source, target, e.Start, e.End, e.State);
-                _history.Add(connect);
+                var connect = new Connect(source, target, e.Start, e.End, e.Duration, e.State);
+                History.Add(connect);
                 source.ReCountBill();
             }
         }
-        public static IEnumerable<Connect> GetConnection(Client client)
+
+        public static IEnumerable<Connect> GetConnections(Func<Connect, bool> predicate)
         {
-            return _history.Where(x => x.SourceClient == client || x.TargetClient == client);
+            return History.Where(predicate);
         }
-        public static IEnumerable<Connect> GetIncomingConnections(Client client)
-        {
-            return _history.Where(x => x.TargetClient == client);
-        }
-        public static IEnumerable<Connect> GetOutgoingConnections(Client client)
-        {
-            return _history.Where(x => x.SourceClient == client);
-        }
-        public static IEnumerable<Connect> GetUnacceptedConnection(Client client)
-        {
-            return _history.Where(x => x.State == TelephoneExchange.StationCompoment.ConnectComponent.ConnectInfoState.Unaccepted && x.TargetClient == client);
-        }
-        
+
         public static string GetString(this IEnumerable<Connect> source)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("Show connection info\r\n");
-            foreach (Connect connect in source)
+            foreach (var connect in source)
             {
-                sb.Append(string.Format("From: {0} - To: {1} - Start: {2} - End: {3} - Duration: {4} - Cost: {5}\r\n",
-                    connect.SourceClient.Name, connect.TargetClient.Name, 
-                    connect.Start, connect.End, connect.Duration, connect.Cost));
+                sb.Append($"From: {connect.SourceClient.Name} - To: {connect.TargetClient.Name} - Start: {connect.Start} - End: {connect.End} - Duration: {connect.Duration} - Cost: {connect.Cost}\r\n");
             }
             return sb.ToString();
         }
 
         public static void TimerElapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            foreach (Client client in _clients)
-            {
-                client.CheckBillState();
-            }
+            Clients.ForEach(client => client.CheckBillState());
         }
     }
 }

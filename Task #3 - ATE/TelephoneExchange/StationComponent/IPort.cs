@@ -1,12 +1,14 @@
 ﻿using System;
-using TelephoneExchange.StationCompoment.PortComponent;
+using TelephoneExchange.StationComponent.PortComponent;
 
-namespace TelephoneExchange.StationCompoment
+namespace TelephoneExchange.StationComponent
 {
     public interface IPort : IDisposable
     {
         PortStateCall StateCall { get; set; }
+
         PortStateLock StateLock { get; set; }
+
         PhoneNumber Number { get; }
 
         event EventHandler Connected;
@@ -17,7 +19,9 @@ namespace TelephoneExchange.StationCompoment
         event EventHandler IncomingCall;
 
         void RegisterTerminal(ITerminal terminal);
+
         void UnregisterTerminal(ITerminal terminal);
+
         void IncomingCallPort(object sender, EventArgs e);
     }
 }

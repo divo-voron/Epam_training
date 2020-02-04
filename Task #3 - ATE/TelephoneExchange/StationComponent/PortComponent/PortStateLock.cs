@@ -1,5 +1,5 @@
 ﻿
-namespace TelephoneExchange.StationCompoment.PortComponent
+namespace TelephoneExchange.StationComponent.PortComponent
 {
     public enum PortStateLock
     {

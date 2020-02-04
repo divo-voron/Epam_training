@@ -1,7 +1,7 @@
 ﻿using System;
-using TelephoneExchange.StationCompoment.TerminalComponent;
+using TelephoneExchange.StationComponent.TerminalComponent;
 
-namespace TelephoneExchange.StationCompoment
+namespace TelephoneExchange.StationComponent
 {
     public interface ITerminal : IDisposable
     {
@@ -19,6 +19,6 @@ namespace TelephoneExchange.StationCompoment
         void Accept();
         void Call(PhoneNumber number);
 
-        void IncomimgCall(object sender, EventArgs e);
+        void IncomingCall(object sender, EventArgs e);
     }
 }

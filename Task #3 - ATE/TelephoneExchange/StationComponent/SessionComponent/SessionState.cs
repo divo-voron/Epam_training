@@ -1,5 +1,5 @@
 ﻿
-namespace TelephoneExchange.StationCompoment.SessionComponent
+namespace TelephoneExchange.StationComponent.SessionComponent
 {
     enum SessionState
     {

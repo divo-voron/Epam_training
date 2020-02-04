@@ -39,22 +39,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StationCompoment\CallRequestNumber.cs" />
-    <Compile Include="StationCompoment\ConnectInfo.cs" />
-    <Compile Include="StationCompoment\ConnectComponent\ConnectInfoState.cs" />
-    <Compile Include="StationCompoment\IPort.cs" />
-    <Compile Include="StationCompoment\PortComponent\PortStateLock.cs" />
-    <Compile Include="StationCompoment\ITerminal.cs" />
-    <Compile Include="StationCompoment\PhoneNumber.cs" />
-    <Compile Include="StationCompoment\Port.cs" />
+    <Compile Include="StationComponent\CallRequestNumber.cs" />
+    <Compile Include="StationComponent\ConnectInfo.cs" />
+    <Compile Include="StationComponent\ConnectComponent\ConnectInfoState.cs" />
+    <Compile Include="StationComponent\IPort.cs" />
+    <Compile Include="StationComponent\PortComponent\PortStateLock.cs" />
+    <Compile Include="StationComponent\ITerminal.cs" />
+    <Compile Include="StationComponent\PhoneNumber.cs" />
+    <Compile Include="StationComponent\Port.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StationCompoment\Session.cs" />
-    <Compile Include="StationCompoment\SessionContainer.cs" />
-    <Compile Include="StationCompoment\SessionComponent\SessionState.cs" />
-    <Compile Include="StationCompoment\PortComponent\PortStateCall.cs" />
+    <Compile Include="StationComponent\Session.cs" />
+    <Compile Include="StationComponent\SessionContainer.cs" />
+    <Compile Include="StationComponent\SessionComponent\SessionState.cs" />
+    <Compile Include="StationComponent\PortComponent\PortStateCall.cs" />
     <Compile Include="Station.cs" />
-    <Compile Include="StationCompoment\Terminal.cs" />
-    <Compile Include="StationCompoment\TerminalComponent\TerminalsState.cs" />
+    <Compile Include="StationComponent\Terminal.cs" />
+    <Compile Include="StationComponent\TerminalComponent\TerminalsState.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,5 @@
 ﻿
-namespace TelephoneExchange.StationCompoment.TerminalComponent
+namespace TelephoneExchange.StationComponent.TerminalComponent
 {
     public enum TerminalsState
     {
